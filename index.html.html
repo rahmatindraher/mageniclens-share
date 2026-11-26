@@ -78,10 +78,9 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between bg-[#F7F5F0] text-[#1C1B18] dark:bg-[#0A0A0B] dark:text-[#F4F1EA] selection:bg-[#B5945B] selection:text-white dark:selection:bg-[#D4AF37] dark:selection:text-black">
 
-  <!-- TOP NAVBAR (Palet Ivory Alabaster & Champagne Gold) -->
+  <!-- TOP NAVBAR -->
   <header class="sticky top-0 z-30 bg-[#F7F5F0]/88 dark:bg-[#0A0A0B]/88 backdrop-blur-md border-b border-[#E5DFD3] dark:border-zinc-800/80">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-      <!-- Brand Logo -->
       <div class="flex items-center gap-2.5 cursor-pointer" onclick="goHomeView()">
         <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-[#1C1B18] dark:text-white">
           mageniclens<span class="text-[#B5945B] dark:text-[#D4AF37]">.</span>
@@ -91,7 +90,6 @@
         </span>
       </div>
 
-      <!-- Center Nav Links (Landing Only) -->
       <nav id="landingNavLinks" class="hidden md:flex items-center gap-7 text-xs font-semibold text-[#5C5549] dark:text-zinc-400">
         <a href="#masalahSection" class="hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition">Tantangan Studio</a>
         <a href="#fiturSection" class="hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition">Keunggulan</a>
@@ -100,9 +98,7 @@
         <a href="#faqSection" class="hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition">Tanya Jawab</a>
       </nav>
 
-      <!-- Right Actions -->
       <div class="flex items-center gap-2">
-        <!-- Theme Toggle -->
         <button type="button" onclick="toggleColorTheme()" title="Ubah Nuansa · Siang / Malam" class="p-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#4A4337] dark:text-[#D4AF37] border border-[#DFD8C8] dark:border-zinc-800 transition cursor-pointer">
           <svg id="themeIconSun" class="hidden dark:block h-4 w-4 text-[#D4AF37]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="5"></circle>
@@ -141,15 +137,10 @@
   <!-- MAIN CONTENT -->
   <main class="flex-grow w-full">
 
-    <!-- ===================================================================== -->
-    <!-- LANDING PAGE LUXURY EDITORIAL (COPYWRITING ORISINAL MAGENICLENS)      -->
-    <!-- ===================================================================== -->
+    <!-- LANDING PAGE -->
     <div id="welcomeLandingSection" class="space-y-24 pb-20">
-
-      <!-- 1. HERO SECTION -->
       <section class="max-w-6xl mx-auto px-4 sm:px-6 pt-10 sm:pt-16">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          <!-- Left Column: Original Luxury Copywriting -->
           <div class="lg:col-span-7 space-y-6 text-left">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 shadow-xs">
               <span class="w-2 h-2 rounded-full bg-[#B5945B] dark:bg-[#D4AF37]"></span>
@@ -174,7 +165,6 @@
               </button>
             </div>
 
-            <!-- Micro trust bullets -->
             <div class="flex flex-wrap items-center gap-x-6 gap-y-2 pt-2 text-xs font-semibold text-[#6E6556] dark:text-zinc-400">
               <span class="flex items-center gap-1.5">
                 <svg class="w-4 h-4 text-[#B5945B] dark:text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
@@ -191,10 +181,8 @@
             </div>
           </div>
 
-          <!-- Right Column: Interactive Luxury Gallery Mockup -->
           <div class="lg:col-span-5 flex justify-center">
             <div class="w-full max-w-[360px] rounded-[2rem] bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 shadow-2xl p-4 space-y-3.5 relative">
-              <!-- Mockup Studio Header -->
               <div class="flex items-center justify-between pb-2.5 border-b border-[#EFECE6] dark:border-zinc-800">
                 <div>
                   <p class="text-[10px] font-extrabold tracking-[0.2em] uppercase text-[#B5945B] dark:text-[#D4AF37]">PRIVATE GALLERY</p>
@@ -206,10 +194,8 @@
                 </div>
               </div>
 
-              <!-- Interactive Photo Grid inside Mockup -->
               <div class="grid grid-cols-3 gap-2" id="heroMockGrid"></div>
 
-              <!-- Mockup Bottom Bar -->
               <div class="pt-2 flex items-center justify-between gap-2">
                 <span class="text-[11px] text-[#6E6556] dark:text-zinc-400">Sentuh foto untuk pratinjau kurasi</span>
                 <button type="button" onclick="openAdminGate('register')" class="px-4 py-2 rounded-full bg-[#1C1B18] dark:bg-[#D4AF37] text-[#F7F5F0] dark:text-black text-xs font-bold hover:opacity-90 transition cursor-pointer">
@@ -220,7 +206,6 @@
           </div>
         </div>
 
-        <!-- 4 Key Metrics Strip -->
         <div class="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 rounded-3xl bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 shadow-xs">
           <div class="text-center sm:text-left">
             <p class="text-2xl sm:text-3xl font-extrabold text-[#1C1B18] dark:text-white">&lt; 1 Mnt</p>
@@ -241,7 +226,6 @@
         </div>
       </section>
 
-      <!-- 2. SECTION TANTANGAN STUDIO (Original Copywriting) -->
       <section id="masalahSection" class="max-w-6xl mx-auto px-4 sm:px-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-[2rem] p-6 sm:p-12 shadow-xs">
           <div class="lg:col-span-6 space-y-4">
@@ -254,7 +238,6 @@
             </p>
           </div>
 
-          <!-- Conversation Illustration Card -->
           <div class="lg:col-span-6">
             <div class="rounded-2xl bg-[#EFECE6] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-800 p-4 sm:p-5 space-y-2.5">
               <div class="flex items-center justify-between pb-2 border-b border-black/10 dark:border-zinc-800">
@@ -280,7 +263,6 @@
         </div>
       </section>
 
-      <!-- 3. SECTION KEUNGGULAN (Bento Grid Fitur Utama) -->
       <section id="fiturSection" class="max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
         <div class="max-w-2xl space-y-3">
           <span class="text-xs font-bold uppercase tracking-[0.2em] text-[#B5945B] dark:text-[#D4AF37]">Keunggulan Sistem</span>
@@ -355,7 +337,6 @@
         </div>
       </section>
 
-      <!-- 4. SECTION ALUR KERJA (3 Tahap Praktis) -->
       <section id="caraKerjaSection" class="max-w-6xl mx-auto px-4 sm:px-6 space-y-10">
         <div class="text-center max-w-xl mx-auto space-y-2">
           <span class="text-xs font-bold uppercase tracking-[0.2em] text-[#B5945B] dark:text-[#D4AF37]">Alur Kerja Studio</span>
@@ -391,7 +372,6 @@
         </div>
       </section>
 
-      <!-- 5. SECTION INVESTASI / PRICING -->
       <section id="hargaSection" class="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div class="space-y-2">
@@ -409,7 +389,6 @@
         </div>
 
         <div id="publicPricingGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <!-- Kartu Trial Gratis -->
           <div class="p-6 rounded-3xl bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 flex flex-col justify-between space-y-5">
             <div class="space-y-2">
               <div class="flex items-center justify-between">
@@ -424,11 +403,9 @@
               Daftar Sekarang
             </button>
           </div>
-          <!-- Paket berbayar akan di-render otomatis oleh renderPublicPricingCards() -->
         </div>
       </section>
 
-      <!-- 6. SECTION FAQ (Tanya Jawab) -->
       <section id="faqSection" class="max-w-4xl mx-auto px-4 sm:px-6 space-y-6">
         <div class="space-y-2">
           <span class="text-xs font-bold uppercase tracking-[0.2em] text-[#B5945B] dark:text-[#D4AF37]">Tanya Jawab</span>
@@ -470,7 +447,6 @@
         </div>
       </section>
 
-      <!-- 7. BOTTOM CTA BANNER -->
       <section class="max-w-6xl mx-auto px-4 sm:px-6">
         <div class="rounded-[2rem] bg-[#1C1B18] dark:bg-[#131316] border border-[#33312B] dark:border-zinc-800 p-8 sm:p-12 text-center space-y-5">
           <h2 class="text-2xl sm:text-4xl font-extrabold text-[#F7F5F0] dark:text-white">
@@ -494,9 +470,7 @@
       </section>
     </div>
 
-    <!-- ===================================================================== -->
-    <!-- GERBANG PASSWORD ALBUM KLIEN                                          -->
-    <!-- ===================================================================== -->
+    <!-- GERBANG PASSWORD ALBUM KLIEN -->
     <section id="clientPasswordGate" class="hidden max-w-md mx-auto mt-12 px-4">
       <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
         <div class="text-center mb-6">
@@ -525,9 +499,7 @@
       </div>
     </section>
 
-    <!-- ===================================================================== -->
-    <!-- PANEL ADMIN / STUDIO + SUPER ADMIN (PALET IVORY & CHAMPAGNE GOLD)     -->
-    <!-- ===================================================================== -->
+    <!-- PANEL ADMIN / STUDIO + SUPER ADMIN -->
     <section id="adminDashboard" class="hidden max-w-6xl mx-auto px-4 sm:px-6 py-6 mb-8">
       <div class="flex flex-wrap items-center justify-between gap-3 mb-5 bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 p-4 rounded-2xl shadow-xs">
         <div>
@@ -855,9 +827,7 @@
       <p id="errorMessage" class="text-[#4A4337] dark:text-zinc-300 text-sm"></p>
     </div>
 
-    <!-- ===================================================================== -->
-    <!-- GALERI FOTO KLIEN (ELEGAN & LUXURY)                                   -->
-    <!-- ===================================================================== -->
+    <!-- GALERI FOTO KLIEN -->
     <section id="gallerySection" class="hidden max-w-7xl mx-auto px-4 sm:px-6 py-6">
       <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-2xl p-4 sm:p-5 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
         <div>
@@ -941,7 +911,6 @@
         </button>
       </div>
 
-      <!-- FORM 1: LOGIN -->
       <div id="authLoginForm" class="space-y-4">
         <div class="space-y-2.5">
           <input type="email" id="loginEmailInput" value="admin@mageniclens.com" placeholder="Email Studio Anda" class="w-full px-4 py-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
@@ -962,7 +931,6 @@
         </p>
       </div>
 
-      <!-- FORM 2: REGISTRASI AKUN BARU -->
       <div id="authRegisterForm" class="hidden space-y-3">
         <div class="p-3 rounded-xl bg-[#B5945B]/10 border border-[#B5945B]/25 text-[11px] text-[#6B5E4A] dark:text-[#E3C14B] leading-relaxed">
           • <strong>Tanpa Kode Lisensi:</strong> Trial Gratis 7 Hari (khusus 1 perangkat).<br>
@@ -1008,7 +976,6 @@
         </button>
       </div>
 
-      <!-- FORM 3: AKTIVASI / PERPANJANG KODE LISENSI -->
       <div id="authActivateForm" class="hidden space-y-3">
         <p class="text-xs text-[#6E6556] dark:text-zinc-400">Masukkan Email Terdaftar dan Kode Lisensi untuk mengaktifkan akses <strong>2 Perangkat</strong> (rotasi pindah perangkat 3x / 7 hari).</p>
         <div>
@@ -1245,7 +1212,7 @@
     <span id="toastMessage">Tersalin!</span>
   </div>
 
-  <!-- FOOTER (Palet Ivory & Champagne Gold) -->
+  <!-- FOOTER -->
   <footer class="border-t border-[#E5DFD3] dark:border-zinc-900 bg-white dark:bg-[#0A0A0B] py-12 text-xs text-[#6E6556] dark:text-zinc-400">
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-[#EFECE6] dark:border-zinc-900">
@@ -1288,7 +1255,7 @@
 
   <script>
     // ==========================================
-    // THEME TOGGLE (TERANG / GELAP GAYA PILIHIN.APP)
+    // THEME TOGGLE
     // ==========================================
     function initColorTheme() {
       var savedTheme = null;
@@ -1307,7 +1274,7 @@
     }
 
     // ==========================================
-    // HERO INTERACTIVE PHONE MOCKUP (PILIH HINGGA 7 FOTO)
+    // HERO INTERACTIVE PHONE MOCKUP
     // ==========================================
     var heroMockPhotos = [
       { id: 1, url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=300&q=80', selected: true },
@@ -1347,7 +1314,7 @@
     }
 
     // ==========================================
-    // CUSTOM DIALOG & CLIPBOARD HELPERS (NO ALERT/CONFIRM)
+    // CUSTOM DIALOG & CLIPBOARD HELPERS
     // ==========================================
     function showToast(msg) {
       var toast = document.getElementById('toastNotification');
@@ -1415,7 +1382,7 @@
     }
 
     // ==========================================
-    // STANDALONE MOCK BACKEND
+    // KONEKSI DATABASE SPREADSHEET (GOOGLE APPS SCRIPT API) + FALLBACK MOCK
     // ==========================================
     var MOCK_SAMPLE_PHOTOS = [
       { id: 'DEMO_IMG_01', name: 'MGL_PREWED_0101.jpg', thumb: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80', full: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=90' },
@@ -1511,6 +1478,10 @@
     function saveMockDatabase(db) {
       try { localStorage.setItem('mgl_pro_mock_db_v1', JSON.stringify(db)); } catch (e) {}
     }
+
+    // Tempelkan Web App URL (/exec) dari Google Apps Script Anda di bawah ini agar terhubung ke Spreadsheet:
+    var GAS_API_URL = 'https://script.google.com/macros/s/PASTE_URL_WEB_APP_ANDA_DISINI/exec';
+    var IS_LIVE_SPREADSHEET = GAS_API_URL.indexOf('PASTE_URL_WEB_APP_ANDA_DISINI') === -1 && GAS_API_URL.indexOf('https://script.google.com/') === 0;
 
     if (typeof window.google === 'undefined' || !window.google.script || !window.google.script.run) {
       window.google = {
@@ -1969,14 +1940,25 @@
               Object.keys(api).forEach(function(methodName) {
                 handlers[methodName] = function() {
                   var args = Array.prototype.slice.call(arguments);
-                  setTimeout(function() {
-                    try {
-                      var result = api[methodName].apply(null, args);
-                      if (successCb) successCb(result);
-                    } catch (err) {
-                      if (failureCb) failureCb(err);
-                    }
-                  }, 250);
+                  if (IS_LIVE_SPREADSHEET) {
+                    fetch(GAS_API_URL, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                      body: JSON.stringify({ action: methodName, args: args })
+                    })
+                    .then(function(res) { return res.json(); })
+                    .then(function(data) { if (successCb) successCb(data); })
+                    .catch(function(err) { if (failureCb) failureCb(err); });
+                  } else {
+                    setTimeout(function() {
+                      try {
+                        var result = api[methodName].apply(null, args);
+                        if (successCb) successCb(result);
+                      } catch (err) {
+                        if (failureCb) failureCb(err);
+                      }
+                    }, 250);
+                  }
                 };
               });
 
@@ -2188,7 +2170,7 @@
     window.addEventListener('load', bootApplication);
 
     // ==========================================
-    // RENDER HARGA CORET & HARGA TERKINI (GAYA PILIHIN.APP)
+    // RENDER HARGA CORET & HARGA TERKINI
     // ==========================================
     function loadPublicPricingPlans() {
       if (typeof google === 'undefined' || !google.script || !google.script.run) return;
@@ -2757,7 +2739,7 @@
 
       google.script.run.withSuccessHandler(function(res) {
         btn.disabled = false;
-        btn.textContent = 'Simpan Semua Harga';
+        btn.textContent = 'Simpan Perubahan Harga';
         showNotice(res.message);
         if (res.success) {
           cachedPricingPlans = payload;
@@ -2893,7 +2875,7 @@
 
       google.script.run.withSuccessHandler(function(res) {
         btn.disabled = false;
-        btn.textContent = '+ Generate Kode Lisensi';
+        btn.textContent = '+ Terbitkan Kode Lisensi';
         if (res.success) {
           document.getElementById('newlyGeneratedTextarea').value = res.codes.join(NL);
           document.getElementById('newlyGeneratedBox').classList.remove('hidden');
@@ -2990,7 +2972,7 @@
       google.script.run
         .withSuccessHandler(function(res) {
           btn.disabled = false;
-          btn.textContent = 'Buat Link Khusus Klien & Muat Galeri';
+          btn.textContent = 'Buat Tautan Galeri & Muat Pratinjau';
           if (res.success) {
             document.getElementById('generatedShareLink').value = res.shareUrl;
             var limitTxt = res.maxLimit > 0 ? 'Batas: ' + res.maxLimit + ' foto' : 'Tanpa Batas';
@@ -3019,7 +3001,7 @@
         })
         .withFailureHandler(function(err) {
           btn.disabled = false;
-          btn.textContent = 'Buat Link Khusus Klien & Muat Galeri';
+          btn.textContent = 'Buat Tautan Galeri & Muat Pratinjau';
           showNotice('Error: ' + err.message);
         })
         .createAlbumConfig(linkVal, maxLimit, password, allowDownload, ownerWa, currentAdminEmail);
@@ -3030,7 +3012,7 @@
       copyTextSafe(input.value);
       var btn = document.getElementById('btnCopyShare');
       btn.textContent = 'Tersalin!';
-      setTimeout(function() { btn.textContent = 'Salin Link Saja'; }, 2000);
+      setTimeout(function() { btn.textContent = 'Salin Tautan'; }, 2000);
     }
 
     function copyInvitationTemplate() {
@@ -3038,7 +3020,7 @@
       copyTextSafe(txt.value);
       var btn = document.getElementById('btnCopyTemplate');
       btn.textContent = 'Pesan Tersalin!';
-      setTimeout(function() { btn.textContent = 'Salin Pesan Undangan'; }, 2000);
+      setTimeout(function() { btn.textContent = 'Salin Pesan'; }, 2000);
     }
 
     function sendInvitationWhatsApp() {
@@ -3074,7 +3056,7 @@
     }
 
     // ==========================================
-    // VENDOR VIEW: HISTORI SELEKSI & RIWAYAT ALBUM MINIMALIS
+    // VENDOR VIEW: HISTORI SELEKSI & RIWAYAT ALBUM
     // ==========================================
     function loadVendorHistory() {
       var container = document.getElementById('vendorSelectionsList');
@@ -3185,7 +3167,7 @@
       currentDetailSelection = sel;
       var total = (sel.photoIds || []).length;
       document.getElementById('detailModalClientBadge').textContent = (sel.folderName || 'Album') + ' • ' + (sel.clientName || 'Klien');
-      document.getElementById('detailModalHeading').textContent = 'Daftar Foto Pilihan (' + total + ' Foto)';
+      document.getElementById('detailModalHeading').textContent = 'Daftar Foto Terkurasi (' + total + ' Foto)';
       document.getElementById('detailPillCount').textContent = total;
       document.getElementById('detailSearchInput').value = '';
       document.getElementById('detailSortSelect').value = 'selected';
@@ -3235,12 +3217,12 @@
 
       var btn = document.getElementById('btnConfirmCopyPreview');
       var origHtml = btn.innerHTML;
-      btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
+      btn.classList.remove('bg-emerald-700', 'hover:bg-emerald-600');
       btn.classList.add('bg-zinc-900', 'text-white');
       btn.innerHTML = '<span>✓ Teks Berhasil Disalin!</span>';
       setTimeout(function() {
         btn.classList.remove('bg-zinc-900', 'text-white');
-        btn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
+        btn.classList.add('bg-emerald-700', 'hover:bg-emerald-600');
         btn.innerHTML = origHtml;
       }, 1800);
     }
