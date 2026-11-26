@@ -37,25 +37,25 @@
       -webkit-tap-highlight-color: transparent;
       transition: background-color 0.25s ease, color 0.25s ease;
     }
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #8c8270; border-radius: 99px; }
+    ::-webkit-scrollbar-thumb { background: rgba(140, 130, 112, 0.45); border-radius: 99px; }
 
-    .photo-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    .photo-card { transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease; }
     .photo-card:hover { transform: translateY(-2px); }
     .photo-selected {
-      box-shadow: 0 0 0 3px #B5945B;
+      box-shadow: 0 0 0 2.5px #B5945B;
     }
     .dark .photo-selected {
-      box-shadow: 0 0 0 3px #D4AF37;
+      box-shadow: 0 0 0 2.5px #D4AF37;
     }
     .loader {
-      border: 3px solid rgba(181, 148, 91, 0.22);
-      border-top: 3px solid #B5945B;
+      border: 2.5px solid rgba(181, 148, 91, 0.22);
+      border-top: 2.5px solid #B5945B;
       border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      animation: spin 0.8s linear infinite;
+      width: 26px;
+      height: 26px;
+      animation: spin 0.75s linear infinite;
     }
     .dark .loader {
       border-top-color: #D4AF37;
@@ -74,12 +74,17 @@
     .editorial-serif {
       font-family: 'Instrument Serif', Georgia, serif;
     }
+    .protected-img {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between bg-[#F7F5F0] text-[#1C1B18] dark:bg-[#0A0A0B] dark:text-[#F4F1EA] selection:bg-[#B5945B] selection:text-white dark:selection:bg-[#D4AF37] dark:selection:text-black">
 
   <!-- TOP NAVBAR -->
-  <header class="sticky top-0 z-30 bg-[#F7F5F0]/88 dark:bg-[#0A0A0B]/88 backdrop-blur-md border-b border-[#E5DFD3] dark:border-zinc-800/80">
+  <header class="sticky top-0 z-30 bg-[#F7F5F0]/90 dark:bg-[#0A0A0B]/90 backdrop-blur-md border-b border-[#E5DFD3] dark:border-zinc-800/80">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       <div class="flex items-center gap-2.5 cursor-pointer" onclick="goHomeView()">
         <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-[#1C1B18] dark:text-white">
@@ -99,7 +104,7 @@
       </nav>
 
       <div class="flex items-center gap-2">
-        <button type="button" onclick="toggleColorTheme()" title="Ubah Nuansa · Siang / Malam" class="p-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#4A4337] dark:text-[#D4AF37] border border-[#DFD8C8] dark:border-zinc-800 transition cursor-pointer">
+        <button type="button" onclick="toggleColorTheme()" title="Ubah Nuansa · Siang / Malam" class="w-9 h-9 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#4A4337] dark:text-[#D4AF37] border border-[#DFD8C8] dark:border-zinc-800 flex items-center justify-center transition cursor-pointer">
           <svg id="themeIconSun" class="hidden dark:block h-4 w-4 text-[#D4AF37]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="5"></circle>
             <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
@@ -109,25 +114,25 @@
           </svg>
         </button>
 
-        <a id="headerWaLink" href="https://wa.me/6287881273759" target="_blank" rel="noopener noreferrer" title="Konsultasi WhatsApp" class="hidden sm:flex p-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#4A4337] dark:text-zinc-300 border border-[#DFD8C8] dark:border-zinc-800 transition">
+        <a id="headerWaLink" href="https://wa.me/6287881273759" target="_blank" rel="noopener noreferrer" title="Konsultasi WhatsApp" class="hidden sm:flex w-9 h-9 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#4A4337] dark:text-zinc-300 border border-[#DFD8C8] dark:border-zinc-800 items-center justify-center transition">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
           </svg>
         </a>
 
-        <button id="btnLoginNav" onclick="openAdminGate('login')" type="button" class="text-xs font-semibold px-3.5 py-2 rounded-full text-[#4A4337] dark:text-zinc-300 hover:bg-[#EAE4D7] dark:hover:bg-zinc-800 transition cursor-pointer">
-          Masuk Akun
+        <button id="btnLoginNav" onclick="openAdminGate('login')" type="button" class="h-9 text-xs font-semibold px-4 rounded-full text-[#4A4337] dark:text-zinc-300 hover:bg-[#EAE4D7] dark:hover:bg-zinc-800 transition cursor-pointer">
+          Masuk
         </button>
 
-        <button id="btnOpenAdmin" onclick="openAdminGate('register')" type="button" class="text-xs font-bold px-4 py-2 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black transition shadow-sm cursor-pointer">
+        <button id="btnOpenAdmin" onclick="openAdminGate('register')" type="button" class="h-9 text-xs font-bold px-4 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black transition shadow-xs cursor-pointer">
           Coba Gratis
         </button>
 
-        <button id="btnBackToStudio" onclick="backToStudioDashboard()" type="button" class="hidden text-xs font-bold px-4 py-2 rounded-full bg-[#1C1B18] text-white dark:bg-[#D4AF37] dark:text-black transition cursor-pointer">
+        <button id="btnBackToStudio" onclick="backToStudioDashboard()" type="button" class="hidden h-9 text-xs font-bold px-4 rounded-full bg-[#1C1B18] text-white dark:bg-[#D4AF37] dark:text-black transition cursor-pointer">
           ← Ruang Studio
         </button>
 
-        <button id="btnLogoutAdmin" onclick="logoutAdmin()" type="button" class="hidden text-xs font-semibold px-3.5 py-2 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-700 dark:text-red-400 border border-red-500/25 transition cursor-pointer">
+        <button id="btnLogoutAdmin" onclick="logoutAdmin()" type="button" class="hidden h-9 text-xs font-semibold px-3.5 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-700 dark:text-red-400 border border-red-500/25 transition cursor-pointer">
           Keluar
         </button>
       </div>
@@ -153,15 +158,15 @@
             </h1>
 
             <p class="text-base sm:text-lg text-[#5C5549] dark:text-zinc-400 max-w-xl leading-relaxed">
-              Hadirkan pengalaman memilih foto berkelas bagi klien Anda langsung dari tautan Google Drive. Tanpa proses unggah ulang—daftar kode file terpilih otomatis tersusun rapi untuk alur kerja editing Anda.
+              Hadirkan pengalaman memilih foto berkelas bagi klien Anda langsung dari tautan Google Drive. Tanpa proses unggah ulang—daftar kode file terpilih dan catatan revisi otomatis tersusun rapi untuk alur kerja editing Anda.
             </p>
 
-            <div class="flex flex-wrap items-center gap-3 pt-1">
-              <button onclick="openAdminGate('register')" type="button" class="px-6 py-3.5 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black font-bold text-sm transition shadow-lg shadow-black/10 dark:shadow-[#D4AF37]/15 cursor-pointer">
-                Aktivasi Trial 7 Hari
+            <div class="flex flex-wrap items-center gap-4 pt-1">
+              <button onclick="openAdminGate('register')" type="button" class="px-7 py-3.5 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black font-bold text-sm transition shadow-lg shadow-black/10 dark:shadow-[#D4AF37]/15 cursor-pointer">
+                Mulai Trial 7 Hari
               </button>
-              <button onclick="openAdminGate('login')" type="button" class="px-6 py-3.5 rounded-full bg-white hover:bg-[#EFECE6] dark:bg-[#131316] dark:hover:bg-zinc-900 text-[#1C1B18] dark:text-white font-bold text-sm border border-[#DFD8C8] dark:border-zinc-800 transition cursor-pointer">
-                Buka Ruang Studio
+              <button onclick="openAdminGate('login')" type="button" class="text-xs sm:text-sm font-bold text-[#5C5549] hover:text-[#1C1B18] dark:text-zinc-400 dark:hover:text-[#D4AF37] underline underline-offset-4 transition cursor-pointer">
+                Sudah punya akun? Masuk Studio →
               </button>
             </div>
 
@@ -172,7 +177,7 @@
               </span>
               <span class="flex items-center gap-1.5">
                 <svg class="w-4 h-4 text-[#B5945B] dark:text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                Tautan ringkas & proteksi sandi
+                Watermark pratinjau & catatan per foto
               </span>
               <span class="flex items-center gap-1.5">
                 <svg class="w-4 h-4 text-[#B5945B] dark:text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
@@ -217,7 +222,7 @@
           </div>
           <div class="text-center sm:text-left">
             <p class="text-2xl sm:text-3xl font-extrabold text-[#1C1B18] dark:text-white">Auto-Save</p>
-            <p class="text-xs text-[#6E6556] dark:text-zinc-400 mt-0.5">progres pilihan klien terjaga</p>
+            <p class="text-xs text-[#6E6556] dark:text-zinc-400 mt-0.5">progres & catatan klien terjaga</p>
           </div>
           <div class="text-center sm:text-left">
             <p class="text-2xl sm:text-3xl font-extrabold text-[#B5945B] dark:text-[#D4AF37]">7 Hari</p>
@@ -279,9 +284,9 @@
             <div class="w-10 h-10 rounded-2xl bg-[#EFECE6] dark:bg-zinc-900 flex items-center justify-center text-[#B5945B] dark:text-[#D4AF37] font-bold border border-[#DFD8C8] dark:border-zinc-800">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
             </div>
-            <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white">Kurasi Visual Tanpa Salah File</h3>
+            <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white">Kurasi Visual & Catatan Per Foto</h3>
             <p class="text-xs sm:text-sm text-[#5C5549] dark:text-zinc-400 leading-relaxed">
-              Klien menandai langsung foto yang disukai pada tampilan galeri bersih. Setiap pilihan tercatat presisi sesuai nama file asli.
+              Klien menandai foto di galeri bersih dan dapat menambahkan catatan revisi spesifik (seperti retouch atau crop) langsung pada foto terkait.
             </p>
           </div>
 
@@ -299,9 +304,9 @@
             <div class="w-10 h-10 rounded-2xl bg-[#EFECE6] dark:bg-zinc-900 flex items-center justify-center text-[#B5945B] dark:text-[#D4AF37] font-bold border border-[#DFD8C8] dark:border-zinc-800">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
             </div>
-            <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white">Kontrol Kuota & Privasi Album</h3>
+            <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white">Watermark & Proteksi Album</h3>
             <p class="text-xs sm:text-sm text-[#5C5549] dark:text-zinc-400 leading-relaxed">
-              Batasi jumlah maksimal foto sesuai paket klien, aktifkan sandi masuk album, serta atur izin unduh foto satuan maupun ZIP.
+              Aktifkan watermark pratinjau otomatis, proteksi klik-kanan, sandi masuk galeri, serta batas kuota pilihan sesuai paket klien.
             </p>
           </div>
 
@@ -317,21 +322,21 @@
 
           <div class="p-6 rounded-3xl bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 space-y-2.5">
             <div class="w-10 h-10 rounded-2xl bg-[#EFECE6] dark:bg-zinc-900 flex items-center justify-center text-[#B5945B] dark:text-[#D4AF37] font-bold border border-[#DFD8C8] dark:border-zinc-800">
-              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
             </div>
-            <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white">Pengemasan ZIP Otomatis</h3>
+            <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white">Pelacak Status Pengerjaan</h3>
             <p class="text-xs sm:text-sm text-[#5C5549] dark:text-zinc-400 leading-relaxed">
-              Kumpulkan seluruh foto hasil kurasi klien menjadi satu arsip ZIP secara paralel di latar belakang untuk keperluan cetak maupun arsip.
+              Pantau progres setiap proyek klien di ruang studio mulai dari Menunggu Edit, Proses Grading, hingga Selesai & Terkirim.
             </p>
           </div>
 
           <div class="p-6 rounded-3xl bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 space-y-2.5">
             <div class="w-10 h-10 rounded-2xl bg-[#EFECE6] dark:bg-zinc-900 flex items-center justify-center text-[#B5945B] dark:text-[#D4AF37] font-bold border border-[#DFD8C8] dark:border-zinc-800">
-              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
             </div>
-            <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white">Tautan Ringkas & Responsif</h3>
+            <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white">Pengemasan ZIP Otomatis</h3>
             <p class="text-xs sm:text-sm text-[#5C5549] dark:text-zinc-400 leading-relaxed">
-              Setiap galeri dilengkapi tautan pendek yang nyaman dibuka melalui browser ponsel klien dengan fitur zoom detail beresolusi tinggi.
+              Kumpulkan seluruh foto hasil kurasi klien menjadi satu arsip ZIP secara paralel di latar belakang untuk keperluan cetak maupun arsip.
             </p>
           </div>
         </div>
@@ -358,7 +363,7 @@
             <span class="w-9 h-9 rounded-full bg-[#1C1B18] dark:bg-[#D4AF37] text-[#F7F5F0] dark:text-black font-extrabold text-sm flex items-center justify-center">02</span>
             <h3 class="text-lg font-extrabold text-[#1C1B18] dark:text-white">Sesuaikan Aturan & Kirim</h3>
             <p class="text-xs sm:text-sm text-[#5C5549] dark:text-zinc-400 leading-relaxed">
-              Tentukan kuota pilihan dan sandi jika diperlukan. Salin pesan undangan siap kirim yang sudah dilengkapi shortlink galeri.
+              Tentukan kuota pilihan, watermark, atau sandi jika diperlukan. Salin pesan undangan siap kirim yang sudah dilengkapi shortlink galeri.
             </p>
           </div>
 
@@ -366,7 +371,7 @@
             <span class="w-9 h-9 rounded-full bg-[#1C1B18] dark:bg-[#D4AF37] text-[#F7F5F0] dark:text-black font-extrabold text-sm flex items-center justify-center">03</span>
             <h3 class="text-lg font-extrabold text-[#1C1B18] dark:text-white">Terima Rekap & Proses Edit</h3>
             <p class="text-xs sm:text-sm text-[#5C5549] dark:text-zinc-400 leading-relaxed">
-              Begitu klien selesai memilih, rekap nama file langsung masuk ke dashboard studio dan notifikasi WhatsApp Anda.
+              Begitu klien selesai memilih, rekap nama file beserta catatan revisi per foto langsung masuk ke dashboard studio dan WhatsApp Anda.
             </p>
           </div>
         </div>
@@ -468,7 +473,7 @@
     </div>
 
     <!-- GERBANG PASSWORD ALBUM KLIEN -->
-    <section id="clientPasswordGate" class="hidden max-w-md mx-auto mt-12 px-4">
+    <section id="clientPasswordGate" class="hidden max-w-md mx-auto mt-14 px-4">
       <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
         <div class="text-center mb-6">
           <div class="w-12 h-12 rounded-2xl bg-[#B5945B]/15 border border-[#B5945B]/30 text-[#B5945B] dark:text-[#D4AF37] flex items-center justify-center mx-auto mb-3">
@@ -483,8 +488,8 @@
 
         <div class="space-y-4">
           <div class="relative">
-            <input type="password" id="clientAlbumPassInput" placeholder="Masukkan Sandi Galeri..." class="w-full px-4 py-3 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37] text-sm text-center tracking-widest">
-            <button type="button" onclick="togglePasswordVisibility('clientAlbumPassInput', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition">
+            <input type="password" id="clientAlbumPassInput" autocomplete="off" placeholder="Masukkan Sandi Galeri..." class="w-full px-4 py-3 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37] text-sm text-center tracking-widest">
+            <button type="button" onclick="togglePasswordVisibility('clientAlbumPassInput', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
             </button>
           </div>
@@ -497,52 +502,55 @@
     </section>
 
     <!-- PANEL ADMIN / STUDIO + SUPER ADMIN -->
-    <section id="adminDashboard" class="hidden max-w-6xl mx-auto px-4 sm:px-6 py-6 mb-8">
-      <div class="flex flex-wrap items-center justify-between gap-3 mb-5 bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 p-4 rounded-2xl shadow-xs">
-        <div>
+    <section id="adminDashboard" class="hidden max-w-6xl mx-auto px-4 sm:px-6 py-6 mb-10">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 p-4 sm:p-5 rounded-3xl shadow-xs">
+        <div class="space-y-1">
           <div class="flex flex-wrap items-center gap-2">
             <span class="text-[11px] font-bold uppercase tracking-wider text-[#B5945B] dark:text-[#D4AF37]" id="adminRoleLabel">Ruang Studio / Member</span>
             <span id="subscriptionBadge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold">Aktif</span>
           </div>
-          <h2 class="text-lg font-extrabold text-[#1C1B18] dark:text-white mt-0.5" id="adminLoggedBadge">Halo, Studio Admin</h2>
+          <h2 class="text-lg sm:text-xl font-extrabold text-[#1C1B18] dark:text-white" id="adminLoggedBadge">Halo, Studio Admin</h2>
         </div>
-        <div class="flex flex-wrap gap-2">
+
+        <div class="inline-flex flex-wrap items-center gap-1.5 bg-[#F7F5F0] dark:bg-zinc-950 p-1.5 rounded-2xl sm:rounded-full border border-[#E5DFD3] dark:border-zinc-800">
           <button type="button" onclick="switchAdminTab('create')" id="tabBtnCreate" class="px-4 py-2 rounded-full text-xs font-bold bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black transition cursor-pointer">
-            + Buat Tautan Klien
+            + Buat Galeri
           </button>
-          <button type="button" onclick="switchAdminTab('selections')" id="tabBtnSelections" class="px-4 py-2 rounded-full text-xs font-bold bg-[#EFECE6] text-[#4A4337] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 transition cursor-pointer">
+          <button type="button" onclick="switchAdminTab('selections')" id="tabBtnSelections" class="px-4 py-2 rounded-full text-xs font-bold text-[#5C5549] hover:text-[#1C1B18] dark:text-zinc-400 dark:hover:text-white transition cursor-pointer">
             Hasil Kurasi Klien
           </button>
-          <button type="button" onclick="switchAdminTab('settings')" id="tabBtnSettings" class="px-4 py-2 rounded-full text-xs font-bold bg-[#EFECE6] text-[#4A4337] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 transition cursor-pointer">
+          <button type="button" onclick="switchAdminTab('settings')" id="tabBtnSettings" class="px-4 py-2 rounded-full text-xs font-bold text-[#5C5549] hover:text-[#1C1B18] dark:text-zinc-400 dark:hover:text-white transition cursor-pointer">
             Akun & Lisensi
           </button>
-          <button type="button" onclick="switchAdminTab('superadmin')" id="tabBtnSuperadmin" class="hidden px-4 py-2 rounded-full text-xs font-extrabold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 transition cursor-pointer">
-            ★ Kelola Member, Harga & Lisensi
+          <button type="button" onclick="switchAdminTab('superadmin')" id="tabBtnSuperadmin" class="hidden px-4 py-2 rounded-full text-xs font-extrabold text-[#B5945B] dark:text-[#D4AF37] hover:bg-[#EFECE6] dark:hover:bg-zinc-900 transition cursor-pointer">
+            ★ Super Admin
           </button>
         </div>
       </div>
 
       <!-- TAB 1: BUAT LINK ALBUM KLIEN -->
-      <div id="adminTabCreate" class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-2xl p-6 shadow-xs">
-        <h3 class="text-base font-bold text-[#1C1B18] dark:text-white mb-1">Siapkan Galeri & Aturan Kurasi Klien</h3>
-        <p class="text-xs text-[#6E6556] dark:text-zinc-400 mb-5">Pastikan izin folder Google Drive telah diatur ke <span class="text-[#1C1B18] dark:text-zinc-200 font-semibold">"Siapa saja yang memiliki link"</span>.</p>
+      <div id="adminTabCreate" class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl p-6 sm:p-8 shadow-xs">
+        <div class="mb-6">
+          <h3 class="text-base sm:text-lg font-extrabold text-[#1C1B18] dark:text-white">Siapkan Galeri & Aturan Kurasi Klien</h3>
+          <p class="text-xs text-[#6E6556] dark:text-zinc-400 mt-0.5">Pastikan izin folder Google Drive telah diatur ke <span class="text-[#1C1B18] dark:text-zinc-200 font-semibold">"Siapa saja yang memiliki link"</span>.</p>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="md:col-span-2">
             <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1.5">Tautan Folder Google Drive *</label>
-            <input type="text" id="driveLinkInput" value="https://drive.google.com/drive/folders/1DemoWeddingPrewed2026" placeholder="https://drive.google.com/drive/folders/1A2B3C..." class="w-full px-4 py-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37] text-sm">
+            <input type="text" id="driveLinkInput" placeholder="https://drive.google.com/drive/folders/..." class="w-full px-4 py-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37] text-sm">
           </div>
 
           <div>
             <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1.5">Kuota Maksimal Pilihan Foto (Opsional)</label>
-            <input type="number" id="albumMaxLimitInput" min="0" placeholder="Contoh: 20 (Kosongkan / 0 = Tanpa Batas)" class="w-full px-4 py-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37] text-sm">
+            <input type="number" id="albumMaxLimitInput" min="0" placeholder="Contoh: 20 (Kosongkan = Tanpa Batas)" class="w-full px-4 py-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37] text-sm">
           </div>
 
           <div>
             <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1.5">Kata Sandi Galeri Klien (Opsional)</label>
             <div class="relative">
-              <input type="password" id="albumPassInput" placeholder="Kosongkan jika akses langsung" class="w-full px-4 py-3 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37] text-sm">
-              <button type="button" onclick="togglePasswordVisibility('albumPassInput', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition">
+              <input type="password" id="albumPassInput" autocomplete="new-password" placeholder="Kosongkan jika akses langsung" class="w-full px-4 py-3 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37] text-sm">
+              <button type="button" onclick="togglePasswordVisibility('albumPassInput', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
               </button>
             </div>
@@ -551,23 +559,33 @@
           <div class="md:col-span-2">
             <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1.5">Nomor WhatsApp Penerima Rekap Klien *</label>
             <input type="tel" id="albumOwnerWaInput" placeholder="Contoh: 087881273759 (Otomatis dari profil Anda)" class="w-full px-4 py-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37] text-sm">
-            <p class="text-[11px] text-[#6E6556] dark:text-zinc-500 mt-1">Rekap kode foto pilihan klien akan otomatis diarahkan ke nomor WhatsApp ini.</p>
           </div>
 
-          <div class="md:col-span-2 flex items-center justify-between bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 p-4 rounded-xl">
-            <div>
+          <div class="flex items-center justify-between bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 p-4 rounded-2xl">
+            <div class="pr-3">
               <p class="text-sm font-bold text-[#1C1B18] dark:text-white">Izinkan Klien Mengunduh Foto</p>
-              <p class="text-xs text-[#6E6556] dark:text-zinc-400">Jika diaktifkan, klien dapat mengunduh foto satuan maupun arsip ZIP dari galeri.</p>
+              <p class="text-[11px] text-[#6E6556] dark:text-zinc-400 mt-0.5">Klien dapat mengunduh foto satuan maupun arsip ZIP.</p>
             </div>
-            <label class="relative inline-flex items-center cursor-pointer">
+            <label class="relative inline-flex items-center cursor-pointer shrink-0">
               <input type="checkbox" id="albumAllowDownloadToggle" class="sr-only peer" checked>
+              <div class="w-11 h-6 bg-[#DFD8C8] dark:bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1C1B18] dark:peer-checked:bg-[#D4AF37]"></div>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 p-4 rounded-2xl">
+            <div class="pr-3">
+              <p class="text-sm font-bold text-[#1C1B18] dark:text-white">Watermark Pratinjau Studio</p>
+              <p class="text-[11px] text-[#6E6556] dark:text-zinc-400 mt-0.5">Tampilkan tanda air nama studio di atas foto pratinjau klien.</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer shrink-0">
+              <input type="checkbox" id="albumWatermarkToggle" class="sr-only peer" checked>
               <div class="w-11 h-6 bg-[#DFD8C8] dark:bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1C1B18] dark:peer-checked:bg-[#D4AF37]"></div>
             </label>
           </div>
         </div>
 
-        <div class="mt-5 flex flex-wrap gap-3">
-          <button type="button" onclick="generateClientAlbum()" id="btnCreateAlbum" class="px-6 py-3 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black font-bold text-sm transition shadow-sm cursor-pointer">
+        <div class="mt-6 flex flex-wrap gap-3">
+          <button type="button" onclick="generateClientAlbum()" id="btnCreateAlbum" class="px-7 py-3 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black font-bold text-sm transition shadow-sm cursor-pointer">
             Buat Tautan Galeri & Muat Pratinjau
           </button>
         </div>
@@ -578,14 +596,14 @@
               <p class="text-xs font-bold text-[#B5945B] dark:text-[#D4AF37]">Tautan Ringkas Galeri Siap Dibagikan!</p>
               <p class="text-[11px] text-[#6E6556] dark:text-zinc-400 mt-0.5" id="shareRuleSummary"></p>
             </div>
-            <button type="button" onclick="previewCreatedAlbumAsClient()" class="px-4 py-2 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs transition cursor-pointer">
+            <button type="button" onclick="previewCreatedAlbumAsClient()" class="px-4 py-2 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black font-bold text-xs transition cursor-pointer">
               Pratinjau Tampilan Klien →
             </button>
           </div>
 
           <div class="flex flex-col sm:flex-row gap-2">
-            <input type="text" id="generatedShareLink" readonly class="flex-1 px-3 py-2.5 rounded-xl bg-white dark:bg-zinc-900 border border-[#DFD8C8] dark:border-zinc-700 text-xs text-emerald-700 dark:text-emerald-300 font-bold select-all">
-            <button type="button" onclick="copyShareLink()" id="btnCopyShare" class="px-4 py-2.5 rounded-xl bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-800 dark:hover:bg-zinc-700 text-[#1C1B18] dark:text-[#D4AF37] font-semibold text-xs border border-[#DFD8C8] dark:border-zinc-700 transition">
+            <input type="text" id="generatedShareLink" readonly class="flex-1 px-3.5 py-2.5 rounded-xl bg-white dark:bg-zinc-900 border border-[#DFD8C8] dark:border-zinc-700 text-xs text-emerald-700 dark:text-emerald-300 font-bold select-all">
+            <button type="button" onclick="copyShareLink()" id="btnCopyShare" class="px-5 py-2.5 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-800 dark:hover:bg-zinc-700 text-[#1C1B18] dark:text-[#D4AF37] font-bold text-xs border border-[#DFD8C8] dark:border-zinc-700 transition cursor-pointer">
               Salin Tautan
             </button>
           </div>
@@ -594,32 +612,32 @@
             <div class="flex items-center justify-between mb-2">
               <label class="text-xs font-bold text-[#4A4337] dark:text-zinc-300">Pesan Undangan Galeri untuk Klien:</label>
               <div class="flex gap-2">
-                <button type="button" onclick="copyInvitationTemplate()" id="btnCopyTemplate" class="px-3 py-1.5 rounded-lg bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black font-bold text-xs transition">
+                <button type="button" onclick="copyInvitationTemplate()" id="btnCopyTemplate" class="px-3.5 py-1.5 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black font-bold text-xs transition cursor-pointer">
                   Salin Pesan
                 </button>
-                <button type="button" onclick="sendInvitationWhatsApp()" class="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs transition">
+                <button type="button" onclick="sendInvitationWhatsApp()" class="px-3.5 py-1.5 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs transition cursor-pointer">
                   Kirim via WhatsApp
                 </button>
               </div>
             </div>
-            <textarea id="invitationTemplateText" rows="11" class="w-full p-3.5 rounded-xl bg-white dark:bg-zinc-900 border border-[#DFD8C8] dark:border-zinc-700 text-xs text-[#1C1B18] dark:text-zinc-200 leading-relaxed focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37]"></textarea>
+            <textarea id="invitationTemplateText" rows="10" class="w-full p-3.5 rounded-xl bg-white dark:bg-zinc-900 border border-[#DFD8C8] dark:border-zinc-700 text-xs text-[#1C1B18] dark:text-zinc-200 leading-relaxed focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37]"></textarea>
           </div>
         </div>
       </div>
 
       <!-- TAB 2: HALAMAN KUMPULAN SELEKSI KLIEN -->
       <div id="adminTabSelections" class="hidden space-y-6">
-        <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-2xl p-5 sm:p-6 shadow-xs">
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl p-5 sm:p-7 shadow-xs">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
             <div>
-              <h3 class="text-base font-bold text-[#1C1B18] dark:text-white">Hasil Kurasi Foto Klien</h3>
-              <p class="text-xs text-[#6E6556] dark:text-zinc-400">Seluruh foto pilihan klien tampil rapi dan siap disalin ke Lightroom.</p>
+              <h3 class="text-base sm:text-lg font-extrabold text-[#1C1B18] dark:text-white">Hasil Kurasi Foto Klien</h3>
+              <p class="text-xs text-[#6E6556] dark:text-zinc-400">Kelola status pengerjaan, tinjau catatan per foto, dan salin kode file ke Lightroom.</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
-              <button type="button" onclick="loadVendorHistory()" class="px-3.5 py-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-xs font-semibold text-[#1C1B18] dark:text-[#D4AF37] border border-[#DFD8C8] dark:border-zinc-700">
+              <button type="button" onclick="loadVendorHistory()" class="px-4 py-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-xs font-bold text-[#1C1B18] dark:text-[#D4AF37] border border-[#DFD8C8] dark:border-zinc-700 transition cursor-pointer">
                 Segarkan Data
               </button>
-              <button type="button" id="btnDeleteAllSelections" onclick="confirmDeleteAllSelections()" class="hidden px-3.5 py-2 rounded-full bg-red-500/10 hover:bg-red-500/20 text-xs font-bold text-red-700 dark:text-red-400 border border-red-500/25 transition">
+              <button type="button" id="btnDeleteAllSelections" onclick="confirmDeleteAllSelections()" class="hidden px-4 py-2 rounded-full bg-red-500/10 hover:bg-red-500/20 text-xs font-bold text-red-700 dark:text-red-400 border border-red-500/25 transition cursor-pointer">
                 Hapus Semua Kurasi
               </button>
             </div>
@@ -630,13 +648,13 @@
           </div>
         </div>
 
-        <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-2xl p-5 sm:p-6 shadow-xs">
+        <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl p-5 sm:p-7 shadow-xs">
           <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
             <div>
-              <h3 class="text-base font-bold text-[#1C1B18] dark:text-white">Arsip Tautan Galeri</h3>
+              <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white">Arsip Tautan Galeri</h3>
               <p class="text-xs text-[#6E6556] dark:text-zinc-400">Daftar proyek galeri klien yang telah Anda buat.</p>
             </div>
-            <button type="button" id="btnDeleteAllAlbums" onclick="confirmDeleteAllAlbums()" class="hidden px-3.5 py-2 rounded-full bg-red-500/10 hover:bg-red-500/20 text-xs font-bold text-red-700 dark:text-red-400 border border-red-500/25 transition">
+            <button type="button" id="btnDeleteAllAlbums" onclick="confirmDeleteAllAlbums()" class="hidden px-4 py-2 rounded-full bg-red-500/10 hover:bg-red-500/20 text-xs font-bold text-red-700 dark:text-red-400 border border-red-500/25 transition cursor-pointer">
               Hapus Semua Arsip
             </button>
           </div>
@@ -647,8 +665,8 @@
       <!-- TAB 3: PENGATURAN AKUN & PERPANJANG LISENSI -->
       <div id="adminTabSettings" class="hidden space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-2xl p-6 shadow-xs">
-            <h3 class="text-base font-bold text-[#1C1B18] dark:text-white mb-1">Profil Studio & Kontak WhatsApp</h3>
+          <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl p-6 shadow-xs">
+            <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white mb-1">Profil Studio & Kontak WhatsApp</h3>
             <p class="text-xs text-[#6E6556] dark:text-zinc-400 mb-4">Perbarui email login, kata sandi, serta nomor WhatsApp penerima rekap pilihan klien.</p>
             <div class="space-y-3">
               <div>
@@ -662,24 +680,24 @@
               <div>
                 <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Kata Sandi Baru (Kosongkan jika tetap)</label>
                 <div class="relative">
-                  <input type="password" id="settingAdminPass" placeholder="Masukkan sandi baru" class="w-full px-4 py-2.5 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white">
-                  <button type="button" onclick="togglePasswordVisibility('settingAdminPass', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition">
+                  <input type="password" id="settingAdminPass" autocomplete="new-password" placeholder="Masukkan sandi baru" class="w-full px-4 py-2.5 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white">
+                  <button type="button" onclick="togglePasswordVisibility('settingAdminPass', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                   </button>
                 </div>
               </div>
-              <button type="button" onclick="saveAdminSettings()" class="px-5 py-2.5 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black font-bold text-xs">
+              <button type="button" onclick="saveAdminSettings()" class="px-5 py-2.5 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black font-bold text-xs cursor-pointer">
                 Simpan Pengaturan
               </button>
             </div>
           </div>
 
-          <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-2xl p-6 shadow-xs space-y-4">
+          <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl p-6 shadow-xs space-y-4">
             <div>
-              <h3 class="text-base font-bold text-[#1C1B18] dark:text-white mb-1">Status Keanggotaan & Perangkat</h3>
+              <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white mb-1">Status Keanggotaan & Perangkat</h3>
               <p class="text-xs text-[#6E6556] dark:text-zinc-400">Rincian masa berlaku paket dan kuota rotasi perangkat studio Anda.</p>
             </div>
-            <div class="p-4 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 space-y-1.5 text-xs">
+            <div class="p-4 rounded-2xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 space-y-1.5 text-xs">
               <p class="text-[#6E6556] dark:text-zinc-400">Paket Aktif: <strong class="text-[#B5945B] dark:text-[#D4AF37]" id="infoCurrentPlan">-</strong></p>
               <p class="text-[#6E6556] dark:text-zinc-400">Berlaku Hingga: <strong class="text-[#1C1B18] dark:text-white" id="infoExpiresAt">-</strong></p>
               <p class="text-[#6E6556] dark:text-zinc-400">Sisa Durasi: <strong class="text-emerald-700 dark:text-emerald-400" id="infoRemainingDays">-</strong></p>
@@ -691,7 +709,7 @@
               <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300">Aktivasi / Perpanjang dengan Kode Lisensi:</label>
               <input type="text" id="redeemInsideCodeInput" placeholder="Contoh: MGL-30D-XXXX-XXXX atau MGL-LIFE-XXXX-XXXX" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white uppercase font-mono">
               <div class="flex flex-wrap gap-2">
-                <button type="button" onclick="redeemLicenseInsidePanel()" class="px-4 py-2.5 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs">
+                <button type="button" onclick="redeemLicenseInsidePanel()" class="px-4 py-2.5 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs cursor-pointer">
                   Gunakan Kode Lisensi
                 </button>
                 <a href="https://wa.me/6287881273759?text=Halo%20Admin,%20saya%20ingin%20perpanjang%20lisensi%20mageniclens%20share" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-800 dark:hover:bg-zinc-700 text-[#1C1B18] dark:text-[#D4AF37] font-bold text-xs border border-[#DFD8C8] dark:border-zinc-700">
@@ -702,9 +720,9 @@
           </div>
         </div>
 
-        <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-2xl p-6 shadow-xs space-y-4">
+        <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl p-6 shadow-xs space-y-4">
           <div>
-            <h3 class="text-base font-bold text-[#1C1B18] dark:text-white">Daftar Paket Lisensi</h3>
+            <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white">Daftar Paket Lisensi</h3>
             <p class="text-xs text-[#6E6556] dark:text-zinc-400">Seluruh paket berbayar mendukung 2 perangkat aktif bersamaan dengan rotasi pindah perangkat 3x / 7 hari.</p>
           </div>
           <div id="memberPricingGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3"></div>
@@ -713,14 +731,14 @@
 
       <!-- TAB 4: DASHBOARD KHUSUS SUPER ADMIN UTAMA -->
       <div id="adminTabSuperadmin" class="hidden space-y-6">
-        <div class="bg-white dark:bg-[#131316] border border-[#B5945B]/40 dark:border-[#D4AF37]/30 rounded-2xl p-6 shadow-xs space-y-4">
+        <div class="bg-white dark:bg-[#131316] border border-[#B5945B]/40 dark:border-[#D4AF37]/30 rounded-3xl p-6 shadow-xs space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div>
               <span class="px-2.5 py-0.5 rounded-full bg-[#B5945B]/15 text-[#B5945B] dark:text-[#D4AF37] text-[11px] font-bold">PENGATURAN HARGA</span>
               <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white mt-1">Atur Harga Coret & Harga Promo Paket Lisensi</h3>
               <p class="text-xs text-[#6E6556] dark:text-zinc-400">Perubahan harga akan langsung diperbarui pada halaman utama website.</p>
             </div>
-            <button type="button" id="btnSavePricing" onclick="handleSaveAdminPricing()" class="px-5 py-2.5 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black font-extrabold text-xs transition">
+            <button type="button" id="btnSavePricing" onclick="handleSaveAdminPricing()" class="px-5 py-2.5 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black font-extrabold text-xs transition cursor-pointer">
               Simpan Perubahan Harga
             </button>
           </div>
@@ -730,14 +748,14 @@
           </div>
         </div>
 
-        <div class="bg-white dark:bg-[#131316] border border-emerald-500/30 rounded-2xl p-6 shadow-xs space-y-4">
+        <div class="bg-white dark:bg-[#131316] border border-emerald-500/30 rounded-3xl p-6 shadow-xs space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div>
               <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold">SUPER ADMIN ONLY</span>
               <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white mt-1">Generator Kode Lisensi</h3>
               <p class="text-xs text-[#6E6556] dark:text-zinc-400">Terbitkan kode aktivasi baru untuk paket 7 Hari, 14 Hari, 1 Bulan, 3 Bulan, 1 Tahun, hingga Lifetime.</p>
             </div>
-            <button type="button" onclick="loadSuperAdminData()" class="px-3.5 py-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-xs font-bold text-[#1C1B18] dark:text-[#D4AF37] border border-[#DFD8C8] dark:border-zinc-700">
+            <button type="button" onclick="loadSuperAdminData()" class="px-3.5 py-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-xs font-bold text-[#1C1B18] dark:text-[#D4AF37] border border-[#DFD8C8] dark:border-zinc-700 cursor-pointer">
               Segarkan Semua Data
             </button>
           </div>
@@ -759,7 +777,7 @@
               <input type="number" id="genLicenseQty" value="1" min="1" max="50" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
             </div>
             <div class="flex items-end">
-              <button type="button" id="btnGenLicenses" onclick="handleGenerateLicenses()" class="w-full py-2.5 px-4 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black font-extrabold text-sm transition">
+              <button type="button" id="btnGenLicenses" onclick="handleGenerateLicenses()" class="w-full py-2.5 px-4 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black font-extrabold text-sm transition cursor-pointer">
                 + Terbitkan Kode Lisensi
               </button>
             </div>
@@ -768,14 +786,14 @@
           <div id="newlyGeneratedBox" class="hidden p-4 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#B5945B]/40 dark:border-[#D4AF37]/40 space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-[#B5945B] dark:text-[#D4AF37]">Kode Lisensi Baru Berhasil Diterbitkan:</span>
-              <button type="button" onclick="copyNewLicenses()" class="px-3 py-1 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-xs font-bold text-[#1C1B18] dark:text-white">Salin Semua Kode</button>
+              <button type="button" onclick="copyNewLicenses()" class="px-3 py-1 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-xs font-bold text-[#1C1B18] dark:text-white cursor-pointer">Salin Semua Kode</button>
             </div>
             <textarea id="newlyGeneratedTextarea" rows="3" readonly class="w-full p-2.5 rounded-lg bg-white dark:bg-zinc-900 border border-[#E5DFD3] dark:border-zinc-800 text-xs font-mono text-emerald-700 dark:text-emerald-300"></textarea>
           </div>
         </div>
 
         <!-- MANAJEMEN MEMBER TERDAFTAR + KOLOM SEARCH -->
-        <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-2xl p-6 shadow-xs space-y-4">
+        <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl p-6 shadow-xs space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white">Daftar Member Studio (<span id="totalMembersCount" class="text-[#B5945B] dark:text-[#D4AF37]">0</span>)</h3>
@@ -792,17 +810,17 @@
         </div>
 
         <!-- DAFTAR KODE LISENSI + TOMBOL HAPUS MASSAL -->
-        <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-2xl p-6 shadow-xs space-y-4">
+        <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl p-6 shadow-xs space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div>
               <h3 class="text-base font-extrabold text-[#1C1B18] dark:text-white">Inventaris Kode Lisensi (<span id="totalLicensesCount" class="text-[#B5945B] dark:text-[#D4AF37]">0</span>)</h3>
               <p class="text-xs text-[#6E6556] dark:text-zinc-400">Pantau kode lisensi yang tersedia (UNUSED) maupun yang telah diaktivasi (USED).</p>
             </div>
             <div id="licenseBulkActions" class="hidden flex flex-wrap items-center gap-2">
-              <button type="button" onclick="confirmDeleteAllLicenses(true)" class="px-3 py-1.5 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-800 dark:hover:bg-zinc-700 text-[#8A6D3B] dark:text-amber-300 border border-[#DFD8C8] dark:border-zinc-700 text-xs font-bold transition">
+              <button type="button" onclick="confirmDeleteAllLicenses(true)" class="px-3 py-1.5 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-800 dark:hover:bg-zinc-700 text-[#8A6D3B] dark:text-[#D4AF37] border border-[#DFD8C8] dark:border-zinc-700 text-xs font-bold transition cursor-pointer">
                 Hapus Kode Terpakai
               </button>
-              <button type="button" onclick="confirmDeleteAllLicenses(false)" class="px-3 py-1.5 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-700 dark:text-red-400 border border-red-500/25 text-xs font-bold transition">
+              <button type="button" onclick="confirmDeleteAllLicenses(false)" class="px-3 py-1.5 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-700 dark:text-red-400 border border-red-500/25 text-xs font-bold transition cursor-pointer">
                 Hapus Semua Kode
               </button>
             </div>
@@ -824,33 +842,33 @@
       <p id="errorMessage" class="text-[#4A4337] dark:text-zinc-300 text-sm"></p>
     </div>
 
-    <!-- GALERI FOTO KLIEN -->
+    <!-- GALERI FOTO KLIEN (DESAIN MINIMALIS & BERSIH) -->
     <section id="gallerySection" class="hidden max-w-7xl mx-auto px-4 sm:px-6 py-6">
-      <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-2xl p-4 sm:p-5 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
-        <div>
+      <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl p-4 sm:p-6 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
+        <div class="space-y-1">
           <div class="flex flex-wrap items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-full bg-[#B5945B]/15 text-[#B5945B] dark:text-[#D4AF37] text-xs font-bold border border-[#B5945B]/30">PRIVATE GALLERY</span>
-            <h2 id="albumTitle" class="text-lg sm:text-xl font-extrabold text-[#1C1B18] dark:text-white truncate max-w-md">Nama Folder</h2>
-            <span id="albumLimitBadge" class="hidden px-2.5 py-0.5 rounded-full bg-[#EFECE6] dark:bg-zinc-900 text-[#B5945B] dark:text-[#D4AF37] text-xs font-bold border border-[#DFD8C8] dark:border-zinc-700"></span>
+            <span class="px-2.5 py-0.5 rounded-full bg-[#B5945B]/15 text-[#B5945B] dark:text-[#D4AF37] text-[10px] font-extrabold tracking-widest uppercase border border-[#B5945B]/30">PRIVATE GALLERY</span>
+            <span id="albumLimitBadge" class="hidden px-2.5 py-0.5 rounded-full bg-[#EFECE6] dark:bg-zinc-900 text-[#B5945B] dark:text-[#D4AF37] text-[11px] font-bold border border-[#DFD8C8] dark:border-zinc-700"></span>
           </div>
-          <p class="text-xs text-[#6E6556] dark:text-zinc-400 mt-1">
-            Total <span id="totalPhotoCount" class="text-[#1C1B18] dark:text-zinc-200 font-semibold">0</span> foto • Sentuh foto untuk pratinjau penuh & zoom, tandai untuk memilih. <span class="text-[#B5945B] dark:text-[#D4AF37]">(Pilihan tersimpan otomatis)</span>
+          <h2 id="albumTitle" class="text-xl sm:text-2xl font-extrabold text-[#1C1B18] dark:text-white truncate max-w-lg">Nama Folder</h2>
+          <p class="text-xs text-[#6E6556] dark:text-zinc-400">
+            <span id="totalPhotoCount" class="text-[#1C1B18] dark:text-zinc-200 font-semibold">0</span> foto • Ketuk foto untuk pratinjau penuh & catatan revisi, ketuk lingkaran untuk memilih.
           </p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
-          <button type="button" id="btnClientDownloadZip" onclick="downloadClientSelectedZip()" class="px-3.5 py-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#1C1B18] dark:text-[#D4AF37] text-xs font-bold border border-[#DFD8C8] dark:border-[#D4AF37]/30 transition flex items-center gap-1.5">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-            <span>Unduh ZIP (<span id="zipCountTop">0</span>)</span>
+          <button type="button" id="btnClientDownloadZip" onclick="downloadClientSelectedZip()" class="px-3.5 py-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#1C1B18] dark:text-[#D4AF37] text-xs font-bold border border-[#DFD8C8] dark:border-[#D4AF37]/30 transition flex items-center gap-1.5 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+            <span>ZIP (<span id="zipCountTop">0</span>)</span>
           </button>
 
-          <button type="button" onclick="selectAllPhotos()" id="btnSelectAll" class="px-3.5 py-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#1C1B18] dark:text-zinc-200 text-xs font-semibold border border-[#DFD8C8] dark:border-zinc-700 transition">
+          <button type="button" onclick="selectAllPhotos()" id="btnSelectAll" class="px-3.5 py-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#1C1B18] dark:text-zinc-200 text-xs font-semibold border border-[#DFD8C8] dark:border-zinc-700 transition cursor-pointer">
             Pilih Semua
           </button>
-          <button type="button" onclick="clearSelection()" class="px-3.5 py-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#6E6556] hover:text-[#1C1B18] dark:text-zinc-400 dark:hover:text-white text-xs font-semibold border border-[#DFD8C8] dark:border-zinc-700 transition">
-            Atur Ulang
+          <button type="button" onclick="clearSelection()" class="px-3.5 py-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#6E6556] hover:text-[#1C1B18] dark:text-zinc-400 dark:hover:text-white text-xs font-semibold border border-[#DFD8C8] dark:border-zinc-700 transition cursor-pointer">
+            Reset
           </button>
-          <button type="button" onclick="toggleFilterSelected()" id="btnFilterSelected" class="px-3.5 py-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#B5945B] dark:text-[#D4AF37] text-xs font-semibold border border-[#DFD8C8] dark:border-zinc-700 transition">
+          <button type="button" onclick="toggleFilterSelected()" id="btnFilterSelected" class="px-3.5 py-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#B5945B] dark:text-[#D4AF37] text-xs font-bold border border-[#DFD8C8] dark:border-zinc-700 transition cursor-pointer">
             Terpilih (<span id="filterCount">0</span>)
           </button>
         </div>
@@ -861,25 +879,25 @@
 
   </main>
 
-  <!-- FLOATING ACTION BAR -->
-  <div id="floatingBar" class="fixed bottom-0 inset-x-0 z-30 bg-[#F7F5F0]/95 dark:bg-[#0A0A0B]/95 backdrop-blur-lg border-t border-[#E5DFD3] dark:border-zinc-800 transform translate-y-full transition-transform duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-[#1C1B18] dark:bg-[#D4AF37] text-[#F7F5F0] dark:text-black font-extrabold flex items-center justify-center text-base shadow-md" id="selectedBadge">0</div>
+  <!-- FLOATING PILL BAR (RAMPING & MOBILE-FIRST) -->
+  <div id="floatingBar" class="fixed bottom-4 inset-x-0 z-30 px-4 pointer-events-none transform translate-y-28 transition-transform duration-300">
+    <div class="max-w-xl mx-auto pointer-events-auto bg-[#1C1B18]/95 dark:bg-[#131316]/95 backdrop-blur-lg border border-[#33312B] dark:border-[#D4AF37]/40 rounded-full px-4 py-2.5 shadow-2xl flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 pl-1">
+        <div class="w-8 h-8 rounded-full bg-[#B5945B] dark:bg-[#D4AF37] text-white dark:text-black font-extrabold flex items-center justify-center text-xs shadow-xs" id="selectedBadge">0</div>
         <div>
-          <p class="text-sm font-bold text-[#1C1B18] dark:text-white"><span id="selectedCountText">0</span> Foto Terkurasi</p>
-          <p class="text-[11px] text-[#6E6556] dark:text-zinc-400" id="floatingSubText">Siap dikirim ke studio fotografi</p>
+          <p class="text-xs sm:text-sm font-bold text-white"><span id="selectedCountText">0</span> Terpilih</p>
+          <p class="text-[10px] text-zinc-400 hidden sm:block" id="floatingSubText">Tersimpan otomatis</p>
         </div>
       </div>
 
       <div class="flex items-center gap-2">
-        <button type="button" id="btnFloatingZip" onclick="downloadClientSelectedZip()" class="px-4 py-3 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#1C1B18] dark:text-[#D4AF37] font-bold text-xs sm:text-sm border border-[#DFD8C8] dark:border-zinc-700 transition flex items-center gap-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-          <span>Unduh ZIP</span>
+        <button type="button" id="btnFloatingZip" onclick="downloadClientSelectedZip()" class="px-3.5 py-2 rounded-full bg-white/10 hover:bg-white/15 text-zinc-200 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+          <span>ZIP</span>
         </button>
 
-        <button type="button" onclick="openSummaryModal()" class="px-6 py-3 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black font-extrabold text-xs sm:text-sm shadow-lg transition flex items-center gap-2">
-          <span>Kirim Pilihan Foto</span>
+        <button type="button" onclick="openSummaryModal()" class="px-5 py-2.5 rounded-full bg-[#B5945B] hover:bg-[#C6A468] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] text-white dark:text-black font-extrabold text-xs sm:text-sm shadow-md transition flex items-center gap-1.5 cursor-pointer">
+          <span>Kirim Pilihan</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
           </svg>
@@ -893,40 +911,47 @@
     <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl max-w-md w-full p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-extrabold text-[#1C1B18] dark:text-white">Akses Studio <span class="text-[#B5945B] dark:text-[#D4AF37]">mageniclens.</span></h3>
-        <button type="button" onclick="closeAdminLoginModal()" class="text-zinc-400 hover:text-[#1C1B18] dark:hover:text-white p-1.5 text-lg">✕</button>
+        <button type="button" onclick="closeAdminLoginModal()" class="text-zinc-400 hover:text-[#1C1B18] dark:hover:text-white p-1.5 text-lg cursor-pointer">✕</button>
       </div>
 
       <div class="grid grid-cols-3 gap-1 bg-[#EFECE6] dark:bg-zinc-950 p-1 rounded-full border border-[#DFD8C8] dark:border-zinc-800 mb-5">
-        <button type="button" id="authTabLoginBtn" onclick="switchAuthTab('login')" class="py-2 rounded-full text-xs font-bold bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black transition">
+        <button type="button" id="authTabLoginBtn" onclick="switchAuthTab('login')" class="py-2 rounded-full text-xs font-bold bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black transition cursor-pointer">
           Masuk
         </button>
-        <button type="button" id="authTabRegisterBtn" onclick="switchAuthTab('register')" class="py-2 rounded-full text-xs font-bold text-[#6E6556] dark:text-zinc-400 hover:text-[#1C1B18] dark:hover:text-white transition">
+        <button type="button" id="authTabRegisterBtn" onclick="switchAuthTab('register')" class="py-2 rounded-full text-xs font-bold text-[#6E6556] dark:text-zinc-400 hover:text-[#1C1B18] dark:hover:text-white transition cursor-pointer">
           Daftar / Trial
         </button>
-        <button type="button" id="authTabActivateBtn" onclick="switchAuthTab('activate')" class="py-2 rounded-full text-xs font-bold text-[#6E6556] dark:text-zinc-400 hover:text-[#1C1B18] dark:hover:text-white transition">
+        <button type="button" id="authTabActivateBtn" onclick="switchAuthTab('activate')" class="py-2 rounded-full text-xs font-bold text-[#6E6556] dark:text-zinc-400 hover:text-[#1C1B18] dark:hover:text-white transition cursor-pointer">
           Input Lisensi
         </button>
       </div>
 
-      <div id="authLoginForm" class="space-y-4">
-        <div class="space-y-2.5">
-          <input type="email" id="loginEmailInput" value="admin@mageniclens.com" placeholder="Email Studio Anda" class="w-full px-4 py-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
-          <div class="relative">
-            <input type="password" id="loginPassInput" value="admin123" placeholder="Kata Sandi" class="w-full px-4 py-3 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
-            <button type="button" onclick="togglePasswordVisibility('loginPassInput', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-            </button>
+      <!-- FORM LOGIN BERSIH (TANPA AUTO-FILL EMAIL/PASSWORD) -->
+      <form id="authLoginForm" autocomplete="off" onsubmit="event.preventDefault(); handleEmailLogin();" class="space-y-4">
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Email Studio</label>
+            <input type="email" id="loginEmailInput" name="mgl_login_email" autocomplete="off" placeholder="Masukkan email terdaftar..." class="w-full px-4 py-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37]">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Kata Sandi</label>
+            <div class="relative">
+              <input type="password" id="loginPassInput" name="mgl_login_pass" autocomplete="new-password" placeholder="Masukkan kata sandi..." class="w-full px-4 py-3 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37]">
+              <button type="button" onclick="togglePasswordVisibility('loginPassInput', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+              </button>
+            </div>
           </div>
           <div id="loginErrorMsg" class="hidden text-xs text-red-600 dark:text-red-400 bg-red-500/10 border border-red-500/25 p-2.5 rounded-xl"></div>
-          <button type="button" id="btnEmailLogin" onclick="handleEmailLogin()" class="w-full py-3 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black font-bold text-sm transition">
+          <button type="submit" id="btnEmailLogin" class="w-full py-3 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black font-bold text-sm transition cursor-pointer">
             Masuk ke Ruang Studio
           </button>
         </div>
 
         <p class="text-center text-xs text-[#6E6556] dark:text-zinc-400 pt-1">
-          Belum memiliki akun? <button type="button" onclick="switchAuthTab('register')" class="text-[#B5945B] dark:text-[#D4AF37] font-bold hover:underline">Aktivasi Trial 7 Hari</button>
+          Belum memiliki akun? <button type="button" onclick="switchAuthTab('register')" class="text-[#B5945B] dark:text-[#D4AF37] font-bold hover:underline cursor-pointer">Aktivasi Trial 7 Hari</button>
         </p>
-      </div>
+      </form>
 
       <div id="authRegisterForm" class="hidden space-y-3">
         <div class="p-3 rounded-xl bg-[#B5945B]/10 border border-[#B5945B]/25 text-[11px] text-[#6B5E4A] dark:text-[#E3C14B] leading-relaxed">
@@ -935,21 +960,21 @@
         </div>
         <div>
           <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Nama Studio / Fotografer *</label>
-          <input type="text" id="regNameInput" placeholder="Nama Studio Anda" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
+          <input type="text" id="regNameInput" autocomplete="off" placeholder="Nama Studio Anda" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
         </div>
         <div>
           <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Email Aktif *</label>
-          <input type="email" id="regEmailInput" placeholder="studio@gmail.com" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
+          <input type="email" id="regEmailInput" autocomplete="off" placeholder="studio@gmail.com" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
         </div>
         <div>
           <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Nomor WhatsApp *</label>
-          <input type="tel" id="regWaInput" placeholder="Contoh: 081234567890" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
+          <input type="tel" id="regWaInput" autocomplete="off" placeholder="Contoh: 081234567890" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
         </div>
         <div>
           <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Kata Sandi (Minimal 4 karakter) *</label>
           <div class="relative">
-            <input type="password" id="regPassInput" placeholder="Buat kata sandi" class="w-full px-4 py-2.5 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
-            <button type="button" onclick="togglePasswordVisibility('regPassInput', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition">
+            <input type="password" id="regPassInput" autocomplete="new-password" placeholder="Buat kata sandi" class="w-full px-4 py-2.5 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
+            <button type="button" onclick="togglePasswordVisibility('regPassInput', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
             </button>
           </div>
@@ -957,18 +982,18 @@
         <div>
           <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Konfirmasi Kata Sandi *</label>
           <div class="relative">
-            <input type="password" id="regConfirmPassInput" placeholder="Ulangi kata sandi" class="w-full px-4 py-2.5 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
-            <button type="button" onclick="togglePasswordVisibility('regConfirmPassInput', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition">
+            <input type="password" id="regConfirmPassInput" autocomplete="new-password" placeholder="Ulangi kata sandi" class="w-full px-4 py-2.5 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
+            <button type="button" onclick="togglePasswordVisibility('regConfirmPassInput', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
             </button>
           </div>
         </div>
         <div>
           <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Kode Lisensi (Opsional untuk Trial)</label>
-          <input type="text" id="regLicenseInput" placeholder="Kosongkan untuk Trial 7 Hari" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white uppercase font-mono focus:outline-none">
+          <input type="text" id="regLicenseInput" autocomplete="off" placeholder="Kosongkan untuk Trial 7 Hari" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white uppercase font-mono focus:outline-none">
         </div>
         <div id="registerErrorMsg" class="hidden text-xs text-red-600 dark:text-red-400 bg-red-500/10 border border-red-500/25 p-2.5 rounded-xl"></div>
-        <button type="button" id="btnRegisterUser" onclick="handleRegisterUser()" class="w-full py-3 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black font-bold text-sm transition mt-2">
+        <button type="button" id="btnRegisterUser" onclick="handleRegisterUser()" class="w-full py-3 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black font-bold text-sm transition mt-2 cursor-pointer">
           Daftarkan Akun Studio
         </button>
       </div>
@@ -977,14 +1002,14 @@
         <p class="text-xs text-[#6E6556] dark:text-zinc-400">Masukkan Email Terdaftar dan Kode Lisensi untuk mengaktifkan akses <strong>2 Perangkat</strong> (rotasi pindah perangkat 3x / 7 hari).</p>
         <div>
           <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Email Akun Terdaftar *</label>
-          <input type="email" id="actEmailInput" placeholder="studio@gmail.com" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
+          <input type="email" id="actEmailInput" autocomplete="off" placeholder="studio@gmail.com" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
         </div>
         <div>
           <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Kode Lisensi *</label>
-          <input type="text" id="actLicenseInput" placeholder="MGL-30D-XXXX-XXXX atau MGL-LIFE-XXXX-XXXX" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white uppercase font-mono focus:outline-none">
+          <input type="text" id="actLicenseInput" autocomplete="off" placeholder="MGL-30D-XXXX-XXXX atau MGL-LIFE-XXXX-XXXX" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white uppercase font-mono focus:outline-none">
         </div>
         <div id="activateErrorMsg" class="hidden text-xs text-red-600 dark:text-red-400 bg-red-500/10 border border-red-500/25 p-2.5 rounded-xl"></div>
-        <button type="button" id="btnActivateLicense" onclick="handleActivateLicenseModal()" class="w-full py-3 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-sm transition">
+        <button type="button" id="btnActivateLicense" onclick="handleActivateLicenseModal()" class="w-full py-3 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-sm transition cursor-pointer">
           Aktivasi Lisensi & Masuk
         </button>
         <a href="https://wa.me/6287881273759?text=Halo%20Admin,%20saya%20ingin%20memesan%20Kode%20Lisensi%20mageniclens%20share" target="_blank" rel="noopener noreferrer" class="block text-center text-xs text-[#B5945B] dark:text-[#D4AF37] font-bold hover:underline pt-1">
@@ -1000,20 +1025,20 @@
       <div class="px-4 sm:px-6 py-4 border-b border-[#E5DFD3] dark:border-zinc-800 flex items-center justify-between gap-3 bg-[#F7F5F0] dark:bg-zinc-950/60 shrink-0">
         <div class="min-w-0">
           <div class="flex items-center gap-2">
-            <button type="button" onclick="closeVendorSelectionDetail()" class="text-xs font-bold text-[#6E6556] hover:text-[#1C1B18] dark:text-zinc-400 dark:hover:text-[#D4AF37] flex items-center gap-1">
+            <button type="button" onclick="closeVendorSelectionDetail()" class="text-xs font-bold text-[#6E6556] hover:text-[#1C1B18] dark:text-zinc-400 dark:hover:text-[#D4AF37] flex items-center gap-1 cursor-pointer">
               <span>← Kembali</span>
             </button>
             <span class="text-zinc-400">•</span>
             <span class="text-xs text-[#B5945B] dark:text-[#D4AF37] font-bold truncate" id="detailModalClientBadge">Klien</span>
           </div>
           <h3 class="text-base sm:text-xl font-extrabold text-[#1C1B18] dark:text-white mt-0.5 truncate" id="detailModalHeading">Daftar Foto Terkurasi (0 Foto)</h3>
-          <p class="text-[11px] text-[#6E6556] dark:text-zinc-400 mt-0.5">Pilih format ekspor kode file sebelum menyalin, atau sentuh foto untuk memperbesar.</p>
+          <p class="text-[11px] text-[#6E6556] dark:text-zinc-400 mt-0.5">Pilih format ekspor kode file sebelum menyalin, atau tinjau catatan revisi tiap foto.</p>
         </div>
         <div class="flex items-center gap-2 shrink-0">
-          <button type="button" id="btnDetailDownloadZip" onclick="downloadDetailModalZip()" class="px-4 py-2 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black font-extrabold text-xs transition">
+          <button type="button" id="btnDetailDownloadZip" onclick="downloadDetailModalZip()" class="px-4 py-2 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black font-extrabold text-xs transition cursor-pointer">
             Unduh ZIP
           </button>
-          <button type="button" onclick="closeVendorSelectionDetail()" class="p-2 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-[#1C1B18] dark:text-zinc-300 text-sm font-bold">✕</button>
+          <button type="button" onclick="closeVendorSelectionDetail()" class="w-8 h-8 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-[#1C1B18] dark:text-zinc-300 text-xs font-bold flex items-center justify-center cursor-pointer">✕</button>
         </div>
       </div>
 
@@ -1026,16 +1051,16 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-1.5">
-              <button type="button" id="fmtBtn_with_ext" onclick="selectOutputFormat('with_ext')" class="px-3 py-1.5 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black text-[11px] font-bold transition">
+              <button type="button" id="fmtBtn_with_ext" onclick="selectOutputFormat('with_ext')" class="px-3 py-1.5 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black text-[11px] font-bold transition cursor-pointer">
                 Dengan Ekstensi (.jpg,)
               </button>
-              <button type="button" id="fmtBtn_per_line" onclick="selectOutputFormat('per_line')" class="px-3 py-1.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-[#4A4337] dark:text-zinc-200 text-[11px] font-bold transition">
+              <button type="button" id="fmtBtn_per_line" onclick="selectOutputFormat('per_line')" class="px-3 py-1.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-[#4A4337] dark:text-zinc-200 text-[11px] font-bold transition cursor-pointer">
                 Per Baris
               </button>
-              <button type="button" id="fmtBtn_lightroom" onclick="selectOutputFormat('lightroom')" class="px-3 py-1.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-[#4A4337] dark:text-zinc-200 text-[11px] font-bold transition">
+              <button type="button" id="fmtBtn_lightroom" onclick="selectOutputFormat('lightroom')" class="px-3 py-1.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-[#4A4337] dark:text-zinc-200 text-[11px] font-bold transition cursor-pointer">
                 Lightroom (Tanpa Ekstensi)
               </button>
-              <button type="button" id="fmtBtn_numbers_only" onclick="selectOutputFormat('numbers_only')" class="px-3 py-1.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-[#4A4337] dark:text-zinc-200 text-[11px] font-bold transition">
+              <button type="button" id="fmtBtn_numbers_only" onclick="selectOutputFormat('numbers_only')" class="px-3 py-1.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-[#4A4337] dark:text-zinc-200 text-[11px] font-bold transition cursor-pointer">
                 Angka Belakang Saja
               </button>
             </div>
@@ -1046,7 +1071,7 @@
               <span class="text-[11px] font-semibold text-[#6E6556] dark:text-zinc-400">
                 Pratinjau Output (<span id="previewFormatLabel" class="text-[#B5945B] dark:text-[#D4AF37] font-bold">Dengan Ekstensi (.jpg,)</span>):
               </span>
-              <button type="button" id="btnConfirmCopyPreview" onclick="copyPreviewOutputText()" class="px-4 py-1.5 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white font-extrabold text-xs transition flex items-center gap-1.5 shadow">
+              <button type="button" id="btnConfirmCopyPreview" onclick="copyPreviewOutputText()" class="px-4 py-1.5 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white font-extrabold text-xs transition flex items-center gap-1.5 shadow cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                 <span>Salin Kode File</span>
               </button>
@@ -1076,7 +1101,7 @@
     </div>
   </div>
 
-  <!-- MODAL LIGHTBOX FULL PREVIEW + ZOOM IN / ZOOM OUT -->
+  <!-- MODAL LIGHTBOX FULL PREVIEW + ZOOM + CATATAN PER FOTO -->
   <div id="lightboxModal" class="fixed inset-0 z-50 hidden bg-black/98 backdrop-blur-md flex flex-col justify-between">
     <div class="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-6 py-2.5 bg-zinc-950/85 border-b border-zinc-800/80 z-20">
       <div class="flex items-center gap-2.5 min-w-0">
@@ -1086,27 +1111,27 @@
 
       <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
         <div class="flex items-center bg-zinc-900 border border-zinc-700 rounded-full p-0.5">
-          <button type="button" onclick="adjustLightboxZoom(-0.35)" title="Perkecil (-)" class="px-2.5 py-1 rounded-full hover:bg-zinc-800 text-zinc-200 font-extrabold text-sm transition">
+          <button type="button" onclick="adjustLightboxZoom(-0.35)" title="Perkecil (-)" class="px-2.5 py-1 rounded-full hover:bg-zinc-800 text-zinc-200 font-extrabold text-sm transition cursor-pointer">
             −
           </button>
-          <button type="button" id="lightboxZoomLevelBtn" onclick="resetLightboxZoom()" title="Reset Zoom (100%)" class="px-2 py-1 text-[11px] font-bold text-[#D4AF37] min-w-[46px] text-center">
+          <button type="button" id="lightboxZoomLevelBtn" onclick="resetLightboxZoom()" title="Reset Zoom (100%)" class="px-2 py-1 text-[11px] font-bold text-[#D4AF37] min-w-[46px] text-center cursor-pointer">
             100%
           </button>
-          <button type="button" onclick="adjustLightboxZoom(0.35)" title="Perbesar (+)" class="px-2.5 py-1 rounded-full hover:bg-zinc-800 text-zinc-200 font-extrabold text-sm transition">
+          <button type="button" onclick="adjustLightboxZoom(0.35)" title="Perbesar (+)" class="px-2.5 py-1 rounded-full hover:bg-zinc-800 text-zinc-200 font-extrabold text-sm transition cursor-pointer">
             +
           </button>
         </div>
 
-        <button type="button" id="btnLightboxDownload" onclick="downloadCurrentLightboxPhoto()" class="px-3.5 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 text-xs font-bold transition flex items-center gap-1.5">
+        <button type="button" id="btnLightboxDownload" onclick="downloadCurrentLightboxPhoto()" class="px-3.5 py-2 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
           <span class="hidden sm:inline" id="btnLightboxDownloadText">Unduh</span>
         </button>
 
-        <button type="button" id="lightboxSelectBtn" onclick="toggleSelectFromLightbox()" class="px-4 py-2 rounded-full text-xs font-bold transition flex items-center gap-1.5">
+        <button type="button" id="lightboxSelectBtn" onclick="toggleSelectFromLightbox()" class="px-4 py-2 rounded-full text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
           Pilih Foto Ini
         </button>
 
-        <button type="button" onclick="closeLightbox()" class="p-2 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300">
+        <button type="button" onclick="closeLightbox()" class="p-2 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-300 cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
           </svg>
@@ -1115,7 +1140,7 @@
     </div>
 
     <div id="lightboxSwipeArea" class="relative flex-grow w-full flex items-center justify-center overflow-hidden select-none">
-      <button type="button" id="btnPrevPhoto" onclick="navigateLightbox(-1)" class="absolute left-2 sm:left-5 z-20 p-3 rounded-full bg-zinc-900/85 hover:bg-[#D4AF37] text-white hover:text-black border border-zinc-700 transition shadow-xl">
+      <button type="button" id="btnPrevPhoto" onclick="navigateLightbox(-1)" class="absolute left-2 sm:left-5 z-20 p-3 rounded-full bg-zinc-900/85 hover:bg-[#D4AF37] text-white hover:text-black border border-zinc-700 transition shadow-xl cursor-pointer">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
@@ -1123,17 +1148,31 @@
 
       <div id="lightboxImgLoader" class="hidden loader absolute"></div>
 
-      <img id="lightboxImg" src="" alt="Preview" class="max-h-[85vh] max-w-[96vw] sm:max-w-[92vw] object-contain rounded-md shadow-2xl cursor-grab">
+      <div class="relative flex items-center justify-center">
+        <img id="lightboxImg" src="" alt="Preview" class="max-h-[78vh] max-w-[96vw] sm:max-w-[90vw] object-contain rounded-md shadow-2xl cursor-grab">
+        <!-- WATERMARK PRATINJAU LIGHTBOX -->
+        <div id="lightboxWatermarkOverlay" class="hidden pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
+          <span class="text-white/25 font-extrabold tracking-[0.25em] uppercase text-xl sm:text-3xl -rotate-12 select-none border border-white/20 px-4 py-1.5 rounded-lg backdrop-blur-[1px]" id="lightboxWatermarkText">MAGENICLENS PREVIEW</span>
+        </div>
+      </div>
 
-      <button type="button" id="btnNextPhoto" onclick="navigateLightbox(1)" class="absolute right-2 sm:right-5 z-20 p-3 rounded-full bg-zinc-900/85 hover:bg-[#D4AF37] text-white hover:text-black border border-zinc-700 transition shadow-xl">
+      <button type="button" id="btnNextPhoto" onclick="navigateLightbox(1)" class="absolute right-2 sm:right-5 z-20 p-3 rounded-full bg-zinc-900/85 hover:bg-[#D4AF37] text-white hover:text-black border border-zinc-700 transition shadow-xl cursor-pointer">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
         </svg>
       </button>
     </div>
 
-    <div class="py-2 px-4 text-center text-[11px] text-zinc-500 bg-zinc-950/85 border-t border-zinc-900">
-      Ketuk 2x pada foto atau gunakan tombol <b>+ / −</b> untuk Zoom • Geser area foto saat diperbesar • Usap kiri/kanan untuk berpindah
+    <!-- BAR CATATAN REVISI PER FOTO DI LIGHTBOX -->
+    <div id="lightboxNoteBar" class="px-4 py-2.5 bg-zinc-950/90 border-t border-zinc-800/80 z-20">
+      <div class="max-w-xl mx-auto flex items-center gap-2">
+        <span class="text-[#D4AF37] text-xs font-bold shrink-0">Catatan Foto:</span>
+        <input type="text" id="lightboxPhotoNoteInput" oninput="saveCurrentLightboxPhotoNote()" placeholder="Tulis catatan edit khusus untuk foto ini (opsional)..." class="flex-1 px-3.5 py-1.5 rounded-full bg-zinc-900 border border-zinc-700 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#D4AF37]">
+      </div>
+    </div>
+
+    <div class="py-1.5 px-4 text-center text-[10px] text-zinc-500 bg-zinc-950">
+      Ketuk 2x pada foto atau gunakan tombol <b>+ / −</b> untuk Zoom • Usap kiri/kanan untuk berpindah foto
     </div>
   </div>
 
@@ -1142,27 +1181,27 @@
     <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-extrabold text-[#1C1B18] dark:text-white">Konfirmasi Kurasi Foto</h3>
-        <button type="button" onclick="closeSummaryModal()" class="text-zinc-400 hover:text-[#1C1B18] dark:hover:text-white p-1">✕</button>
+        <button type="button" onclick="closeSummaryModal()" class="text-zinc-400 hover:text-[#1C1B18] dark:hover:text-white p-1 cursor-pointer">✕</button>
       </div>
 
       <div class="mb-4">
-        <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1.5">Nama Anda / Catatan Khusus:</label>
-        <input type="text" id="clientNameInput" placeholder="Tuliskan nama Anda atau catatan revisi..." class="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none">
+        <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1.5">Nama Anda / Catatan Umum:</label>
+        <input type="text" id="clientNameInput" placeholder="Tuliskan nama Anda atau catatan umum..." class="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none">
       </div>
 
       <div class="mb-4">
         <div class="flex items-center justify-between mb-1.5">
-          <span class="text-xs font-semibold text-[#4A4337] dark:text-zinc-300">Daftar File Terpilih (<span id="modalSelectedCount" class="text-[#B5945B] dark:text-[#D4AF37]">0</span> foto):</span>
-          <button type="button" onclick="copySelectedList()" id="btnCopyList" class="text-xs text-[#B5945B] dark:text-[#D4AF37] hover:underline font-semibold">Salin Daftar</button>
+          <span class="text-xs font-semibold text-[#4A4337] dark:text-zinc-300">Daftar File & Catatan (<span id="modalSelectedCount" class="text-[#B5945B] dark:text-[#D4AF37]">0</span> foto):</span>
+          <button type="button" onclick="copySelectedList()" id="btnCopyList" class="text-xs text-[#B5945B] dark:text-[#D4AF37] hover:underline font-semibold cursor-pointer">Salin Daftar</button>
         </div>
         <textarea id="selectedListTextarea" rows="6" readonly class="w-full p-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 text-xs text-[#1C1B18] dark:text-zinc-300 font-mono focus:outline-none"></textarea>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <button type="button" onclick="submitToStudioAndCopy()" id="btnSubmitStudio" class="w-full py-3 px-4 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black font-bold text-xs sm:text-sm transition">
+        <button type="button" onclick="submitToStudioAndCopy()" id="btnSubmitStudio" class="w-full py-3 px-4 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black font-bold text-xs sm:text-sm transition cursor-pointer">
           Simpan ke Studio & Salin
         </button>
-        <button type="button" onclick="submitAndSendWhatsApp()" class="w-full py-3 px-4 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm transition flex items-center justify-center gap-2">
+        <button type="button" onclick="submitAndSendWhatsApp()" class="w-full py-3 px-4 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm transition flex items-center justify-center gap-2 cursor-pointer">
           <span>Simpan & Kirim WhatsApp</span>
         </button>
       </div>
@@ -1235,8 +1274,8 @@
         <div class="space-y-2">
           <p class="font-bold text-[#1C1B18] dark:text-white">Layanan Studio</p>
           <ul class="space-y-1.5">
-            <li><button type="button" onclick="openAdminGate('login')" class="hover:text-[#B5945B] dark:hover:text-[#D4AF37]">Masuk Ruang Studio</button></li>
-            <li><button type="button" onclick="openAdminGate('register')" class="hover:text-[#B5945B] dark:hover:text-[#D4AF37]">Aktivasi Trial 7 Hari</button></li>
+            <li><button type="button" onclick="openAdminGate('login')" class="hover:text-[#B5945B] dark:hover:text-[#D4AF37] cursor-pointer">Masuk Ruang Studio</button></li>
+            <li><button type="button" onclick="openAdminGate('register')" class="hover:text-[#B5945B] dark:hover:text-[#D4AF37] cursor-pointer">Aktivasi Trial 7 Hari</button></li>
             <li><a href="https://www.instagram.com/mageniclens?jplx=YnJ4MjlpMW04MHox" target="_blank" rel="noopener noreferrer" class="hover:text-[#B5945B] dark:hover:text-[#D4AF37]">Instagram</a></li>
             <li><a href="https://wa.me/6287881273759" target="_blank" rel="noopener noreferrer" class="hover:text-[#B5945B] dark:hover:text-[#D4AF37]">WhatsApp Admin</a></li>
           </ul>
@@ -1394,7 +1433,7 @@
     ];
 
     function initMockDatabase() {
-      var raw = localStorage.getItem('mgl_pro_mock_db_v1');
+      var raw = localStorage.getItem('mgl_pro_mock_db_v2');
       if (raw) {
         try { return JSON.parse(raw); } catch (e) {}
       }
@@ -1411,19 +1450,6 @@
             deviceId: 'ANY_DEVICE',
             status: 'ACTIVE',
             createdAt: new Date().toISOString(),
-            switchHistory: []
-          },
-          {
-            email: 'studio.kreatif@gmail.com',
-            password: 'member123',
-            name: 'Kreatif Studio Photo',
-            whatsapp: '6281234567890',
-            role: 'MEMBER',
-            planName: 'Paket 1 Tahun',
-            expiresAt: new Date(Date.now() + 310 * 86400000).toISOString(),
-            deviceId: 'DEV-STUDIO-01',
-            status: 'ACTIVE',
-            createdAt: new Date(Date.now() - 55 * 86400000).toISOString(),
             switchHistory: []
           }
         ],
@@ -1448,6 +1474,7 @@
             maxLimit: 5,
             password: '',
             allowDownload: true,
+            enableWatermark: true,
             createdAt: new Date().toISOString(),
             ownerWhatsapp: '6287881273759',
             ownerEmail: 'admin@mageniclens.com',
@@ -1462,20 +1489,21 @@
             clientName: 'Raka & Nabila',
             photoIds: ['DEMO_IMG_01', 'DEMO_IMG_03', 'DEMO_IMG_06'],
             photoNames: ['MGL_PREWED_0101.jpg', 'MGL_PREWED_0103.jpg', 'MGL_PREWED_0106.jpg'],
+            photoNotes: { 'DEMO_IMG_03': 'Tone hangat & haluskan kulit wajah' },
+            workStatus: 'Menunggu Edit',
             totalSelected: 3,
             submittedAt: new Date(Date.now() - 3600000).toISOString()
           }
         ]
       };
-      localStorage.setItem('mgl_pro_mock_db_v1', JSON.stringify(initialDb));
+      localStorage.setItem('mgl_pro_mock_db_v2', JSON.stringify(initialDb));
       return initialDb;
     }
 
     function saveMockDatabase(db) {
-      try { localStorage.setItem('mgl_pro_mock_db_v1', JSON.stringify(db)); } catch (e) {}
+      try { localStorage.setItem('mgl_pro_mock_db_v2', JSON.stringify(db)); } catch (e) {}
     }
 
-    // Tempelkan Web App URL (/exec) dari Google Apps Script Anda di bawah ini agar terhubung ke Spreadsheet:
     var GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxIhyP0oYBUAviIT3Q7dmuOgO63-UsI_qPW4X-o3sCd55i_En1NEwfCdVEyjAfWSZFb/exec';
     var IS_LIVE_SPREADSHEET = GAS_API_URL.indexOf('PASTE_URL_WEB_APP_ANDA_DISINI') === -1 && GAS_API_URL.indexOf('https://script.google.com/') === 0;
 
@@ -1515,7 +1543,7 @@
                   var db = initMockDatabase();
                   var cleanEmail = String(email || '').trim().toLowerCase();
                   if (db.users.some(function(u) { return u.email === cleanEmail; })) {
-                    return { success: false, message: 'Email ini sudah terdaftar. Silakan masuk di tab Masuk Akun.' };
+                    return { success: false, message: 'Email ini sudah terdaftar. Silakan masuk di tab Masuk.' };
                   }
                   var cleanWa = String(whatsapp || '').replace(/[^0-9]/g, '');
                   if (cleanWa.indexOf('0') === 0) cleanWa = '62' + cleanWa.substring(1);
@@ -1777,7 +1805,7 @@
                   saveMockDatabase(db);
                   return { success: true, message: (before - db.licenses.length) + ' kode lisensi berhasil dihapus.' };
                 },
-                createAlbumConfig: function(folderInput, maxLimit, password, allowDownload, ownerWa, ownerEmail) {
+                createAlbumConfig: function(folderInput, maxLimit, password, allowDownload, enableWatermark, ownerWa, ownerEmail) {
                   var db = initMockDatabase();
                   var albumId = 'ALB' + Math.random().toString(36).substring(2, 8).toUpperCase();
                   var folderName = folderInput.indexOf('Demo') !== -1 ? 'Prewedding Raka & Nabila - Bali' : ('Album Drive (' + albumId + ')');
@@ -1792,6 +1820,7 @@
                     maxLimit: parseInt(maxLimit, 10) || 0,
                     password: String(password || '').trim(),
                     allowDownload: Boolean(allowDownload),
+                    enableWatermark: Boolean(enableWatermark),
                     createdAt: new Date().toISOString(),
                     ownerWhatsapp: cleanWa,
                     ownerEmail: ownerEmail || 'admin@mageniclens.com',
@@ -1808,6 +1837,7 @@
                     password: String(password || '').trim(),
                     hasPassword: Boolean(password && password.trim()),
                     allowDownload: Boolean(allowDownload),
+                    enableWatermark: Boolean(enableWatermark),
                     ownerWhatsapp: cleanWa,
                     shareUrl: shortUrl
                   };
@@ -1823,6 +1853,7 @@
                     maxLimit: alb.maxLimit || 0,
                     requiresPassword: Boolean(alb.password),
                     allowDownload: alb.allowDownload,
+                    enableWatermark: Boolean(alb.enableWatermark),
                     ownerWhatsapp: alb.ownerWhatsapp
                   };
                 },
@@ -1841,9 +1872,11 @@
                     folderName: alb.folderName,
                     maxLimit: alb.maxLimit || 0,
                     allowDownload: alb.allowDownload,
+                    enableWatermark: Boolean(alb.enableWatermark),
                     ownerWhatsapp: alb.ownerWhatsapp,
                     photos: MOCK_SAMPLE_PHOTOS,
                     savedPhotoIds: latestSel ? latestSel.photoIds : [],
+                    savedPhotoNotes: latestSel ? (latestSel.photoNotes || {}) : {},
                     savedClientName: latestSel ? latestSel.clientName : ''
                   };
                 },
@@ -1854,7 +1887,9 @@
                     folderName: 'Prewedding Raka & Nabila - Bali',
                     photos: MOCK_SAMPLE_PHOTOS,
                     savedPhotoIds: [],
+                    savedPhotoNotes: {},
                     savedClientName: '',
+                    enableWatermark: true,
                     ownerWhatsapp: '6287881273759'
                   };
                 },
@@ -1869,7 +1904,7 @@
                   grad.addColorStop(1, '#3f3f46');
                   ctx.fillStyle = grad;
                   ctx.fillRect(0, 0, 800, 600);
-                  ctx.fillStyle = '#facc15';
+                  ctx.fillStyle = '#D4AF37';
                   ctx.font = 'bold 32px sans-serif';
                   ctx.fillText('mageniclens share', 50, 80);
                   ctx.fillStyle = '#ffffff';
@@ -1885,7 +1920,7 @@
                     dataUrl: dataUrl
                   };
                 },
-                submitClientSelection: function(albumId, folderName, clientName, selectedPhotos) {
+                submitClientSelection: function(albumId, folderName, clientName, selectedPhotos, photoNotesObj) {
                   var db = initMockDatabase();
                   var selId = 'SEL' + Math.random().toString(36).substring(2, 8).toUpperCase();
                   db.selections.unshift({
@@ -1895,11 +1930,23 @@
                     clientName: clientName || 'Klien (Tanpa Catatan)',
                     photoIds: selectedPhotos.map(function(p) { return p.id; }),
                     photoNames: selectedPhotos.map(function(p) { return p.name; }),
+                    photoNotes: photoNotesObj || {},
+                    workStatus: 'Menunggu Edit',
                     totalSelected: selectedPhotos.length,
                     submittedAt: new Date().toISOString()
                   });
                   saveMockDatabase(db);
                   return { success: true, selectionId: selId };
+                },
+                updateSelectionWorkStatus: function(selectionId, newStatus) {
+                  var db = initMockDatabase();
+                  var item = db.selections.find(function(s) { return s.selectionId === selectionId; });
+                  if (item) {
+                    item.workStatus = newStatus;
+                    saveMockDatabase(db);
+                    return { success: true };
+                  }
+                  return { success: false, message: 'Data tidak ditemukan.' };
                 },
                 getSelectionHistory: function() {
                   var db = initMockDatabase();
@@ -1953,7 +2000,7 @@
                       } catch (err) {
                         if (failureCb) failureCb(err);
                       }
-                    }, 250);
+                    }, 220);
                   }
                 };
               });
@@ -1974,11 +2021,13 @@
 
     var allPhotos = [];
     var selectedPhotoIds = new Set();
+    var photoNotesMap = {};
     var currentFolderName = '';
     var currentFolderId = '';
     var currentAlbumId = '';
     var currentMaxLimit = 0;
     var currentAllowDownload = true;
+    var currentEnableWatermark = false;
     var currentAlbumTargetWa = DEFAULT_STUDIO_WA;
     var showOnlySelected = false;
     var currentLightboxIndex = -1;
@@ -2030,6 +2079,13 @@
       return String(str || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
+    function getCompactPhotoCode(filename) {
+      var base = String(filename || '').replace(/\.[^/.]+$/, '');
+      var match = base.match(/(\d+)$/);
+      if (match) return '#' + match[1];
+      return base.length > 14 ? base.slice(-12) : base;
+    }
+
     function getOrCreateDeviceId() {
       var storedId = safeGetItem('mageniclens_device_fp_v1');
       if (storedId) return storedId;
@@ -2058,7 +2114,7 @@
     function goHomeView() {
       document.getElementById('gallerySection').classList.add('hidden');
       document.getElementById('clientPasswordGate').classList.add('hidden');
-      document.getElementById('floatingBar').classList.add('translate-y-full');
+      document.getElementById('floatingBar').classList.add('translate-y-28');
       document.getElementById('btnBackToStudio').classList.add('hidden');
       if (isAdminLoggedIn) {
         document.getElementById('welcomeLandingSection').classList.add('hidden');
@@ -2081,7 +2137,7 @@
     function backToStudioDashboard() {
       document.getElementById('gallerySection').classList.add('hidden');
       document.getElementById('clientPasswordGate').classList.add('hidden');
-      document.getElementById('floatingBar').classList.add('translate-y-full');
+      document.getElementById('floatingBar').classList.add('translate-y-28');
       document.getElementById('btnBackToStudio').classList.add('hidden');
       document.getElementById('adminDashboard').classList.remove('hidden');
       loadVendorHistory();
@@ -2092,12 +2148,6 @@
       var deviceId = getOrCreateDeviceId();
       var devEl = document.getElementById('infoDeviceId');
       if (devEl) devEl.textContent = deviceId;
-
-      var loginPass = document.getElementById('loginPassInput');
-      if (loginPass) loginPass.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleEmailLogin(); });
-
-      var regConfirm = document.getElementById('regConfirmPassInput');
-      if (regConfirm) regConfirm.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleRegisterUser(); });
 
       var clientPass = document.getElementById('clientAlbumPassInput');
       if (clientPass) clientPass.addEventListener('keydown', function(e) { if (e.key === 'Enter') unlockClientAlbum(); });
@@ -2236,7 +2286,7 @@
       plans.forEach(function(p) {
         var isLife = String(p.planKey) === '36500' || p.planTitle.toLowerCase().indexOf('lifetime') !== -1;
         var card = document.createElement('div');
-        card.className = 'p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border ' + (isLife ? 'border-emerald-500/40' : 'border-zinc-200 dark:border-zinc-800') + ' flex flex-col justify-between space-y-2.5';
+        card.className = 'p-3.5 rounded-2xl bg-[#F7F5F0] dark:bg-zinc-950 border ' + (isLife ? 'border-emerald-500/40' : 'border-[#E5DFD3] dark:border-zinc-800') + ' flex flex-col justify-between space-y-2.5';
 
         var origHtml = p.originalPrice
           ? '<p class="text-[11px] text-zinc-400 line-through">' + escapeHtmlAttr(p.originalPrice) + '</p>'
@@ -2248,16 +2298,16 @@
         card.innerHTML =
           '<div>' +
             '<div class="flex items-center justify-between gap-1">' +
-              '<span class="text-[10px] font-bold uppercase ' + (isLife ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-yellow-400') + '">' + escapeHtmlAttr(p.badge || 'PAKET') + '</span>' +
+              '<span class="text-[10px] font-bold uppercase ' + (isLife ? 'text-emerald-600 dark:text-emerald-400' : 'text-[#B5945B] dark:text-[#D4AF37]') + '">' + escapeHtmlAttr(p.badge || 'PAKET') + '</span>' +
               '<span class="text-[9px] text-sky-600 dark:text-sky-400 font-bold">2 Device</span>' +
             '</div>' +
-            '<h4 class="text-sm font-extrabold text-zinc-900 dark:text-white mt-0.5">' + escapeHtmlAttr(p.planTitle) + '</h4>' +
+            '<h4 class="text-sm font-extrabold text-[#1C1B18] dark:text-white mt-0.5">' + escapeHtmlAttr(p.planTitle) + '</h4>' +
             '<div class="mt-2">' +
               origHtml +
-              '<p class="text-base font-extrabold text-zinc-900 dark:text-white">' + escapeHtmlAttr(p.currentPrice) + '</p>' +
+              '<p class="text-base font-extrabold text-[#1C1B18] dark:text-white">' + escapeHtmlAttr(p.currentPrice) + '</p>' +
             '</div>' +
           '</div>' +
-          '<a href="' + waUrl + '" target="_blank" rel="noopener noreferrer" class="block text-center w-full py-2 px-2.5 rounded-full bg-zinc-900 text-white dark:bg-zinc-800 dark:hover:bg-yellow-400 dark:text-yellow-400 dark:hover:text-black font-bold text-[11px] transition">' +
+          '<a href="' + waUrl + '" target="_blank" rel="noopener noreferrer" class="block text-center w-full py-2 px-2.5 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-zinc-800 dark:hover:bg-[#D4AF37] dark:text-[#D4AF37] dark:hover:text-black font-bold text-[11px] transition">' +
             'Order via WA' +
           '</a>';
 
@@ -2284,21 +2334,24 @@
     }
 
     // ==========================================
-    // AUTO-SAVE PILIHAN KLIEN DI PERANGKAT
+    // AUTO-SAVE PILIHAN & CATATAN FOTO KLIEN DI PERANGKAT
     // ==========================================
     function getStorageKey() {
       return 'mageniclens_sel_' + (currentAlbumId || currentFolderId || 'default');
     }
 
+    function getNotesStorageKey() {
+      return 'mageniclens_notes_' + (currentAlbumId || currentFolderId || 'default');
+    }
+
     function saveSelectionsToLocal() {
-      var key = getStorageKey();
-      safeSetItem(key, JSON.stringify(Array.from(selectedPhotoIds)));
+      safeSetItem(getStorageKey(), JSON.stringify(Array.from(selectedPhotoIds)));
+      safeSetItem(getNotesStorageKey(), JSON.stringify(photoNotesMap));
     }
 
     function loadSelectionsFromLocal() {
       try {
-        var key = getStorageKey();
-        var raw = safeGetItem(key);
+        var raw = safeGetItem(getStorageKey());
         if (raw) {
           var arr = JSON.parse(raw);
           if (Array.isArray(arr)) return arr;
@@ -2307,9 +2360,28 @@
       return null;
     }
 
+    function loadNotesFromLocal() {
+      try {
+        var raw = safeGetItem(getNotesStorageKey());
+        if (raw) {
+          var obj = JSON.parse(raw);
+          if (obj && typeof obj === 'object') return obj;
+        }
+      } catch (e) {}
+      return null;
+    }
+
     // ==========================================
     // OTENTIKASI, TRIAL 1 PERANGKAT & LISENSI 2 PERANGKAT
     // ==========================================
+    function clearAuthModalInputs() {
+      var ids = ['loginEmailInput', 'loginPassInput', 'regNameInput', 'regEmailInput', 'regWaInput', 'regPassInput', 'regConfirmPassInput', 'regLicenseInput', 'actEmailInput', 'actLicenseInput'];
+      ids.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+    }
+
     function openAdminGate(defaultTab) {
       if (isAdminLoggedIn) {
         document.getElementById('welcomeLandingSection').classList.add('hidden');
@@ -2319,12 +2391,14 @@
         document.getElementById('adminDashboard').classList.remove('hidden');
         document.getElementById('adminDashboard').scrollIntoView({ behavior: 'smooth' });
       } else {
+        clearAuthModalInputs();
         switchAuthTab(defaultTab || 'login');
         document.getElementById('adminLoginModal').classList.remove('hidden');
       }
     }
 
     function closeAdminLoginModal() {
+      clearAuthModalInputs();
       document.getElementById('adminLoginModal').classList.add('hidden');
     }
 
@@ -2347,10 +2421,10 @@
       Object.keys(forms).forEach(function(k) {
         if (k === tab) {
           forms[k].classList.remove('hidden');
-          btns[k].className = 'py-2 rounded-full text-xs font-bold bg-zinc-900 text-white dark:bg-yellow-400 dark:text-black transition';
+          btns[k].className = 'py-2 rounded-full text-xs font-bold bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black transition cursor-pointer';
         } else {
           forms[k].classList.add('hidden');
-          btns[k].className = 'py-2 rounded-full text-xs font-bold text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition';
+          btns[k].className = 'py-2 rounded-full text-xs font-bold text-[#6E6556] dark:text-zinc-400 hover:text-[#1C1B18] dark:hover:text-white transition cursor-pointer';
         }
       });
     }
@@ -2385,7 +2459,7 @@
       google.script.run
         .withSuccessHandler(function(res) {
           btn.disabled = false;
-          btn.textContent = 'Daftar & Aktifkan Akun';
+          btn.textContent = 'Daftarkan Akun Studio';
           if (res.success) {
             var durMsg = res.isLifetime ? 'Selamanya (Lifetime)' : (res.remainingDays + ' hari');
             var devMsg = res.maxDevices === 1 ? 'Maks 1 Perangkat' : 'Maks 2 Perangkat • Pindah 3x/7 Hari';
@@ -2398,7 +2472,7 @@
         })
         .withFailureHandler(function(err) {
           btn.disabled = false;
-          btn.textContent = 'Daftar & Aktifkan Akun';
+          btn.textContent = 'Daftarkan Akun Studio';
           errEl.textContent = 'Error: ' + err.message;
           errEl.classList.remove('hidden');
         })
@@ -2413,20 +2487,21 @@
       var btn = document.getElementById('btnEmailLogin');
 
       if (!email || !pass) {
-        errEl.textContent = 'Masukkan email dan password.';
+        errEl.textContent = 'Masukkan email dan kata sandi terlebih dahulu.';
         errEl.classList.remove('hidden');
         return;
       }
 
       btn.disabled = true;
-      btn.textContent = 'Memverifikasi Akun & Perangkat...';
+      btn.textContent = 'Memverifikasi Akun...';
 
       google.script.run
         .withSuccessHandler(function(res) {
           btn.disabled = false;
-          btn.textContent = 'Masuk ke Dashboard';
+          btn.textContent = 'Masuk ke Ruang Studio';
           if (res.success) {
             errEl.classList.add('hidden');
+            clearAuthModalInputs();
             if (res.notice) {
               showNotice(res.notice, 'Perangkat Baru Tertaut');
             }
@@ -2444,7 +2519,7 @@
         })
         .withFailureHandler(function(err) {
           btn.disabled = false;
-          btn.textContent = 'Masuk ke Dashboard';
+          btn.textContent = 'Masuk ke Ruang Studio';
           errEl.textContent = 'Error: ' + err.message;
           errEl.classList.remove('hidden');
         })
@@ -2470,7 +2545,7 @@
       google.script.run
         .withSuccessHandler(function(res) {
           btn.disabled = false;
-          btn.textContent = 'Aktifkan Kode Lisensi & Masuk';
+          btn.textContent = 'Aktivasi Lisensi & Masuk';
           if (res.success) {
             showNotice(res.message, 'Aktivasi Berhasil');
             setAdminAuthenticated(res, true);
@@ -2481,7 +2556,7 @@
         })
         .withFailureHandler(function(err) {
           btn.disabled = false;
-          btn.textContent = 'Aktifkan Kode Lisensi & Masuk';
+          btn.textContent = 'Aktivasi Lisensi & Masuk';
           errEl.textContent = 'Error: ' + err.message;
           errEl.classList.remove('hidden');
         })
@@ -2618,6 +2693,7 @@
       safeRemoveItem('mageniclens_admin_swu');
       safeRemoveItem('mageniclens_admin_swm');
 
+      clearAuthModalInputs();
       document.getElementById('adminDashboard').classList.add('hidden');
       document.getElementById('btnLogoutAdmin').classList.add('hidden');
       document.getElementById('btnBackToStudio').classList.add('hidden');
@@ -2636,9 +2712,9 @@
         if (panel) panel.classList.add('hidden');
         if (btn) {
           if (t === 'superadmin') {
-            btn.className = (currentAdminRole === 'SUPERADMIN' ? '' : 'hidden ') + 'px-4 py-2 rounded-full text-xs font-extrabold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/25 transition cursor-pointer';
+            btn.className = (currentAdminRole === 'SUPERADMIN' ? '' : 'hidden ') + 'px-4 py-2 rounded-full text-xs font-extrabold text-[#B5945B] dark:text-[#D4AF37] hover:bg-[#EFECE6] dark:hover:bg-zinc-900 transition cursor-pointer';
           } else {
-            btn.className = 'px-4 py-2 rounded-full text-xs font-bold bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700 transition cursor-pointer';
+            btn.className = 'px-4 py-2 rounded-full text-xs font-bold text-[#5C5549] hover:text-[#1C1B18] dark:text-zinc-400 dark:hover:text-white transition cursor-pointer';
           }
         }
       });
@@ -2647,7 +2723,7 @@
       var activeBtn = document.getElementById('tabBtn' + tab.charAt(0).toUpperCase() + tab.slice(1));
       if (activePanel) activePanel.classList.remove('hidden');
       if (activeBtn) {
-        activeBtn.className = 'px-4 py-2 rounded-full text-xs font-extrabold bg-zinc-900 text-white dark:bg-yellow-400 dark:text-black transition cursor-pointer';
+        activeBtn.className = 'px-4 py-2 rounded-full text-xs font-extrabold bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black transition cursor-pointer';
       }
 
       if (tab === 'selections') loadVendorHistory();
@@ -2688,27 +2764,27 @@
 
       plans.forEach(function(p) {
         var box = document.createElement('div');
-        box.className = 'p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 space-y-2.5 pricing-edit-card';
+        box.className = 'p-4 rounded-2xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 space-y-2.5 pricing-edit-card';
         box.dataset.plankey = p.planKey;
         box.dataset.plantitle = p.planTitle;
         box.dataset.subtitle = p.subtitle || '';
 
         box.innerHTML =
           '<div class="flex items-center justify-between">' +
-            '<span class="text-sm font-extrabold text-amber-600 dark:text-yellow-400">' + escapeHtmlAttr(p.planTitle) + '</span>' +
+            '<span class="text-sm font-extrabold text-[#B5945B] dark:text-[#D4AF37]">' + escapeHtmlAttr(p.planTitle) + '</span>' +
             '<span class="text-[11px] text-sky-600 dark:text-sky-400 font-bold">2 Perangkat</span>' +
           '</div>' +
           '<div>' +
-            '<label class="block text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 mb-1">Harga Coret (Normal)</label>' +
-            '<input type="text" class="inp-orig-price w-full px-3 py-2 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-xs text-zinc-500 dark:text-zinc-300 line-through focus:outline-none" value="' + escapeHtmlAttr(p.originalPrice) + '" placeholder="Contoh: Rp 100.000">' +
+            '<label class="block text-[11px] font-semibold text-[#6E6556] dark:text-zinc-400 mb-1">Harga Coret (Normal)</label>' +
+            '<input type="text" class="inp-orig-price w-full px-3 py-2 rounded-xl bg-white dark:bg-zinc-900 border border-[#DFD8C8] dark:border-zinc-700 text-xs text-zinc-500 dark:text-zinc-300 line-through focus:outline-none" value="' + escapeHtmlAttr(p.originalPrice) + '" placeholder="Contoh: Rp 100.000">' +
           '</div>' +
           '<div>' +
-            '<label class="block text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Harga Terkini (Promo) *</label>' +
-            '<input type="text" class="inp-curr-price w-full px-3 py-2 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-xs text-emerald-700 dark:text-emerald-300 font-bold focus:outline-none" value="' + escapeHtmlAttr(p.currentPrice) + '" placeholder="Contoh: Rp 49.000">' +
+            '<label class="block text-[11px] font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Harga Terkini (Promo) *</label>' +
+            '<input type="text" class="inp-curr-price w-full px-3 py-2 rounded-xl bg-white dark:bg-zinc-900 border border-[#DFD8C8] dark:border-zinc-700 text-xs text-emerald-700 dark:text-emerald-300 font-bold focus:outline-none" value="' + escapeHtmlAttr(p.currentPrice) + '" placeholder="Contoh: Rp 49.000">' +
           '</div>' +
           '<div>' +
-            '<label class="block text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 mb-1">Label Badge (Opsional)</label>' +
-            '<input type="text" class="inp-badge w-full px-3 py-1.5 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 text-xs text-zinc-900 dark:text-white focus:outline-none" value="' + escapeHtmlAttr(p.badge) + '" placeholder="Contoh: TERLARIS / BEST VALUE">' +
+            '<label class="block text-[11px] font-semibold text-[#6E6556] dark:text-zinc-400 mb-1">Label Badge (Opsional)</label>' +
+            '<input type="text" class="inp-badge w-full px-3 py-1.5 rounded-xl bg-white dark:bg-zinc-900 border border-[#DFD8C8] dark:border-zinc-700 text-xs text-[#1C1B18] dark:text-white focus:outline-none" value="' + escapeHtmlAttr(p.badge) + '" placeholder="Contoh: TERLARIS / BEST VALUE">' +
           '</div>';
 
         container.appendChild(box);
@@ -2761,13 +2837,13 @@
 
       membersBox.innerHTML = '';
       if (filtered.length === 0) {
-        membersBox.innerHTML = '<p class="text-xs text-zinc-500 text-center py-4">Tidak ada member yang cocok dengan pencarian "' + escapeHtmlAttr(q) + '".</p>';
+        membersBox.innerHTML = '<p class="text-xs text-[#6E6556] text-center py-4">Tidak ada member yang cocok dengan pencarian "' + escapeHtmlAttr(q) + '".</p>';
         return;
       }
 
       filtered.forEach(function(m) {
         var row = document.createElement('div');
-        row.className = 'p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex flex-col lg:flex-row lg:items-center justify-between gap-3';
+        row.className = 'p-4 rounded-2xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 flex flex-col lg:flex-row lg:items-center justify-between gap-3';
 
         var isSuper = m.role === 'SUPERADMIN';
         var isTrialMember = String(m.planName || '').toLowerCase().indexOf('trial') !== -1;
@@ -2776,7 +2852,7 @@
           : '<span class="px-2 py-0.5 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 text-[10px] font-bold">SUSPENDED</span>';
 
         var remText = isSuper ? 'Owner Unlimited' : (m.isLifetime ? 'LIFETIME' : (m.remainingDays > 0 ? m.remainingDays + ' hari tersisa' : 'EXPIRED'));
-        var remColor = isSuper || m.isLifetime ? 'text-emerald-600 dark:text-emerald-400' : (m.remainingDays > 0 ? 'text-amber-600 dark:text-yellow-400' : 'text-red-500');
+        var remColor = isSuper || m.isLifetime ? 'text-emerald-600 dark:text-emerald-400' : (m.remainingDays > 0 ? 'text-[#B5945B] dark:text-[#D4AF37]' : 'text-red-500');
 
         var devQuotaLabel = isSuper ? 'Unlimited' : (m.usedDevicesCount + '/' + m.maxDevices + ' Perangkat');
         var switchQuotaLabel = (isSuper || isTrialMember) ? '' : (' • Pindah 7h: ' + (m.switchesUsed7d || 0) + '/' + (m.maxSwitches7d || 3) + 'x');
@@ -2784,25 +2860,25 @@
         var actionsHtml = isSuper
           ? '<span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">Akun Pemilik Utama</span>'
           : '<div class="flex flex-wrap items-center gap-1.5">' +
-              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'EXTEND\', 7)" class="px-2.5 py-1.5 rounded-full bg-zinc-200 dark:bg-zinc-800 text-xs font-bold text-zinc-800 dark:text-zinc-200">+7 Hari</button>' +
-              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'EXTEND\', 30)" class="px-2.5 py-1.5 rounded-full bg-zinc-200 dark:bg-zinc-800 text-xs font-bold text-amber-700 dark:text-yellow-400">+30 Hari</button>' +
-              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'EXTEND\', 365)" class="px-2.5 py-1.5 rounded-full bg-zinc-200 dark:bg-zinc-800 text-xs font-bold text-emerald-700 dark:text-emerald-400">+1 Tahun</button>' +
-              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'EXTEND\', 36500)" class="px-2.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 text-xs font-extrabold">+Lifetime</button>' +
-              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'RESET_DEVICE\', 0)" title="Reset Slot Perangkat & Kuota Pindah 3x/7 Hari" class="px-2.5 py-1.5 rounded-full bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-500/30 text-xs font-bold">Reset Perangkat</button>' +
-              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'TOGGLE_STATUS\', 0)" class="px-2.5 py-1.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-xs font-bold">' + (m.status === 'ACTIVE' ? 'Blokir' : 'Aktifkan') + '</button>' +
-              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'DELETE_USER\', 0)" class="px-2.5 py-1.5 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 text-xs font-bold">Hapus</button>' +
+              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'EXTEND\', 7)" class="px-2.5 py-1.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-xs font-bold text-[#1C1B18] dark:text-zinc-200 cursor-pointer">+7 Hari</button>' +
+              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'EXTEND\', 30)" class="px-2.5 py-1.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-xs font-bold text-[#B5945B] dark:text-[#D4AF37] cursor-pointer">+30 Hari</button>' +
+              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'EXTEND\', 365)" class="px-2.5 py-1.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-xs font-bold text-emerald-700 dark:text-emerald-400 cursor-pointer">+1 Tahun</button>' +
+              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'EXTEND\', 36500)" class="px-2.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 text-xs font-extrabold cursor-pointer">+Lifetime</button>' +
+              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'RESET_DEVICE\', 0)" title="Reset Slot Perangkat & Kuota Pindah 3x/7 Hari" class="px-2.5 py-1.5 rounded-full bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-500/30 text-xs font-bold cursor-pointer">Reset Perangkat</button>' +
+              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'TOGGLE_STATUS\', 0)" class="px-2.5 py-1.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-xs font-bold cursor-pointer">' + (m.status === 'ACTIVE' ? 'Blokir' : 'Aktifkan') + '</button>' +
+              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'DELETE_USER\', 0)" class="px-2.5 py-1.5 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 text-xs font-bold cursor-pointer">Hapus</button>' +
             '</div>';
 
         row.innerHTML =
           '<div class="space-y-1 min-w-0">' +
             '<div class="flex flex-wrap items-center gap-2">' +
-              '<span class="font-extrabold text-sm text-zinc-900 dark:text-white">' + escapeHtmlAttr(m.name) + '</span>' +
+              '<span class="font-extrabold text-sm text-[#1C1B18] dark:text-white">' + escapeHtmlAttr(m.name) + '</span>' +
               statusBadge +
               '<span class="text-xs font-bold ' + remColor + '">(' + remText + ')</span>' +
               '<span class="px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-700 dark:text-sky-300 text-[10px] font-bold">' + devQuotaLabel + switchQuotaLabel + '</span>' +
             '</div>' +
-            '<p class="text-xs text-zinc-500 dark:text-zinc-400 break-all">Email: <span class="text-zinc-800 dark:text-zinc-200">' + escapeHtmlAttr(m.email) + '</span> • WA: <span class="text-emerald-600 dark:text-emerald-400">+' + m.whatsapp + '</span></p>' +
-            '<p class="text-[11px] text-zinc-500 break-all">Paket: <span class="text-zinc-700 dark:text-zinc-300">' + escapeHtmlAttr(m.planName) + '</span> • ID Perangkat: <code class="text-zinc-600 dark:text-zinc-400">' + escapeHtmlAttr(m.deviceId || '0 Perangkat') + '</code></p>' +
+            '<p class="text-xs text-[#6E6556] dark:text-zinc-400 break-all">Email: <span class="text-[#1C1B18] dark:text-zinc-200">' + escapeHtmlAttr(m.email) + '</span> • WA: <span class="text-emerald-600 dark:text-emerald-400">+' + m.whatsapp + '</span></p>' +
+            '<p class="text-[11px] text-[#6E6556] break-all">Paket: <span class="text-[#4A4337] dark:text-zinc-300">' + escapeHtmlAttr(m.planName) + '</span> • ID Perangkat: <code class="text-zinc-600 dark:text-zinc-400">' + escapeHtmlAttr(m.deviceId || '0 Perangkat') + '</code></p>' +
           '</div>' +
           actionsHtml;
 
@@ -2814,7 +2890,7 @@
       var membersBox = document.getElementById('superAdminMembersList');
       var licBox = document.getElementById('superAdminLicensesList');
       var licBulkBox = document.getElementById('licenseBulkActions');
-      membersBox.innerHTML = '<p class="text-xs text-zinc-500">Memuat data member...</p>';
+      membersBox.innerHTML = '<p class="text-xs text-[#6E6556]">Memuat data member...</p>';
 
       google.script.run.withSuccessHandler(function(res) {
         if (!res.success) {
@@ -2838,22 +2914,22 @@
         licBox.innerHTML = '';
         if (res.licenses.length === 0) {
           if (licBulkBox) licBulkBox.classList.add('hidden');
-          licBox.innerHTML = '<p class="text-xs text-zinc-500">Belum ada kode lisensi yang dibuat.</p>';
+          licBox.innerHTML = '<p class="text-xs text-[#6E6556]">Belum ada kode lisensi yang dibuat.</p>';
         } else {
           if (licBulkBox) licBulkBox.classList.remove('hidden');
           res.licenses.forEach(function(lic) {
             var item = document.createElement('div');
-            item.className = 'p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex flex-wrap items-center justify-between gap-2 text-xs';
+            item.className = 'p-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 flex flex-wrap items-center justify-between gap-2 text-xs';
             var isUnused = lic.status === 'UNUSED';
             item.innerHTML =
               '<div class="min-w-0">' +
                 '<code class="font-mono font-extrabold text-sm ' + (isUnused ? 'text-emerald-700 dark:text-emerald-300' : 'text-zinc-400 line-through') + '">' + escapeHtmlAttr(lic.code) + '</code>' +
-                '<span class="ml-2 px-2 py-0.5 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-[11px]">' + escapeHtmlAttr(lic.planLabel) + ' (2 Perangkat • 3x Pindah/7h)</span>' +
-                '<p class="text-[11px] text-zinc-500 mt-0.5">' + (isUnused ? 'Status: Siap Digunakan' : 'Dipakai oleh: ' + escapeHtmlAttr(lic.usedByEmail)) + '</p>' +
+                '<span class="ml-2 px-2 py-0.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-[#4A4337] dark:text-zinc-300 text-[11px]">' + escapeHtmlAttr(lic.planLabel) + ' (2 Perangkat • 3x Pindah/7h)</span>' +
+                '<p class="text-[11px] text-[#6E6556] mt-0.5">' + (isUnused ? 'Status: Siap Digunakan' : 'Dipakai oleh: ' + escapeHtmlAttr(lic.usedByEmail)) + '</p>' +
               '</div>' +
               '<div class="flex items-center gap-2 shrink-0">' +
-                (isUnused ? '<button type="button" onclick="copyTextSafe(\'' + escapeHtmlAttr(lic.code) + '\'); showToast(\'Kode lisensi disalin!\');" class="px-3 py-1.5 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-yellow-400 font-bold">Salin Kode</button>' : '') +
-                '<button type="button" onclick="removeLicenseCode(\'' + escapeHtmlAttr(lic.code) + '\')" class="px-2.5 py-1.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 font-bold">Hapus</button>' +
+                (isUnused ? '<button type="button" onclick="copyTextSafe(\'' + escapeHtmlAttr(lic.code) + '\'); showToast(\'Kode lisensi disalin!\');" class="px-3 py-1.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-[#1C1B18] dark:text-[#D4AF37] font-bold cursor-pointer">Salin Kode</button>' : '') +
+                '<button type="button" onclick="removeLicenseCode(\'' + escapeHtmlAttr(lic.code) + '\')" class="px-2.5 py-1.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 font-bold cursor-pointer">Hapus</button>' +
               '</div>';
             licBox.appendChild(item);
           });
@@ -2951,6 +3027,7 @@
       var password = document.getElementById('albumPassInput').value.trim();
       var ownerWa = document.getElementById('albumOwnerWaInput').value.trim() || currentAdminWhatsapp;
       var allowDownload = document.getElementById('albumAllowDownloadToggle').checked;
+      var enableWatermark = document.getElementById('albumWatermarkToggle').checked;
 
       if (!linkVal) {
         showNotice('Silakan masukkan link folder Google Drive terlebih dahulu.');
@@ -2974,8 +3051,8 @@
             var limitTxt = res.maxLimit > 0 ? 'Batas: ' + res.maxLimit + ' foto' : 'Tanpa Batas';
             var passTxt = res.hasPassword ? 'Password: Aktif' : 'Tanpa Password';
             var dlTxt = res.allowDownload ? 'Download: ON' : 'Download: OFF';
-            var waTxt = 'WA Tujuan: +' + res.ownerWhatsapp;
-            document.getElementById('shareRuleSummary').textContent = res.folderName + ' • ' + limitTxt + ' • ' + passTxt + ' • ' + dlTxt + ' • ' + waTxt;
+            var wmTxt = res.enableWatermark ? 'Watermark: ON' : 'Watermark: OFF';
+            document.getElementById('shareRuleSummary').textContent = res.folderName + ' • ' + limitTxt + ' • ' + passTxt + ' • ' + dlTxt + ' • ' + wmTxt;
 
             document.getElementById('invitationTemplateText').value = buildInvitationMessage(
               res.folderName,
@@ -2989,6 +3066,7 @@
             currentAlbumId = res.albumId;
             currentMaxLimit = res.maxLimit;
             currentAllowDownload = res.allowDownload;
+            currentEnableWatermark = Boolean(res.enableWatermark);
             currentAlbumTargetWa = res.ownerWhatsapp || currentAdminWhatsapp;
             loadGalleryFromDrive(res.folderId);
           } else {
@@ -3000,7 +3078,7 @@
           btn.textContent = 'Buat Tautan Galeri & Muat Pratinjau';
           showNotice('Error: ' + err.message);
         })
-        .createAlbumConfig(linkVal, maxLimit, password, allowDownload, ownerWa, currentAdminEmail);
+        .createAlbumConfig(linkVal, maxLimit, password, allowDownload, enableWatermark, ownerWa, currentAdminEmail);
     }
 
     function copyShareLink() {
@@ -3052,14 +3130,24 @@
     }
 
     // ==========================================
-    // VENDOR VIEW: HISTORI SELEKSI & RIWAYAT ALBUM
+    // VENDOR VIEW: HISTORI SELEKSI, STATUS PENGERJAAN & RIWAYAT ALBUM
     // ==========================================
+    function changeSelectionWorkStatus(selId, newStatus) {
+      google.script.run.withSuccessHandler(function(res) {
+        if (res && res.success) {
+          showToast('Status diubah menjadi: ' + newStatus);
+        } else {
+          showNotice('Gagal memperbarui status.');
+        }
+      }).updateSelectionWorkStatus(selId, newStatus);
+    }
+
     function loadVendorHistory() {
       var container = document.getElementById('vendorSelectionsList');
       var albumsContainer = document.getElementById('vendorAlbumsList');
       var btnDelAllSel = document.getElementById('btnDeleteAllSelections');
       var btnDelAllAlb = document.getElementById('btnDeleteAllAlbums');
-      container.innerHTML = '<p class="text-xs text-zinc-500">Mengambil data dari database...</p>';
+      container.innerHTML = '<p class="text-xs text-[#6E6556]">Mengambil data dari database...</p>';
 
       google.script.run.withSuccessHandler(function(res) {
         if (!res.success) {
@@ -3069,20 +3157,29 @@
 
         if (res.selections.length === 0) {
           if (btnDelAllSel) btnDelAllSel.classList.add('hidden');
-          container.innerHTML = '<p class="text-xs text-zinc-500 py-4 text-center">Belum ada klien yang mengirimkan pilihan foto.</p>';
+          container.innerHTML = '<p class="text-xs text-[#6E6556] py-6 text-center">Belum ada klien yang mengirimkan pilihan foto.</p>';
         } else {
           if (btnDelAllSel) btnDelAllSel.classList.remove('hidden');
           container.innerHTML = '';
           res.selections.forEach(function(sel) {
             var dateStr = new Date(sel.submittedAt).toLocaleString('id-ID');
             var card = document.createElement('div');
-            card.className = 'p-4 sm:p-5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 space-y-4';
+            card.className = 'p-4 sm:p-5 rounded-2xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 space-y-4';
 
             var selObjAttr = escapeHtmlAttr(JSON.stringify(sel));
             var idsJsonAttr = escapeHtmlAttr(JSON.stringify(sel.photoIds));
             var namesJsonAttr = escapeHtmlAttr(JSON.stringify(sel.photoNames));
             var safeFolderAttr = escapeHtmlAttr(sel.folderName);
             var safeZipNameAttr = escapeHtmlAttr(sel.folderName + '_' + sel.clientName);
+            var notesObj = sel.photoNotes || {};
+            var currStatus = sel.workStatus || 'Menunggu Edit';
+
+            var statusSelectHtml =
+              '<select onchange="changeSelectionWorkStatus(\'' + sel.selectionId + '\', this.value)" class="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-900 border border-[#DFD8C8] dark:border-zinc-700 text-xs font-bold text-[#1C1B18] dark:text-[#D4AF37] focus:outline-none cursor-pointer">' +
+                '<option value="Menunggu Edit"' + (currStatus === 'Menunggu Edit' ? ' selected' : '') + '>🟡 Menunggu Edit</option>' +
+                '<option value="Proses Grading"' + (currStatus === 'Proses Grading' ? ' selected' : '') + '>🔵 Proses Grading</option>' +
+                '<option value="Selesai & Terkirim"' + (currStatus === 'Selesai & Terkirim' ? ' selected' : '') + '>🟢 Selesai & Terkirim</option>' +
+              '</select>';
 
             var gridHtml = '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">';
             sel.photoIds.forEach(function(pid, pIdx) {
@@ -3091,33 +3188,38 @@
               var pname = escapeHtmlAttr(rawName);
               var demoPhoto = MOCK_SAMPLE_PHOTOS.find(function(mp) { return mp.id === pid; });
               var thumbSrc = demoPhoto ? demoPhoto.thumb : ('https://lh3.googleusercontent.com/d/' + pid + '=s700');
+              var noteText = notesObj[pid] ? escapeHtmlAttr(notesObj[pid]) : '';
 
-              gridHtml += '<div class="rounded-xl overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-900 dark:hover:border-yellow-400/70 transition group flex flex-col shadow-xs">' +
-                '<div data-pids="' + idsJsonAttr + '" data-pnames="' + namesJsonAttr + '" data-idx="' + pIdx + '" onclick="openVendorLightboxFromEl(this)" title="Klik untuk memperbesar: ' + pname + '" class="relative aspect-[4/3] w-full bg-zinc-200 dark:bg-zinc-950 overflow-hidden cursor-pointer">' +
+              gridHtml += '<div class="rounded-xl overflow-hidden bg-white dark:bg-zinc-900 border border-[#E5DFD3] dark:border-zinc-800 hover:border-[#B5945B] dark:hover:border-[#D4AF37] transition group flex flex-col shadow-xs">' +
+                '<div data-pids="' + idsJsonAttr + '" data-pnames="' + namesJsonAttr + '" data-idx="' + pIdx + '" onclick="openVendorLightboxFromEl(this)" title="Klik untuk memperbesar: ' + pname + '" class="relative aspect-[4/3] w-full bg-[#EFECE6] dark:bg-zinc-950 overflow-hidden cursor-pointer">' +
                   '<img src="' + thumbSrc + '" onerror="handleThumbFallback(this, \'' + pid + '\')" alt="' + pname + '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">' +
-                  '<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/80 backdrop-blur-sm text-white text-[11px] font-extrabold">' + numLabel + '</span>' +
-                  '<span class="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 px-2.5 py-0.5 rounded-full bg-zinc-900 text-white dark:bg-yellow-400 dark:text-black text-[10px] font-extrabold transition shadow">Perbesar</span>' +
+                  '<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/75 backdrop-blur-sm text-white text-[10px] font-extrabold">' + numLabel + '</span>' +
+                  '<span class="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 px-2.5 py-0.5 rounded-full bg-[#1C1B18] text-white dark:bg-[#D4AF37] dark:text-black text-[10px] font-extrabold transition shadow">Perbesar</span>' +
                 '</div>' +
-                '<div class="px-2.5 py-2 flex items-center justify-between gap-1.5 bg-white dark:bg-zinc-900 border-t border-zinc-100 dark:border-zinc-800/80">' +
-                  '<span class="text-[11px] font-semibold text-zinc-800 dark:text-zinc-200 font-mono truncate" title="' + pname + '">' + pname + '</span>' +
-                  '<button type="button" data-filename="' + pname + '" onclick="copySingleFileName(this)" title="Salin nama file ini" class="p-1 rounded-lg bg-zinc-100 hover:bg-zinc-900 text-zinc-600 hover:text-white dark:bg-zinc-800 dark:hover:bg-yellow-400 dark:text-zinc-300 dark:hover:text-black transition shrink-0">' +
+                '<div class="px-2.5 py-2 flex items-center justify-between gap-1.5 bg-white dark:bg-zinc-900 border-t border-[#EFECE6] dark:border-zinc-800/80">' +
+                  '<span class="text-[11px] font-semibold text-[#1C1B18] dark:text-zinc-200 font-mono truncate" title="' + pname + '">' + pname + '</span>' +
+                  '<button type="button" data-filename="' + pname + '" onclick="copySingleFileName(this)" title="Salin nama file ini" class="p-1 rounded-lg bg-[#EFECE6] hover:bg-[#1C1B18] text-[#4A4337] hover:text-white dark:bg-zinc-800 dark:hover:bg-[#D4AF37] dark:text-zinc-300 dark:hover:text-black transition shrink-0 cursor-pointer">' +
                     '<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>' +
                   '</button>' +
                 '</div>' +
+                (noteText ? '<div class="px-2.5 py-1.5 bg-[#B5945B]/10 border-t border-[#B5945B]/20 text-[10px] text-[#6B5E4A] dark:text-[#E3C14B] leading-snug">Catatan: ' + noteText + '</div>' : '') +
               '</div>';
             });
             gridHtml += '</div>';
 
-            card.innerHTML = '<div class="flex flex-wrap items-start justify-between gap-3 pb-3 border-b border-zinc-200 dark:border-zinc-800/80">' +
-              '<div class="min-w-0">' +
-                '<span class="px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-yellow-400 text-xs font-bold border border-amber-500/30">' + sel.totalSelected + ' Foto Dipilih</span>' +
-                '<h4 class="text-base font-extrabold text-zinc-900 dark:text-white mt-1.5 break-words">' + escapeHtmlAttr(sel.folderName) + ' — <span class="text-amber-600 dark:text-yellow-400">' + escapeHtmlAttr(sel.clientName) + '</span></h4>' +
-                '<p class="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">Dikirim pada: ' + dateStr + ' • ID: ' + sel.selectionId + '</p>' +
+            card.innerHTML = '<div class="flex flex-wrap items-start justify-between gap-3 pb-3 border-b border-[#E5DFD3] dark:border-zinc-800/80">' +
+              '<div class="min-w-0 space-y-1">' +
+                '<div class="flex flex-wrap items-center gap-2">' +
+                  '<span class="px-2.5 py-0.5 rounded-full bg-[#B5945B]/15 text-[#B5945B] dark:text-[#D4AF37] text-xs font-bold border border-[#B5945B]/30">' + sel.totalSelected + ' Foto Dipilih</span>' +
+                  statusSelectHtml +
+                '</div>' +
+                '<h4 class="text-base font-extrabold text-[#1C1B18] dark:text-white pt-1 break-words">' + escapeHtmlAttr(sel.folderName) + ' — <span class="text-[#B5945B] dark:text-[#D4AF37]">' + escapeHtmlAttr(sel.clientName) + '</span></h4>' +
+                '<p class="text-[11px] text-[#6E6556] dark:text-zinc-400">Dikirim pada: ' + dateStr + ' • ID: ' + sel.selectionId + '</p>' +
               '</div>' +
               '<div class="flex flex-wrap gap-2">' +
-                '<button type="button" data-sel="' + selObjAttr + '" data-format="with_ext" onclick="openVendorSelectionDetailFromEl(this)" class="px-3.5 py-2 rounded-full bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-900 dark:text-yellow-400 text-xs font-bold border border-zinc-300 dark:border-yellow-400/40 transition">Daftar Foto Pilihan & Salin Kode</button>' +
-                '<button type="button" data-pids="' + idsJsonAttr + '" data-pnames="' + namesJsonAttr + '" data-zipname="' + safeZipNameAttr + '" onclick="downloadVendorZipFromEl(this)" class="px-3.5 py-2 rounded-full bg-zinc-900 text-white dark:bg-yellow-400 dark:text-black text-xs font-extrabold transition">Download ZIP</button>' +
-                '<button type="button" data-selid="' + sel.selectionId + '" data-folder="' + safeFolderAttr + '" onclick="confirmDeleteSelectionFromEl(this)" title="Hapus Data Seleksi Ini" class="px-3 py-2 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/25 text-xs font-bold transition">Hapus</button>' +
+                '<button type="button" data-sel="' + selObjAttr + '" data-format="with_ext" onclick="openVendorSelectionDetailFromEl(this)" class="px-3.5 py-2 rounded-full bg-white dark:bg-zinc-800 hover:bg-[#EFECE6] dark:hover:bg-zinc-700 text-[#1C1B18] dark:text-[#D4AF37] text-xs font-bold border border-[#DFD8C8] dark:border-[#D4AF37]/40 transition cursor-pointer">Ekspor Kode File</button>' +
+                '<button type="button" data-pids="' + idsJsonAttr + '" data-pnames="' + namesJsonAttr + '" data-zipname="' + safeZipNameAttr + '" onclick="downloadVendorZipFromEl(this)" class="px-3.5 py-2 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black text-xs font-extrabold transition cursor-pointer">Unduh ZIP</button>' +
+                '<button type="button" data-selid="' + sel.selectionId + '" data-folder="' + safeFolderAttr + '" onclick="confirmDeleteSelectionFromEl(this)" title="Hapus Data Seleksi Ini" class="px-3 py-2 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/25 text-xs font-bold transition cursor-pointer">Hapus</button>' +
               '</div></div>' +
               gridHtml;
 
@@ -3128,24 +3230,24 @@
         albumsContainer.innerHTML = '';
         if (res.albums.length === 0) {
           if (btnDelAllAlb) btnDelAllAlb.classList.add('hidden');
-          albumsContainer.innerHTML = '<p class="text-xs text-zinc-500">Belum ada album yang dibuat.</p>';
+          albumsContainer.innerHTML = '<p class="text-xs text-[#6E6556]">Belum ada album yang dibuat.</p>';
         } else {
           if (btnDelAllAlb) btnDelAllAlb.classList.remove('hidden');
           res.albums.forEach(function(alb) {
             var row = document.createElement('div');
-            row.className = 'flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs overflow-hidden';
+            row.className = 'flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3.5 rounded-2xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 text-xs overflow-hidden';
             var limitLabel = alb.maxLimit > 0 ? alb.maxLimit + ' foto' : 'Bebas';
             var passLabel = alb.password ? alb.password : '-';
             var ownerBadge = (currentAdminRole === 'SUPERADMIN' && alb.ownerEmail) ? ' • ' + escapeHtmlAttr(alb.ownerEmail) : '';
             row.innerHTML =
               '<div class="min-w-0 flex-1 space-y-0.5">' +
-                '<p class="font-bold text-zinc-900 dark:text-white truncate">' + escapeHtmlAttr(alb.folderName) + ' <span class="text-zinc-400 font-normal">(' + alb.albumId + ')</span></p>' +
-                '<p class="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">Batas: ' + limitLabel + ' • Pass: ' + escapeHtmlAttr(passLabel) + ' • WA: <span class="text-emerald-600 dark:text-emerald-400">+' + alb.ownerWhatsapp + '</span>' + ownerBadge + '</p>' +
+                '<p class="font-bold text-[#1C1B18] dark:text-white truncate">' + escapeHtmlAttr(alb.folderName) + ' <span class="text-[#6E6556] font-normal">(' + alb.albumId + ')</span></p>' +
+                '<p class="text-[11px] text-[#6E6556] dark:text-zinc-400 truncate">Batas: ' + limitLabel + ' • Pass: ' + escapeHtmlAttr(passLabel) + ' • WA: <span class="text-emerald-600 dark:text-emerald-400">+' + alb.ownerWhatsapp + '</span>' + ownerBadge + '</p>' +
               '</div>' +
               '<div class="flex flex-wrap items-center gap-1.5 shrink-0">' +
-                '<button type="button" data-url="' + escapeHtmlAttr(alb.shareUrl) + '" onclick="copyTextSafe(this.dataset.url); showToast(\'Link album disalin!\');" class="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 text-zinc-900 dark:text-yellow-400 font-semibold border border-zinc-300 dark:border-zinc-700">Salin Link</button>' +
-                '<button type="button" data-folder="' + escapeHtmlAttr(alb.folderName) + '" data-url="' + escapeHtmlAttr(alb.shareUrl) + '" data-pass="' + escapeHtmlAttr(alb.password || '') + '" data-limit="' + alb.maxLimit + '" onclick="copySavedAlbumTemplateFromEl(this)" class="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 font-semibold border border-zinc-300 dark:border-zinc-700">Salin Pesan</button>' +
-                '<button type="button" data-albumid="' + alb.albumId + '" data-folder="' + escapeHtmlAttr(alb.folderName) + '" onclick="confirmDeleteAlbumFromEl(this)" title="Hapus Riwayat Album Ini" class="px-2.5 py-1.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/25 font-bold transition">Hapus</button>' +
+                '<button type="button" data-url="' + escapeHtmlAttr(alb.shareUrl) + '" onclick="copyTextSafe(this.dataset.url); showToast(\'Link album disalin!\');" class="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 text-[#1C1B18] dark:text-[#D4AF37] font-semibold border border-[#DFD8C8] dark:border-zinc-700 cursor-pointer">Salin Link</button>' +
+                '<button type="button" data-folder="' + escapeHtmlAttr(alb.folderName) + '" data-url="' + escapeHtmlAttr(alb.shareUrl) + '" data-pass="' + escapeHtmlAttr(alb.password || '') + '" data-limit="' + alb.maxLimit + '" onclick="copySavedAlbumTemplateFromEl(this)" class="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 text-[#4A4337] dark:text-zinc-200 font-semibold border border-[#DFD8C8] dark:border-zinc-700 cursor-pointer">Salin Pesan</button>' +
+                '<button type="button" data-albumid="' + alb.albumId + '" data-folder="' + escapeHtmlAttr(alb.folderName) + '" onclick="confirmDeleteAlbumFromEl(this)" title="Hapus Riwayat Album Ini" class="px-2.5 py-1.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/25 font-bold transition cursor-pointer">Hapus</button>' +
               '</div>';
             albumsContainer.appendChild(row);
           });
@@ -3191,9 +3293,9 @@
         var btn = document.getElementById('fmtBtn_' + m);
         if (!btn) return;
         if (m === mode) {
-          btn.className = 'px-3 py-1.5 rounded-full bg-zinc-900 text-white dark:bg-yellow-400 dark:text-black text-[11px] font-bold transition';
+          btn.className = 'px-3 py-1.5 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black text-[11px] font-bold transition cursor-pointer';
         } else {
-          btn.className = 'px-3 py-1.5 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-[11px] font-bold transition';
+          btn.className = 'px-3 py-1.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-[#4A4337] dark:text-zinc-200 text-[11px] font-bold transition cursor-pointer';
         }
       });
 
@@ -3214,10 +3316,10 @@
       var btn = document.getElementById('btnConfirmCopyPreview');
       var origHtml = btn.innerHTML;
       btn.classList.remove('bg-emerald-700', 'hover:bg-emerald-600');
-      btn.classList.add('bg-zinc-900', 'text-white');
+      btn.classList.add('bg-[#1C1B18]', 'text-white');
       btn.innerHTML = '<span>✓ Teks Berhasil Disalin!</span>';
       setTimeout(function() {
-        btn.classList.remove('bg-zinc-900', 'text-white');
+        btn.classList.remove('bg-[#1C1B18]', 'text-white');
         btn.classList.add('bg-emerald-700', 'hover:bg-emerald-600');
         btn.innerHTML = origHtml;
       }, 1800);
@@ -3228,11 +3330,13 @@
       var container = document.getElementById('detailCardsContainer');
       var query = document.getElementById('detailSearchInput').value.trim().toLowerCase();
       var sortBy = document.getElementById('detailSortSelect').value;
+      var notesObj = currentDetailSelection.photoNotes || {};
 
       var items = (currentDetailSelection.photoIds || []).map(function(pid, idx) {
         return {
           id: pid,
           name: (currentDetailSelection.photoNames && currentDetailSelection.photoNames[idx]) || ('Foto_' + (idx + 1) + '.jpg'),
+          note: notesObj[pid] || '',
           originalIndex: idx
         };
       });
@@ -3252,7 +3356,7 @@
 
       container.innerHTML = '';
       if (items.length === 0) {
-        container.innerHTML = '<div class="col-span-full text-center py-10 text-xs text-zinc-500">Tidak ada foto yang cocok dengan pencarian Anda.</div>';
+        container.innerHTML = '<div class="col-span-full text-center py-10 text-xs text-[#6E6556]">Tidak ada foto yang cocok dengan pencarian Anda.</div>';
         return;
       }
 
@@ -3264,22 +3368,24 @@
       items.forEach(function(item, viewIdx) {
         var badgeNum = '#' + String(item.originalIndex + 1).padStart(2, '0');
         var safeName = escapeHtmlAttr(item.name);
+        var safeNote = escapeHtmlAttr(item.note);
         var demoPhoto = MOCK_SAMPLE_PHOTOS.find(function(mp) { return mp.id === item.id; });
         var thumbSrc = demoPhoto ? demoPhoto.thumb : ('https://lh3.googleusercontent.com/d/' + item.id + '=s700');
 
         var card = document.createElement('div');
-        card.className = 'rounded-2xl overflow-hidden bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-900 dark:hover:border-yellow-400/60 shadow-xs flex flex-col transition group';
-        card.innerHTML = '<div data-pids="' + idsJsonAttr + '" data-pnames="' + namesJsonAttr + '" data-idx="' + viewIdx + '" onclick="openVendorLightboxFromEl(this)" class="relative aspect-[4/3] w-full bg-zinc-200 dark:bg-zinc-900 overflow-hidden cursor-pointer">' +
+        card.className = 'rounded-2xl overflow-hidden bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 hover:border-[#B5945B] dark:hover:border-[#D4AF37]/60 shadow-xs flex flex-col transition group';
+        card.innerHTML = '<div data-pids="' + idsJsonAttr + '" data-pnames="' + namesJsonAttr + '" data-idx="' + viewIdx + '" onclick="openVendorLightboxFromEl(this)" class="relative aspect-[4/3] w-full bg-[#EFECE6] dark:bg-zinc-900 overflow-hidden cursor-pointer">' +
           '<img src="' + thumbSrc + '" onerror="handleThumbFallback(this, \'' + item.id + '\')" alt="' + safeName + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">' +
           '<span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-sm text-white text-xs font-extrabold tracking-wide">' + badgeNum + '</span>' +
-          '<span class="absolute bottom-2.5 right-2.5 opacity-0 group-hover:opacity-100 px-2.5 py-1 rounded-full bg-zinc-900 text-white dark:bg-yellow-400 dark:text-black text-[11px] font-extrabold transition shadow">Perbesar & Zoom</span>' +
+          '<span class="absolute bottom-2.5 right-2.5 opacity-0 group-hover:opacity-100 px-2.5 py-1 rounded-full bg-[#1C1B18] text-white dark:bg-[#D4AF37] dark:text-black text-[11px] font-extrabold transition shadow">Perbesar & Zoom</span>' +
         '</div>' +
-        '<div class="px-3.5 py-3 flex items-center justify-between gap-2 bg-white dark:bg-zinc-900/90 border-t border-zinc-200 dark:border-zinc-800">' +
-          '<span class="text-xs font-bold text-zinc-900 dark:text-zinc-100 font-mono truncate" title="' + safeName + '">' + safeName + '</span>' +
-          '<button type="button" data-filename="' + safeName + '" onclick="copySingleFileName(this)" title="Salin nama file ini" class="p-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-900 text-zinc-600 hover:text-white dark:bg-zinc-800 dark:hover:bg-yellow-400 dark:text-zinc-300 dark:hover:text-black transition shrink-0">' +
+        '<div class="px-3.5 py-3 flex items-center justify-between gap-2 bg-white dark:bg-zinc-900/90 border-t border-[#E5DFD3] dark:border-zinc-800">' +
+          '<span class="text-xs font-bold text-[#1C1B18] dark:text-zinc-100 font-mono truncate" title="' + safeName + '">' + safeName + '</span>' +
+          '<button type="button" data-filename="' + safeName + '" onclick="copySingleFileName(this)" title="Salin nama file ini" class="p-1.5 rounded-lg bg-[#EFECE6] hover:bg-[#1C1B18] text-[#4A4337] hover:text-white dark:bg-zinc-800 dark:hover:bg-[#D4AF37] dark:text-zinc-300 dark:hover:text-black transition shrink-0 cursor-pointer">' +
             '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>' +
           '</button>' +
-        '</div>';
+        '</div>' +
+        (safeNote ? '<div class="px-3.5 py-2 bg-[#B5945B]/10 border-t border-[#B5945B]/20 text-[11px] text-[#6B5E4A] dark:text-[#E3C14B]">Catatan: ' + safeNote + '</div>' : '');
         container.appendChild(card);
       });
     }
@@ -3288,10 +3394,10 @@
       var fname = btn.dataset.filename || '';
       copyTextSafe(fname);
       var origHtml = btn.innerHTML;
-      btn.classList.add('bg-emerald-500', 'text-white');
+      btn.classList.add('bg-emerald-600', 'text-white');
       btn.innerHTML = '<span class="text-[10px] font-extrabold px-1">✓</span>';
       setTimeout(function() {
-        btn.classList.remove('bg-emerald-500', 'text-white');
+        btn.classList.remove('bg-emerald-600', 'text-white');
         btn.innerHTML = origHtml;
       }, 1200);
     }
@@ -3397,17 +3503,17 @@
         var pct = Math.min(100, Math.max(5, job.progress || 10));
 
         var row = document.createElement('div');
-        row.className = 'p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 space-y-1.5';
+        row.className = 'p-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 space-y-1.5';
         row.innerHTML =
           '<div class="flex items-center justify-between gap-2">' +
             '<div class="min-w-0">' +
-              '<p class="text-[11px] font-bold text-zinc-900 dark:text-white truncate" title="' + escapeHtmlAttr(job.title) + '">' + escapeHtmlAttr(job.title) + '</p>' +
-              '<p class="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">' + escapeHtmlAttr(statusLabel) + '</p>' +
+              '<p class="text-[11px] font-bold text-[#1C1B18] dark:text-white truncate" title="' + escapeHtmlAttr(job.title) + '">' + escapeHtmlAttr(job.title) + '</p>' +
+              '<p class="text-[10px] text-[#6E6556] dark:text-zinc-400 truncate">' + escapeHtmlAttr(statusLabel) + '</p>' +
             '</div>' +
-            '<button type="button" onclick="cancelDownloadItem(\'' + job.id + '\')" title="Batalkan file ini" class="px-2 py-0.5 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:text-red-500 text-[10px] font-bold transition shrink-0 cursor-pointer">✕</button>' +
+            '<button type="button" onclick="cancelDownloadItem(\'' + job.id + '\')" title="Batalkan file ini" class="px-2 py-0.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-[#4A4337] dark:text-zinc-300 hover:text-red-500 text-[10px] font-bold transition shrink-0 cursor-pointer">✕</button>' +
           '</div>' +
-          '<div class="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-1 overflow-hidden">' +
-            '<div class="bg-zinc-900 dark:bg-yellow-400 h-1 rounded-full transition-all duration-300" style="width:' + pct + '%"></div>' +
+          '<div class="w-full bg-[#E5DFD3] dark:bg-zinc-800 rounded-full h-1 overflow-hidden">' +
+            '<div class="bg-[#B5945B] dark:bg-[#D4AF37] h-1 rounded-full transition-all duration-300" style="width:' + pct + '%"></div>' +
           '</div>';
         listEl.appendChild(row);
       });
@@ -3642,6 +3748,7 @@
         }
         currentMaxLimit = cfg.maxLimit || 0;
         currentAllowDownload = cfg.allowDownload;
+        currentEnableWatermark = Boolean(cfg.enableWatermark);
         if (cfg.ownerWhatsapp) {
           currentAlbumTargetWa = cfg.ownerWhatsapp;
           document.getElementById('headerWaLink').href = 'https://wa.me/' + cfg.ownerWhatsapp;
@@ -3649,6 +3756,7 @@
 
         if (cfg.requiresPassword) {
           document.getElementById('gateAlbumTitle').textContent = cfg.folderName;
+          document.getElementById('clientAlbumPassInput').value = '';
           document.getElementById('clientPasswordGate').classList.remove('hidden');
         } else {
           verifyAndOpenAlbum(albumId, '');
@@ -3672,6 +3780,7 @@
           document.getElementById('clientPasswordGate').classList.add('hidden');
           currentMaxLimit = res.maxLimit || 0;
           currentAllowDownload = res.allowDownload;
+          currentEnableWatermark = Boolean(res.enableWatermark);
           if (res.ownerWhatsapp) {
             currentAlbumTargetWa = res.ownerWhatsapp;
             document.getElementById('headerWaLink').href = 'https://wa.me/' + res.ownerWhatsapp;
@@ -3687,7 +3796,7 @@
     }
 
     // ==========================================
-    // GALERI FOTO & FALLBACK iOS/SAFARI
+    // GALERI FOTO MINIMALIS & PROTEKSI KLIK KANAN
     // ==========================================
     function handleThumbFallback(imgEl, fileId) {
       if (imgEl.dataset.fallbackTried === '1') return;
@@ -3733,8 +3842,12 @@
       allPhotos = res.photos;
       currentFolderName = res.folderName;
       currentFolderId = res.folderId;
+      if (typeof res.enableWatermark !== 'undefined') {
+        currentEnableWatermark = Boolean(res.enableWatermark);
+      }
 
       selectedPhotoIds.clear();
+      photoNotesMap = {};
       var validIds = new Set(allPhotos.map(function(p) { return p.id; }));
 
       var localSaved = loadSelectionsFromLocal();
@@ -3746,8 +3859,15 @@
         res.savedPhotoIds.forEach(function(id) {
           if (validIds.has(id)) selectedPhotoIds.add(id);
         });
-        saveSelectionsToLocal();
       }
+
+      var localNotes = loadNotesFromLocal();
+      if (localNotes) {
+        photoNotesMap = localNotes;
+      } else if (res.savedPhotoNotes && typeof res.savedPhotoNotes === 'object') {
+        photoNotesMap = res.savedPhotoNotes;
+      }
+      saveSelectionsToLocal();
 
       if (res.savedClientName && res.savedClientName !== 'Klien (Tanpa Catatan)') {
         document.getElementById('clientNameInput').value = res.savedClientName;
@@ -3760,7 +3880,7 @@
 
       var limitBadge = document.getElementById('albumLimitBadge');
       if (currentMaxLimit > 0) {
-        limitBadge.textContent = 'Maksimal Pilih: ' + currentMaxLimit + ' Foto';
+        limitBadge.textContent = 'Kuota Maksimal: ' + currentMaxLimit + ' Foto';
         limitBadge.classList.remove('hidden');
         document.getElementById('btnSelectAll').classList.add('hidden');
       } else {
@@ -3797,34 +3917,45 @@
         : allPhotos;
 
       if (listToRender.length === 0 && showOnlySelected) {
-        grid.innerHTML = '<div class="col-span-full text-center py-12 text-zinc-500 text-sm">Belum ada foto yang dipilih.</div>';
+        grid.innerHTML = '<div class="col-span-full text-center py-12 text-[#6E6556] text-sm">Belum ada foto yang dipilih.</div>';
         return;
       }
 
+      var protectAttr = currentAllowDownload ? '' : ' oncontextmenu="return false;" draggable="false"';
+
       listToRender.forEach(function(photo) {
         var isSelected = selectedPhotoIds.has(photo.id);
+        var hasNote = Boolean(photoNotesMap[photo.id] && photoNotesMap[photo.id].trim());
         var card = document.createElement('div');
-        card.className = 'photo-card group relative rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 cursor-pointer shadow-xs ' + (isSelected ? 'photo-selected' : '');
+        card.className = 'photo-card group relative rounded-2xl overflow-hidden bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 cursor-pointer shadow-xs ' + (isSelected ? 'photo-selected' : '');
 
         var safeNameAttr = escapeHtmlAttr(photo.name);
-        var dlBtnHtml = currentAllowDownload ? '<button type="button" data-fileid="' + photo.id + '" data-filename="' + safeNameAttr + '" onclick="downloadSinglePhoto(this.dataset.fileid, this.dataset.filename, event)" title="Unduh Foto Ini" class="absolute bottom-10 right-2.5 z-10 w-8 h-8 rounded-full bg-black/75 hover:bg-zinc-900 dark:hover:bg-yellow-400 text-white dark:hover:text-black border border-white/20 flex items-center justify-center transition"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg></button>' : '';
+        var compactCode = escapeHtmlAttr(getCompactPhotoCode(photo.name));
 
-        var btnCheckClass = isSelected ? 'bg-zinc-900 text-white dark:bg-yellow-400 dark:text-black scale-105' : 'bg-black/60 text-white hover:bg-zinc-800 border border-white/30';
-        var labelBadgeClass = isSelected ? 'bg-zinc-900 text-white dark:bg-yellow-400 dark:text-black' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400';
-        var labelBadgeText = isSelected ? 'Dipilih' : 'Pilih';
+        var wmHtml = currentEnableWatermark
+          ? '<div class="pointer-events-none absolute inset-0 flex items-center justify-center"><span class="text-white/30 text-[10px] font-extrabold tracking-[0.2em] uppercase -rotate-12 select-none">MAGENICLENS</span></div>'
+          : '';
 
-        card.innerHTML = '<div class="aspect-[4/5] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-950 relative" onclick="openLightbox(\'' + photo.id + '\')">' +
-          '<img src="' + photo.thumb + '" data-fileid="' + photo.id + '" onerror="handleThumbFallback(this, \'' + photo.id + '\')" alt="' + safeNameAttr + '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">' +
-          '<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/15 opacity-75"></div>' +
-        '</div>' +
-        dlBtnHtml +
-        '<button type="button" onclick="toggleSelect(\'' + photo.id + '\', event)" aria-label="Pilih foto" class="absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all shadow-md ' + btnCheckClass + '">' +
-          '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>' +
-        '</button>' +
-        '<div onclick="toggleSelect(\'' + photo.id + '\', event)" class="px-3 py-2.5 flex items-center justify-between bg-white dark:bg-zinc-900/95 border-t border-zinc-100 dark:border-zinc-800/80">' +
-          '<p class="text-xs font-medium text-zinc-800 dark:text-zinc-200 truncate pr-2" title="' + safeNameAttr + '">' + safeNameAttr + '</p>' +
-          '<span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ' + labelBadgeClass + '">' + labelBadgeText + '</span>' +
-        '</div>';
+        var noteBadgeHtml = hasNote
+          ? '<span title="Ada catatan revisi" class="px-1.5 py-0.5 rounded-full bg-[#B5945B]/20 text-[#B5945B] dark:text-[#D4AF37] text-[9px] font-bold">Catatan</span>'
+          : '';
+
+        var btnCheckClass = isSelected
+          ? 'bg-[#B5945B] dark:bg-[#D4AF37] text-white dark:text-black scale-105 border-transparent'
+          : 'bg-black/45 text-white/90 hover:bg-black/70 border-white/50';
+
+        card.innerHTML =
+          '<div class="aspect-[4/5] w-full overflow-hidden bg-[#EFECE6] dark:bg-zinc-950 relative" onclick="openLightbox(\'' + photo.id + '\')"' + protectAttr + '>' +
+            '<img src="' + photo.thumb + '" data-fileid="' + photo.id + '" onerror="handleThumbFallback(this, \'' + photo.id + '\')" alt="' + safeNameAttr + '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 protected-img"' + protectAttr + '>' +
+            wmHtml +
+          '</div>' +
+          '<button type="button" onclick="toggleSelect(\'' + photo.id + '\', event)" aria-label="Pilih foto" class="absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full border flex items-center justify-center transition-all shadow-md cursor-pointer ' + btnCheckClass + '">' +
+            '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>' +
+          '</button>' +
+          '<div onclick="openLightbox(\'' + photo.id + '\')" class="px-3 py-2 flex items-center justify-between bg-white dark:bg-[#131316] border-t border-[#EFECE6] dark:border-zinc-800/80">' +
+            '<span class="text-[11px] font-mono font-bold text-[#5C5549] dark:text-zinc-300 truncate" title="' + safeNameAttr + '">' + compactCode + '</span>' +
+            noteBadgeHtml +
+          '</div>';
         grid.appendChild(card);
       });
     }
@@ -3865,9 +3996,9 @@
       showOnlySelected = !showOnlySelected;
       var btn = document.getElementById('btnFilterSelected');
       if (showOnlySelected) {
-        btn.classList.add('bg-zinc-900', 'text-white', 'dark:bg-yellow-400', 'dark:text-black');
+        btn.classList.add('bg-[#1C1B18]', 'text-white', 'dark:bg-[#D4AF37]', 'dark:text-black');
       } else {
-        btn.classList.remove('bg-zinc-900', 'text-white', 'dark:bg-yellow-400', 'dark:text-black');
+        btn.classList.remove('bg-[#1C1B18]', 'text-white', 'dark:bg-[#D4AF37]', 'dark:text-black');
       }
       renderGrid();
     }
@@ -3880,12 +4011,12 @@
       document.getElementById('selectedCountText').textContent = currentMaxLimit > 0 ? (count + ' / ' + currentMaxLimit) : count;
 
       var bar = document.getElementById('floatingBar');
-      if (count > 0) bar.classList.remove('translate-y-full');
-      else bar.classList.add('translate-y-full');
+      if (count > 0) bar.classList.remove('translate-y-28');
+      else bar.classList.add('translate-y-28');
     }
 
     // ==========================================
-    // LIGHTBOX FULL PREVIEW + ZOOM IN / ZOOM OUT
+    // LIGHTBOX FULL PREVIEW + ZOOM + CATATAN PER FOTO
     // ==========================================
     function applyLightboxTransform() {
       var img = document.getElementById('lightboxImg');
@@ -3920,6 +4051,7 @@
       currentLightboxIndex = idx;
       resetLightboxZoom();
       document.getElementById('lightboxSelectBtn').classList.remove('hidden');
+      document.getElementById('lightboxNoteBar').classList.remove('hidden');
       updateLightboxContent();
       document.getElementById('lightboxModal').classList.remove('hidden');
     }
@@ -3937,12 +4069,34 @@
       currentLightboxIndex = startIndex || 0;
       resetLightboxZoom();
       document.getElementById('lightboxSelectBtn').classList.add('hidden');
+      document.getElementById('lightboxNoteBar').classList.add('hidden');
       updateLightboxContent();
       document.getElementById('lightboxModal').classList.remove('hidden');
     }
 
     function getActiveLightboxList() {
       return lightboxMode === 'vendor' ? vendorPreviewPhotos : allPhotos;
+    }
+
+    function saveCurrentLightboxPhotoNote() {
+      if (lightboxMode !== 'client') return;
+      var photo = allPhotos[currentLightboxIndex];
+      if (!photo) return;
+      var val = document.getElementById('lightboxPhotoNoteInput').value;
+      if (val && val.trim()) {
+        photoNotesMap[photo.id] = val.trim();
+        if (!selectedPhotoIds.has(photo.id)) {
+          if (currentMaxLimit === 0 || selectedPhotoIds.size < currentMaxLimit) {
+            selectedPhotoIds.add(photo.id);
+            updateSelectionUI();
+            updateLightboxSelectButton();
+          }
+        }
+      } else {
+        delete photoNotesMap[photo.id];
+      }
+      saveSelectionsToLocal();
+      renderGrid();
     }
 
     function updateLightboxContent() {
@@ -3953,15 +4107,31 @@
       var photo = activeList[currentLightboxIndex];
       var img = document.getElementById('lightboxImg');
       var loader = document.getElementById('lightboxImgLoader');
+      var wmOverlay = document.getElementById('lightboxWatermarkOverlay');
 
       document.getElementById('lightboxCounter').textContent = (currentLightboxIndex + 1) + ' / ' + activeList.length;
       document.getElementById('lightboxTitle').textContent = photo.name;
 
+      var noteInput = document.getElementById('lightboxPhotoNoteInput');
+      if (noteInput && lightboxMode === 'client') {
+        noteInput.value = photoNotesMap[photo.id] || '';
+      }
+
+      if (wmOverlay) {
+        if (lightboxMode === 'client' && currentEnableWatermark) {
+          wmOverlay.classList.remove('hidden');
+        } else {
+          wmOverlay.classList.add('hidden');
+        }
+      }
+
       var dlBtn = document.getElementById('btnLightboxDownload');
       if (lightboxMode === 'vendor' || currentAllowDownload) {
         dlBtn.classList.remove('hidden');
+        img.oncontextmenu = null;
       } else {
         dlBtn.classList.add('hidden');
+        img.oncontextmenu = function() { return false; };
       }
 
       loader.classList.remove('hidden');
@@ -4019,10 +4189,10 @@
       var btn = document.getElementById('lightboxSelectBtn');
       var isSelected = selectedPhotoIds.has(photo.id);
       if (isSelected) {
-        btn.className = 'px-4 py-2 rounded-full text-xs font-bold bg-yellow-400 text-black transition';
+        btn.className = 'px-4 py-2 rounded-full text-xs font-bold bg-[#D4AF37] text-black transition cursor-pointer';
         btn.textContent = '✓ Terpilih';
       } else {
-        btn.className = 'px-4 py-2 rounded-full text-xs font-bold bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-600 transition';
+        btn.className = 'px-4 py-2 rounded-full text-xs font-bold bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-600 transition cursor-pointer';
         btn.textContent = '+ Pilih Foto Ini';
       }
     }
@@ -4141,6 +4311,7 @@
 
       document.addEventListener('keydown', function(e) {
         if (document.getElementById('lightboxModal').classList.contains('hidden')) return;
+        if (document.activeElement && document.activeElement.id === 'lightboxPhotoNoteInput') return;
         if (e.key === 'ArrowRight') navigateLightbox(1);
         else if (e.key === 'ArrowLeft') navigateLightbox(-1);
         else if (e.key === '+' || e.key === '=') adjustLightboxZoom(0.35);
@@ -4153,10 +4324,17 @@
     // ==========================================
     // KIRIM PILIHAN KLIEN KE DATABASE VENDOR & WA
     // ==========================================
+    function buildFormattedChosenList(chosen) {
+      return chosen.map(function(p, i) {
+        var note = photoNotesMap[p.id] ? (' [Catatan: ' + photoNotesMap[p.id] + ']') : '';
+        return (i + 1) + '. ' + p.name + note;
+      }).join(NL);
+    }
+
     function openSummaryModal() {
       var chosen = allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); });
       document.getElementById('modalSelectedCount').textContent = chosen.length;
-      document.getElementById('selectedListTextarea').value = chosen.map(function(p, i) { return (i + 1) + '. ' + p.name; }).join(NL);
+      document.getElementById('selectedListTextarea').value = buildFormattedChosenList(chosen);
       document.getElementById('summaryModal').classList.remove('hidden');
     }
 
@@ -4172,10 +4350,21 @@
       setTimeout(function() { btn.textContent = 'Salin Daftar'; }, 2000);
     }
 
+    function getFilteredNotesForChosen(chosen) {
+      var res = {};
+      chosen.forEach(function(p) {
+        if (photoNotesMap[p.id] && photoNotesMap[p.id].trim()) {
+          res[p.id] = photoNotesMap[p.id].trim();
+        }
+      });
+      return res;
+    }
+
     function submitToStudioAndCopy() {
       var chosen = allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); });
       var clientName = document.getElementById('clientNameInput').value.trim();
       var btn = document.getElementById('btnSubmitStudio');
+      var chosenNotes = getFilteredNotesForChosen(chosen);
 
       saveSelectionsToLocal();
       btn.disabled = true;
@@ -4186,22 +4375,23 @@
         btn.textContent = 'Simpan ke Studio & Salin';
         copySelectedList();
         if (res.success) {
-          showNotice('Pilihan foto berhasil dikirim ke sistem Studio & daftar nama file telah disalin!', 'Terkirim ke Studio');
+          showNotice('Pilihan foto beserta catatan berhasil dikirim ke sistem Studio & daftar nama file telah disalin!', 'Terkirim ke Studio');
           closeSummaryModal();
         } else {
           showNotice('Gagal menyimpan ke database: ' + res.message);
         }
-      }).submitClientSelection(currentAlbumId, currentFolderName, clientName, chosen);
+      }).submitClientSelection(currentAlbumId, currentFolderName, clientName, chosen, chosenNotes);
     }
 
     function submitAndSendWhatsApp() {
       var chosen = allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); });
       var clientName = document.getElementById('clientNameInput').value.trim();
-      var listText = chosen.map(function(p, i) { return (i + 1) + '. ' + p.name; }).join(NL);
+      var listText = buildFormattedChosenList(chosen);
+      var chosenNotes = getFilteredNotesForChosen(chosen);
 
       saveSelectionsToLocal();
 
-      google.script.run.submitClientSelection(currentAlbumId, currentFolderName, clientName, chosen);
+      google.script.run.submitClientSelection(currentAlbumId, currentFolderName, clientName, chosen, chosenNotes);
 
       var targetWa = currentAlbumTargetWa || currentAdminWhatsapp || DEFAULT_STUDIO_WA;
 
