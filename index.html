@@ -79,6 +79,9 @@
       -webkit-user-select: none;
       user-select: none;
     }
+    .pb-safe {
+      padding-bottom: max(0.55rem, env(safe-area-inset-bottom));
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between bg-[#F7F5F0] text-[#1C1B18] dark:bg-[#0A0A0B] dark:text-[#F4F1EA] selection:bg-[#B5945B] selection:text-white dark:selection:bg-[#D4AF37] dark:selection:text-black">
@@ -501,31 +504,20 @@
       </div>
     </section>
 
-    <!-- PANEL ADMIN / STUDIO + SUPER ADMIN -->
-    <section id="adminDashboard" class="hidden max-w-6xl mx-auto px-4 sm:px-6 py-6 mb-10">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 p-4 sm:p-5 rounded-3xl shadow-xs">
-        <div class="space-y-1">
+    <!-- PANEL ADMIN / STUDIO + SUPER ADMIN (DENGAN BOTTOM TAB BAR TETAP DI BAWAH) -->
+    <section id="adminDashboard" class="hidden max-w-6xl mx-auto px-4 sm:px-6 pt-5 pb-28">
+      <!-- HEADER STATUS STUDIO RINGKAS -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-5 bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 px-5 py-4 rounded-3xl shadow-xs">
+        <div class="space-y-0.5">
           <div class="flex flex-wrap items-center gap-2">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-[#B5945B] dark:text-[#D4AF37]" id="adminRoleLabel">Ruang Studio / Member</span>
-            <span id="subscriptionBadge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-[11px] font-bold">Aktif</span>
+            <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#B5945B] dark:text-[#D4AF37]" id="adminRoleLabel">Ruang Studio / Member</span>
+            <span id="subscriptionBadge" class="px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold">Aktif</span>
           </div>
-          <h2 class="text-lg sm:text-xl font-extrabold text-[#1C1B18] dark:text-white" id="adminLoggedBadge">Halo, Studio Admin</h2>
+          <h2 class="text-base sm:text-lg font-extrabold text-[#1C1B18] dark:text-white" id="adminLoggedBadge">Halo, Studio Admin</h2>
         </div>
-
-        <div class="inline-flex flex-wrap items-center gap-1.5 bg-[#F7F5F0] dark:bg-zinc-950 p-1.5 rounded-2xl sm:rounded-full border border-[#E5DFD3] dark:border-zinc-800">
-          <button type="button" onclick="switchAdminTab('create')" id="tabBtnCreate" class="px-4 py-2 rounded-full text-xs font-bold bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black transition cursor-pointer">
-            + Buat Galeri
-          </button>
-          <button type="button" onclick="switchAdminTab('selections')" id="tabBtnSelections" class="px-4 py-2 rounded-full text-xs font-bold text-[#5C5549] hover:text-[#1C1B18] dark:text-zinc-400 dark:hover:text-white transition cursor-pointer">
-            Hasil Kurasi Klien
-          </button>
-          <button type="button" onclick="switchAdminTab('settings')" id="tabBtnSettings" class="px-4 py-2 rounded-full text-xs font-bold text-[#5C5549] hover:text-[#1C1B18] dark:text-zinc-400 dark:hover:text-white transition cursor-pointer">
-            Akun & Lisensi
-          </button>
-          <button type="button" onclick="switchAdminTab('superadmin')" id="tabBtnSuperadmin" class="hidden px-4 py-2 rounded-full text-xs font-extrabold text-[#B5945B] dark:text-[#D4AF37] hover:bg-[#EFECE6] dark:hover:bg-zinc-900 transition cursor-pointer">
-            ★ Super Admin
-          </button>
-        </div>
+        <span id="activeTabTitleIndicator" class="text-xs font-bold px-3.5 py-1.5 rounded-full bg-[#F7F5F0] dark:bg-zinc-950 text-[#5C5549] dark:text-[#D4AF37] border border-[#E5DFD3] dark:border-zinc-800">
+          Buat Galeri Klien
+        </span>
       </div>
 
       <!-- TAB 1: BUAT LINK ALBUM KLIEN -->
@@ -828,6 +820,58 @@
           <div id="superAdminLicensesList" class="space-y-2 max-h-96 overflow-y-auto"></div>
         </div>
       </div>
+
+      <!-- FIXED BOTTOM TAB NAVIGATION BAR (TETAP DI BAWAH SAAT SCROLL) -->
+      <nav aria-label="Navigasi Ruang Studio" class="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-[#131316]/95 backdrop-blur-lg border-t border-[#E5DFD3] dark:border-zinc-800/90 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] pb-safe">
+        <div class="max-w-lg mx-auto px-2 pt-1.5 pb-1 flex items-center justify-around">
+          <!-- Tab 1: Galeri -->
+          <button type="button" onclick="switchAdminTab('create')" id="tabBtnCreate" class="group relative flex-1 flex flex-col items-center justify-center py-1 transition cursor-pointer">
+            <span id="tabIndCreate" class="absolute -top-1.5 w-8 h-[3px] rounded-full bg-[#1C1B18] dark:bg-[#D4AF37] transition-opacity"></span>
+            <div id="tabIconBoxCreate" class="w-14 h-8 rounded-full bg-[#EFECE6] dark:bg-[#D4AF37]/20 flex items-center justify-center transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#1C1B18] dark:text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+              </svg>
+            </div>
+            <span id="tabLabelCreate" class="text-[11px] font-extrabold text-[#1C1B18] dark:text-white mt-1 tracking-tight">Galeri</span>
+          </button>
+
+          <!-- Tab 2: Kurasi -->
+          <button type="button" onclick="switchAdminTab('selections')" id="tabBtnSelections" class="group relative flex-1 flex flex-col items-center justify-center py-1 transition cursor-pointer">
+            <span id="tabIndSelections" class="hidden absolute -top-1.5 w-8 h-[3px] rounded-full bg-[#1C1B18] dark:bg-[#D4AF37] transition-opacity"></span>
+            <div id="tabIconBoxSelections" class="w-14 h-8 rounded-full bg-transparent flex items-center justify-center transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#6E6556] dark:text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+            </div>
+            <span id="tabLabelSelections" class="text-[11px] font-semibold text-[#6E6556] dark:text-zinc-400 mt-1 tracking-tight">Kurasi</span>
+          </button>
+
+          <!-- Tab 3: Akun -->
+          <button type="button" onclick="switchAdminTab('settings')" id="tabBtnSettings" class="group relative flex-1 flex flex-col items-center justify-center py-1 transition cursor-pointer">
+            <span id="tabIndSettings" class="hidden absolute -top-1.5 w-8 h-[3px] rounded-full bg-[#1C1B18] dark:bg-[#D4AF37] transition-opacity"></span>
+            <div id="tabIconBoxSettings" class="w-14 h-8 rounded-full bg-transparent flex items-center justify-center transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#6E6556] dark:text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <span id="tabLabelSettings" class="text-[11px] font-semibold text-[#6E6556] dark:text-zinc-400 mt-1 tracking-tight">Akun</span>
+          </button>
+
+          <!-- Tab 4: Kelola (Khusus Super Admin) -->
+          <button type="button" onclick="switchAdminTab('superadmin')" id="tabBtnSuperadmin" class="hidden group relative flex-1 flex flex-col items-center justify-center py-1 transition cursor-pointer">
+            <span id="tabIndSuperadmin" class="hidden absolute -top-1.5 w-8 h-[3px] rounded-full bg-[#1C1B18] dark:bg-[#D4AF37] transition-opacity"></span>
+            <div id="tabIconBoxSuperadmin" class="w-14 h-8 rounded-full bg-transparent flex items-center justify-center transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#6E6556] dark:text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+              </svg>
+            </div>
+            <span id="tabLabelSuperadmin" class="text-[11px] font-semibold text-[#6E6556] dark:text-zinc-400 mt-1 tracking-tight">Kelola</span>
+          </button>
+        </div>
+      </nav>
     </section>
 
     <!-- LOADING STATE -->
@@ -1249,7 +1293,7 @@
   </div>
 
   <!-- FOOTER -->
-  <footer class="border-t border-[#E5DFD3] dark:border-zinc-900 bg-white dark:bg-[#0A0A0B] py-12 text-xs text-[#6E6556] dark:text-zinc-400">
+  <footer id="mainSiteFooter" class="border-t border-[#E5DFD3] dark:border-zinc-900 bg-white dark:bg-[#0A0A0B] py-12 text-xs text-[#6E6556] dark:text-zinc-400">
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-[#EFECE6] dark:border-zinc-900">
         <div class="md:col-span-2 space-y-2">
@@ -2119,11 +2163,13 @@
       if (isAdminLoggedIn) {
         document.getElementById('welcomeLandingSection').classList.add('hidden');
         document.getElementById('landingNavLinks').classList.add('hidden');
+        document.getElementById('mainSiteFooter').classList.add('hidden');
         document.getElementById('adminDashboard').classList.remove('hidden');
       } else {
         document.getElementById('adminDashboard').classList.add('hidden');
         document.getElementById('welcomeLandingSection').classList.remove('hidden');
         document.getElementById('landingNavLinks').classList.remove('hidden');
+        document.getElementById('mainSiteFooter').classList.remove('hidden');
       }
     }
 
@@ -2139,6 +2185,7 @@
       document.getElementById('clientPasswordGate').classList.add('hidden');
       document.getElementById('floatingBar').classList.add('translate-y-28');
       document.getElementById('btnBackToStudio').classList.add('hidden');
+      document.getElementById('mainSiteFooter').classList.add('hidden');
       document.getElementById('adminDashboard').classList.remove('hidden');
       loadVendorHistory();
     }
@@ -2386,6 +2433,7 @@
       if (isAdminLoggedIn) {
         document.getElementById('welcomeLandingSection').classList.add('hidden');
         document.getElementById('landingNavLinks').classList.add('hidden');
+        document.getElementById('mainSiteFooter').classList.add('hidden');
         document.getElementById('gallerySection').classList.add('hidden');
         document.getElementById('btnBackToStudio').classList.add('hidden');
         document.getElementById('adminDashboard').classList.remove('hidden');
@@ -2610,6 +2658,7 @@
       document.getElementById('adminLoginModal').classList.add('hidden');
       document.getElementById('welcomeLandingSection').classList.add('hidden');
       document.getElementById('landingNavLinks').classList.add('hidden');
+      document.getElementById('mainSiteFooter').classList.add('hidden');
       document.getElementById('btnOpenAdmin').classList.add('hidden');
       document.getElementById('btnLoginNav').classList.add('hidden');
       document.getElementById('btnLogoutAdmin').classList.remove('hidden');
@@ -2702,29 +2751,65 @@
       if (document.getElementById('gallerySection').classList.contains('hidden')) {
         document.getElementById('welcomeLandingSection').classList.remove('hidden');
         document.getElementById('landingNavLinks').classList.remove('hidden');
+        document.getElementById('mainSiteFooter').classList.remove('hidden');
       }
     }
 
     function switchAdminTab(tab) {
+      var tabTitles = {
+        create: 'Buat Galeri Klien',
+        selections: 'Hasil Kurasi Klien',
+        settings: 'Akun & Lisensi',
+        superadmin: 'Super Admin Studio'
+      };
+
       ['create', 'selections', 'settings', 'superadmin'].forEach(function(t) {
-        var panel = document.getElementById('adminTab' + t.charAt(0).toUpperCase() + t.slice(1));
-        var btn = document.getElementById('tabBtn' + t.charAt(0).toUpperCase() + t.slice(1));
+        var cap = t.charAt(0).toUpperCase() + t.slice(1);
+        var panel = document.getElementById('adminTab' + cap);
+        var ind = document.getElementById('tabInd' + cap);
+        var iconBox = document.getElementById('tabIconBox' + cap);
+        var label = document.getElementById('tabLabel' + cap);
+        var svg = iconBox ? iconBox.querySelector('svg') : null;
+
         if (panel) panel.classList.add('hidden');
-        if (btn) {
-          if (t === 'superadmin') {
-            btn.className = (currentAdminRole === 'SUPERADMIN' ? '' : 'hidden ') + 'px-4 py-2 rounded-full text-xs font-extrabold text-[#B5945B] dark:text-[#D4AF37] hover:bg-[#EFECE6] dark:hover:bg-zinc-900 transition cursor-pointer';
-          } else {
-            btn.className = 'px-4 py-2 rounded-full text-xs font-bold text-[#5C5549] hover:text-[#1C1B18] dark:text-zinc-400 dark:hover:text-white transition cursor-pointer';
-          }
+        if (ind) ind.classList.add('hidden');
+        if (iconBox) {
+          iconBox.className = 'w-14 h-8 rounded-full bg-transparent flex items-center justify-center transition-colors';
+        }
+        if (svg) {
+          svg.classList.remove('text-[#1C1B18]', 'dark:text-[#D4AF37]');
+          svg.classList.add('text-[#6E6556]', 'dark:text-zinc-400');
+        }
+        if (label) {
+          label.className = 'text-[11px] font-semibold text-[#6E6556] dark:text-zinc-400 mt-1 tracking-tight';
         }
       });
 
-      var activePanel = document.getElementById('adminTab' + tab.charAt(0).toUpperCase() + tab.slice(1));
-      var activeBtn = document.getElementById('tabBtn' + tab.charAt(0).toUpperCase() + tab.slice(1));
+      var activeCap = tab.charAt(0).toUpperCase() + tab.slice(1);
+      var activePanel = document.getElementById('adminTab' + activeCap);
+      var activeInd = document.getElementById('tabInd' + activeCap);
+      var activeIconBox = document.getElementById('tabIconBox' + activeCap);
+      var activeLabel = document.getElementById('tabLabel' + activeCap);
+      var activeSvg = activeIconBox ? activeIconBox.querySelector('svg') : null;
+      var headerIndicator = document.getElementById('activeTabTitleIndicator');
+
       if (activePanel) activePanel.classList.remove('hidden');
-      if (activeBtn) {
-        activeBtn.className = 'px-4 py-2 rounded-full text-xs font-extrabold bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black transition cursor-pointer';
+      if (activeInd) activeInd.classList.remove('hidden');
+      if (activeIconBox) {
+        activeIconBox.className = 'w-14 h-8 rounded-full bg-[#EFECE6] dark:bg-[#D4AF37]/20 flex items-center justify-center transition-colors';
       }
+      if (activeSvg) {
+        activeSvg.classList.remove('text-[#6E6556]', 'dark:text-zinc-400');
+        activeSvg.classList.add('text-[#1C1B18]', 'dark:text-[#D4AF37]');
+      }
+      if (activeLabel) {
+        activeLabel.className = 'text-[11px] font-extrabold text-[#1C1B18] dark:text-white mt-1 tracking-tight';
+      }
+      if (headerIndicator && tabTitles[tab]) {
+        headerIndicator.textContent = tabTitles[tab];
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
       if (tab === 'selections') loadVendorHistory();
       if (tab === 'superadmin') loadSuperAdminData();
@@ -3839,6 +3924,7 @@
     function renderGalleryData(res) {
       document.getElementById('welcomeLandingSection').classList.add('hidden');
       document.getElementById('landingNavLinks').classList.add('hidden');
+      document.getElementById('mainSiteFooter').classList.remove('hidden');
       allPhotos = res.photos;
       currentFolderName = res.folderName;
       currentFolderId = res.folderId;
