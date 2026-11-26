@@ -2162,13 +2162,13 @@
       document.getElementById('btnBackToStudio').classList.add('hidden');
       if (isAdminLoggedIn) {
         document.getElementById('welcomeLandingSection').classList.add('hidden');
-        document.getElementById('landingNavLinks').classList.add('hidden');
+        document.getElementById('landingNavLinks').className = 'hidden items-center gap-7 text-xs font-semibold text-[#5C5549] dark:text-zinc-400';
         document.getElementById('mainSiteFooter').classList.add('hidden');
         document.getElementById('adminDashboard').classList.remove('hidden');
       } else {
         document.getElementById('adminDashboard').classList.add('hidden');
         document.getElementById('welcomeLandingSection').classList.remove('hidden');
-        document.getElementById('landingNavLinks').classList.remove('hidden');
+        document.getElementById('landingNavLinks').className = 'hidden md:flex items-center gap-7 text-xs font-semibold text-[#5C5549] dark:text-zinc-400';
         document.getElementById('mainSiteFooter').classList.remove('hidden');
       }
     }
@@ -2750,7 +2750,7 @@
       document.getElementById('btnLoginNav').classList.remove('hidden');
       if (document.getElementById('gallerySection').classList.contains('hidden')) {
         document.getElementById('welcomeLandingSection').classList.remove('hidden');
-        document.getElementById('landingNavLinks').classList.remove('hidden');
+        document.getElementById('landingNavLinks').className = 'hidden md:flex items-center gap-7 text-xs font-semibold text-[#5C5549] dark:text-zinc-400';
         document.getElementById('mainSiteFooter').classList.remove('hidden');
       }
     }
