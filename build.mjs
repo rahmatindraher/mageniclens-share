@@ -19,3 +19,4 @@ for (const [field, variable] of Object.entries(fields)) {
 await mkdir('dist', { recursive: true });
 await writeFile('dist/firebase-config.js', 'window.MGL_FIREBASE_CONFIG = ' + JSON.stringify(config) + ';\n');
 await copyFile('index.html', 'dist/index.html');
+await copyFile('favicon.ico', 'dist/favicon.ico');
