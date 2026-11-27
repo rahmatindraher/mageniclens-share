@@ -1411,7 +1411,7 @@
     }
 
     // ==========================================
-    // DATA DEMO & API PEMBACA GOOGLE DRIVE
+    // VERCEL SERVERLESS API UNTUK GOOGLE DRIVE (/api/drive)
     // ==========================================
     var MOCK_SAMPLE_PHOTOS = [
       { id: 'DEMO_IMG_01', name: 'MGL_PREWED_0101.jpg', thumb: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80', full: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=90' },
@@ -1431,7 +1431,7 @@
       { planKey: '36500', planTitle: 'Lifetime', subtitle: '', originalPrice: 'Rp 1.500.000', currentPrice: 'Rp 699.000', badge: 'BEST VALUE' }
     ];
 
-    var GAS_DRIVE_PROXY_URL = 'https://script.google.com/macros/s/AKfycbxIhyP0oYBUAviIT3Q7dmuOgO63-UsI_qPW4X-o3sCd55i_En1NEwfCdVEyjAfWSZFb/exec';
+    var VERCEL_DRIVE_API_URL = '/api/drive';
 
     function extractDriveFolderId(input) {
       var str = String(input || '').trim();
@@ -1448,9 +1448,9 @@
       }
 
       try {
-        var res = await fetch(GAS_DRIVE_PROXY_URL, {
+        var res = await fetch(VERCEL_DRIVE_API_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ action: 'getDrivePhotos', args: [folderId] })
         });
         var data = await res.json();
@@ -1464,16 +1464,16 @@
       } catch (err) {
         return {
           success: false,
-          message: 'Gagal terhubung ke layanan pembaca Google Drive: ' + err.message
+          message: 'Gagal terhubung ke API Google Drive (/api/drive): ' + err.message
         };
       }
     }
 
     async function fetchDrivePhotoBase64(fileId) {
       try {
-        var res = await fetch(GAS_DRIVE_PROXY_URL, {
+        var res = await fetch(VERCEL_DRIVE_API_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ action: 'getPhotoFileData', args: [fileId] })
         });
         return await res.json();
@@ -3939,7 +3939,7 @@
     }
   </script>
 
-  <!-- FIREBASE MODULE (CLEAN SLATE - DATABASE DARI NOL) -->
+  <!-- FIREBASE MODULE (PRODUCTION FINAL) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
     import {
@@ -4089,7 +4089,6 @@
         const snap = await getDoc(userRef);
 
         if (!snap.exists()) {
-          // Otomatis buatkan dokumen profil jika akun ada di Auth tapi belum ada di Firestore
           const fallbackProfile = {
             uid,
             email: credential.user.email || email,
