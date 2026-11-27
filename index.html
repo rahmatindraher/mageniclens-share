@@ -950,7 +950,7 @@
       </div>
 
       <div id="authActivateForm" class="hidden space-y-3">
-        <p class="text-xs text-[#6E6556] dark:text-zinc-400">Masukkan Email Terdaftar dan Kode Lisensi untuk mengaktifkan akses <strong>2 Perangkat</strong> (rotasi pindah perangkat 3x / 7 hari).</p>
+        <p class="text-xs text-[#6E6556] dark:text-zinc-400">Masuk terlebih dahulu atau masukkan Email & Kode Lisensi untuk mengaktifkan akses <strong>2 Perangkat</strong>.</p>
         <div>
           <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Email Akun Terdaftar *</label>
           <input type="email" id="actEmailInput" autocomplete="off" placeholder="studio@gmail.com" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
@@ -961,7 +961,7 @@
         </div>
         <div id="activateErrorMsg" class="hidden text-xs text-red-600 dark:text-red-400 bg-red-500/10 border border-red-500/25 p-2.5 rounded-xl"></div>
         <button type="button" id="btnActivateLicense" onclick="handleActivateLicenseModal()" class="w-full py-3 rounded-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-sm transition">
-          Aktivasi Lisensi & Masuk
+          Aktivasi Lisensi
         </button>
       </div>
     </div>
@@ -1399,8 +1399,19 @@
       document.body.removeChild(temp);
     }
 
+    function withTimeout(promise, ms, label) {
+      return Promise.race([
+        promise,
+        new Promise(function(_, reject) {
+          setTimeout(function() {
+            reject(new Error((label || 'Koneksi Firebase') + ' melebihi batas waktu (' + (ms / 1000) + ' detik). Pastikan internet stabil dan Firestore Database sudah diaktifkan di Firebase Console.'));
+          }, ms);
+        })
+      ]);
+    }
+
     // ==========================================
-    // DATA DEMO CADANGAN & API DRIVE (VERCEL / GAS)
+    // DATA DEMO & API PEMBACA GOOGLE DRIVE
     // ==========================================
     var MOCK_SAMPLE_PHOTOS = [
       { id: 'DEMO_IMG_01', name: 'MGL_PREWED_0101.jpg', thumb: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80', full: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=90' },
@@ -1420,7 +1431,6 @@
       { planKey: '36500', planTitle: 'Lifetime', subtitle: '', originalPrice: 'Rp 1.500.000', currentPrice: 'Rp 699.000', badge: 'BEST VALUE' }
     ];
 
-    // Endpoint Drive Sementara (Stage 5 akan dipindah ke Vercel /api/drive)
     var GAS_DRIVE_PROXY_URL = 'https://script.google.com/macros/s/AKfycbxIhyP0oYBUAviIT3Q7dmuOgO63-UsI_qPW4X-o3sCd55i_En1NEwfCdVEyjAfWSZFb/exec';
 
     function extractDriveFolderId(input) {
@@ -1534,9 +1544,6 @@
     }
     function safeSetItem(key, val) {
       try { window.localStorage.setItem(key, val); } catch (e) { memoryStorage[key] = val; }
-    }
-    function safeRemoveItem(key) {
-      try { window.localStorage.removeItem(key); } catch (e) { delete memoryStorage[key]; }
     }
     function escapeHtmlAttr(str) {
       return String(str || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -1681,7 +1688,7 @@
           renderMemberPricingCards(DEFAULT_PRICING_PLANS);
           return;
         }
-        var plans = await window.mglFirebase.getPublicPricing();
+        var plans = await withTimeout(window.mglFirebase.getPublicPricing(), 6000, 'Memuat harga');
         cachedPricingPlans = plans && plans.length ? plans : DEFAULT_PRICING_PLANS;
         renderPublicPricingCards(cachedPricingPlans);
         renderMemberPricingCards(cachedPricingPlans);
@@ -1912,18 +1919,18 @@
 
       errEl.classList.add('hidden');
       btn.disabled = true;
-      btn.textContent = 'Memproses Pendaftaran...';
+      btn.textContent = 'Menyimpan ke Firebase...';
 
       try {
-        await window.mglFirebaseReady;
-        var res = await window.mglFirebase.registerUser({
+        if (!window.mglFirebase) throw new Error('SDK Firebase belum termuat. Muat ulang halaman.');
+        var res = await withTimeout(window.mglFirebase.registerUser({
           name: name,
           email: email,
           whatsapp: whatsapp,
           password: pass,
           licenseCode: licenseCode,
           deviceId: getOrCreateDeviceId()
-        });
+        }), 12000, 'Pendaftaran akun');
 
         document.getElementById('regPassInput').value = '';
         document.getElementById('regConfirmPassInput').value = '';
@@ -1931,7 +1938,7 @@
         showNotice(res.message, 'Pendaftaran Berhasil');
         setAdminAuthenticated(res.sessionUser, true);
       } catch (err) {
-        errEl.textContent = window.mglFirebase.errorMessage(err);
+        errEl.textContent = window.mglFirebase ? window.mglFirebase.errorMessage(err) : (err.message || String(err));
         errEl.classList.remove('hidden');
       } finally {
         btn.disabled = false;
@@ -1952,16 +1959,20 @@
       }
 
       btn.disabled = true;
-      btn.textContent = 'Memverifikasi Akun...';
+      btn.textContent = 'Menghubungkan ke Firebase...';
       errEl.classList.add('hidden');
 
       try {
-        await window.mglFirebaseReady;
-        var sessionUser = await window.mglFirebase.loginUser(email, pass, getOrCreateDeviceId());
+        if (!window.mglFirebase) throw new Error('SDK Firebase belum termuat. Muat ulang halaman.');
+        var sessionUser = await withTimeout(
+          window.mglFirebase.loginUser(email, pass, getOrCreateDeviceId()),
+          12000,
+          'Login akun'
+        );
         document.getElementById('loginPassInput').value = '';
         setAdminAuthenticated(sessionUser, true);
       } catch (err) {
-        errEl.textContent = window.mglFirebase.errorMessage(err);
+        errEl.textContent = window.mglFirebase ? window.mglFirebase.errorMessage(err) : (err.message || String(err));
         errEl.classList.remove('hidden');
       } finally {
         btn.disabled = false;
@@ -1986,8 +1997,11 @@
       errEl.classList.add('hidden');
 
       try {
-        await window.mglFirebaseReady;
-        var res = await window.mglFirebase.activateLicenseByEmail(email, code, getOrCreateDeviceId());
+        var res = await withTimeout(
+          window.mglFirebase.activateLicenseByEmail(email, code, getOrCreateDeviceId()),
+          12000,
+          'Aktivasi lisensi'
+        );
         showNotice(res.message, 'Aktivasi Berhasil');
         document.getElementById('actLicenseInput').value = '';
         if (res.sessionUser) {
@@ -2001,7 +2015,7 @@
         errEl.classList.remove('hidden');
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Aktivasi Lisensi & Masuk';
+        btn.textContent = 'Aktivasi Lisensi';
       }
     }
 
@@ -2013,7 +2027,11 @@
       }
 
       try {
-        var res = await window.mglFirebase.activateLicenseByEmail(currentAdminEmail, code, getOrCreateDeviceId());
+        var res = await withTimeout(
+          window.mglFirebase.activateLicenseByEmail(currentAdminEmail, code, getOrCreateDeviceId()),
+          12000,
+          'Aktivasi lisensi'
+        );
         showNotice(res.message, 'Lisensi Diperbarui');
         document.getElementById('redeemInsideCodeInput').value = '';
         if (res.sessionUser) {
@@ -3921,7 +3939,7 @@
     }
   </script>
 
-  <!-- FIREBASE MODULE (FULL FIRESTORE STAGE 4) -->
+  <!-- FIREBASE MODULE (CLEAN SLATE - DATABASE DARI NOL) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
     import {
@@ -3930,7 +3948,6 @@
       signInWithEmailAndPassword,
       updatePassword,
       signOut,
-      deleteUser,
       onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
     import {
@@ -3944,7 +3961,6 @@
       deleteDoc,
       query,
       where,
-      runTransaction,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
@@ -3992,60 +4008,6 @@
       };
     }
 
-    function validateDeviceAccess(profile, deviceId) {
-      const role = String(profile.role || "").toUpperCase();
-      if (role === "SUPERADMIN") return { allowed: true, updatedFields: null };
-
-      if (String(profile.status || "").toUpperCase() !== "ACTIVE") {
-        throw new Error("Akun Anda sedang dinonaktifkan / ditangguhkan oleh Admin.");
-      }
-
-      const isLife = Boolean(profile.isLifetime) || String(profile.planName || "").toLowerCase().includes("lifetime");
-      if (!isLife && calcRemainingDays(profile.expiresAt) <= 0) {
-        throw new Error("Masa aktif paket Anda telah berakhir. Silakan masukkan Kode Lisensi pada tab Input Lisensi.");
-      }
-
-      const isTrial = String(profile.planName || "").toLowerCase().includes("trial");
-      const maxDevices = isTrial ? 1 : (profile.maxDevices || 2);
-      let devices = Array.isArray(profile.devices) ? [...profile.devices] : [];
-
-      if (devices.includes(deviceId)) {
-        return { allowed: true, updatedFields: null };
-      }
-
-      if (devices.length < maxDevices) {
-        devices.push(deviceId);
-        return { allowed: true, updatedFields: { devices } };
-      }
-
-      if (isTrial) {
-        throw new Error("Akun Trial 7 Hari terkunci pada 1 perangkat pertama yang didaftarkan.");
-      }
-
-      const now = Date.now();
-      const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
-      let switchLogs = Array.isArray(profile.switchLogs)
-        ? profile.switchLogs.filter(ts => (now - Number(ts)) < sevenDaysMs)
-        : [];
-
-      if (switchLogs.length >= 3) {
-        throw new Error("Batas rotasi pindah perangkat (3x dalam 7 hari) telah tercapai. Hubungi Admin jika perlu reset perangkat.");
-      }
-
-      devices.shift();
-      devices.push(deviceId);
-      switchLogs.push(now);
-
-      return {
-        allowed: true,
-        updatedFields: {
-          devices,
-          switchLogs,
-          switchesUsed7d: switchLogs.length
-        }
-      };
-    }
-
     function getPlanTitleFromDays(days) {
       if (days >= 36500) return "Paket Lifetime";
       if (days === 365) return "Paket 1 Tahun";
@@ -4057,191 +4019,208 @@
 
     window.mglFirebase = {
       async registerUser({ name, email, whatsapp, password, licenseCode, deviceId }) {
-        // Cek apakah perangkat sudah pernah memakai Trial jika daftar tanpa lisensi
-        if (!licenseCode) {
-          const trialSnap = await getDoc(doc(db, "trial_devices", deviceId));
-          if (trialSnap.exists()) {
-            throw new Error("Perangkat ini sudah pernah menggunakan kuota Trial Gratis 7 Hari. Silakan masukkan Kode Lisensi untuk mendaftar.");
+        const credential = await createUserWithEmailAndPassword(auth, email, password);
+        const uid = credential.user.uid;
+
+        let planName = "Trial Gratis 7 Hari";
+        let durationDays = 7;
+        let isLifetime = false;
+        let maxDevices = 1;
+
+        if (licenseCode) {
+          const licRef = doc(db, "licenses", licenseCode);
+          const licSnap = await getDoc(licRef);
+          if (!licSnap.exists()) {
+            throw new Error("Akun dibuat, namun Kode Lisensi tidak ditemukan. Gunakan tombol Masuk lalu input kode yang valid.");
           }
+          const licData = licSnap.data();
+          if (licData.status !== "UNUSED") {
+            throw new Error("Kode Lisensi ini sudah pernah digunakan.");
+          }
+          durationDays = Number(licData.durationDays || 30);
+          isLifetime = durationDays >= 36500;
+          planName = licData.planLabel || getPlanTitleFromDays(durationDays);
+          maxDevices = 2;
+
+          await updateDoc(licRef, {
+            status: "USED",
+            usedByEmail: email,
+            usedByUid: uid,
+            usedAt: new Date().toISOString()
+          });
         }
 
-        let credential = null;
-        try {
-          credential = await createUserWithEmailAndPassword(auth, email, password);
-          const uid = credential.user.uid;
+        const expiresAt = isLifetime
+          ? "2099-12-31T23:59:59.000Z"
+          : new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000).toISOString();
 
-          let planName = "Trial Gratis 7 Hari";
-          let durationDays = 7;
-          let isLifetime = false;
-          let maxDevices = 1;
+        const profile = {
+          uid,
+          email,
+          name,
+          whatsapp,
+          role: "MEMBER",
+          status: "ACTIVE",
+          planName,
+          expiresAt,
+          isLifetime,
+          maxDevices,
+          devices: [deviceId],
+          switchLogs: [],
+          switchesUsed7d: 0,
+          maxSwitches7d: 3,
+          createdAt: serverTimestamp()
+        };
 
-          if (licenseCode) {
-            await runTransaction(db, async (tx) => {
-              const licRef = doc(db, "licenses", licenseCode);
-              const licSnap = await tx.get(licRef);
-              if (!licSnap.exists()) {
-                throw new Error("Kode Lisensi tidak ditemukan. Periksa kembali penulisan kode.");
-              }
-              const licData = licSnap.data();
-              if (licData.status !== "UNUSED") {
-                throw new Error("Kode Lisensi ini sudah pernah digunakan.");
-              }
+        await setDoc(doc(db, "users", uid), profile);
+        const sessionUser = buildSessionUser(uid, email, profile);
+        return {
+          message: licenseCode
+            ? `Akun aktif dengan ${planName} (2 Perangkat)!`
+            : "Akun berhasil dibuat! Trial Gratis 7 Hari telah aktif.",
+          sessionUser
+        };
+      },
 
-              durationDays = Number(licData.durationDays || 30);
-              isLifetime = durationDays >= 36500;
-              planName = licData.planLabel || getPlanTitleFromDays(durationDays);
-              maxDevices = 2;
+      async loginUser(email, password, deviceId) {
+        const credential = await signInWithEmailAndPassword(auth, email, password);
+        const uid = credential.user.uid;
+        const userRef = doc(db, "users", uid);
+        const snap = await getDoc(userRef);
 
-              tx.update(licRef, {
-                status: "USED",
-                usedByEmail: email,
-                usedByUid: uid,
-                usedAt: new Date().toISOString()
-              });
-            });
-          } else {
-            await setDoc(doc(db, "trial_devices", deviceId), {
-              email,
-              uid,
-              claimedAt: new Date().toISOString()
-            });
-          }
-
-          const expiresAt = isLifetime
-            ? "2099-12-31T23:59:59.000Z"
-            : new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000).toISOString();
-
-          const profile = {
+        if (!snap.exists()) {
+          // Otomatis buatkan dokumen profil jika akun ada di Auth tapi belum ada di Firestore
+          const fallbackProfile = {
             uid,
-            email,
-            name,
-            whatsapp,
+            email: credential.user.email || email,
+            name: (credential.user.email || email).split("@")[0],
+            whatsapp: "",
             role: "MEMBER",
             status: "ACTIVE",
-            planName,
-            expiresAt,
-            isLifetime,
-            maxDevices,
+            planName: "Trial Gratis 7 Hari",
+            expiresAt: new Date(Date.now() + 7 * 86400000).toISOString(),
+            isLifetime: false,
+            maxDevices: 1,
             devices: [deviceId],
             switchLogs: [],
             switchesUsed7d: 0,
             maxSwitches7d: 3,
             createdAt: serverTimestamp()
           };
-
-          await setDoc(doc(db, "users", uid), profile);
-          const sessionUser = buildSessionUser(uid, email, profile);
-          return {
-            message: licenseCode
-              ? `Akun aktif dengan ${planName} (2 Perangkat)!`
-              : "Akun berhasil dibuat! Trial Gratis 7 Hari telah aktif.",
-            sessionUser
-          };
-        } catch (err) {
-          if (credential && credential.user) {
-            try { await deleteUser(credential.user); } catch (_) {}
-          }
-          throw err;
+          await setDoc(userRef, fallbackProfile);
+          return buildSessionUser(uid, credential.user.email, fallbackProfile);
         }
-      },
 
-      async loginUser(email, password, deviceId) {
-        const credential = await signInWithEmailAndPassword(auth, email, password);
-        const uid = credential.user.uid;
-        try {
-          const userRef = doc(db, "users", uid);
-          const snap = await getDoc(userRef);
-          if (!snap.exists()) {
+        const profile = snap.data();
+        const role = String(profile.role || "").toUpperCase();
+
+        if (role !== "SUPERADMIN") {
+          if (String(profile.status || "").toUpperCase() !== "ACTIVE") {
             await signOut(auth);
-            throw new Error("Profil akun tidak ditemukan di Firestore.");
+            throw new Error("Akun Anda sedang dinonaktifkan oleh Admin.");
           }
-          const profile = snap.data();
-          const check = validateDeviceAccess(profile, deviceId);
-          if (check.updatedFields) {
-            await updateDoc(userRef, check.updatedFields);
-            Object.assign(profile, check.updatedFields);
+
+          const isLife = Boolean(profile.isLifetime) || String(profile.planName || "").toLowerCase().includes("lifetime");
+          if (!isLife && calcRemainingDays(profile.expiresAt) <= 0) {
+            await signOut(auth);
+            throw new Error("Masa aktif paket Anda telah berakhir. Silakan perpanjang melalui tab Input Lisensi.");
           }
-          return buildSessionUser(uid, credential.user.email, profile);
-        } catch (err) {
-          if (auth.currentUser) {
-            try { await signOut(auth); } catch (_) {}
+
+          const isTrial = String(profile.planName || "").toLowerCase().includes("trial");
+          const maxDev = isTrial ? 1 : (profile.maxDevices || 2);
+          let devices = Array.isArray(profile.devices) ? [...profile.devices] : [];
+
+          if (!devices.includes(deviceId)) {
+            if (devices.length < maxDev) {
+              devices.push(deviceId);
+              await updateDoc(userRef, { devices });
+              profile.devices = devices;
+            } else if (isTrial) {
+              await signOut(auth);
+              throw new Error("Akun Trial 7 Hari terkunci pada 1 perangkat pertama yang didaftarkan.");
+            } else {
+              const now = Date.now();
+              const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+              let switchLogs = Array.isArray(profile.switchLogs)
+                ? profile.switchLogs.filter(ts => (now - Number(ts)) < sevenDaysMs)
+                : [];
+              if (switchLogs.length >= 3) {
+                await signOut(auth);
+                throw new Error("Batas rotasi pindah perangkat (3x dalam 7 hari) telah tercapai.");
+              }
+              devices.shift();
+              devices.push(deviceId);
+              switchLogs.push(now);
+              await updateDoc(userRef, { devices, switchLogs, switchesUsed7d: switchLogs.length });
+              profile.devices = devices;
+              profile.switchesUsed7d = switchLogs.length;
+            }
           }
-          throw err;
         }
+
+        return buildSessionUser(uid, credential.user.email, profile);
       },
 
       async activateLicenseByEmail(email, code, deviceId) {
-        const q = query(collection(db, "users"), where("email", "==", email));
-        const userQuerySnap = await getDocs(q);
-        if (userQuerySnap.empty) {
-          throw new Error("Email akun studio tidak ditemukan. Silakan daftar akun terlebih dahulu.");
+        if (!auth.currentUser) {
+          throw new Error("Silakan Masuk (Login) ke akun Anda terlebih dahulu, lalu masukkan Kode Lisensi di menu Akun.");
+        }
+        const uid = auth.currentUser.uid;
+        const userRef = doc(db, "users", uid);
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) {
+          throw new Error("Profil akun tidak ditemukan.");
         }
 
-        const userDocSnap = userQuerySnap.docs[0];
-        const uid = userDocSnap.id;
-        let updatedProfile = null;
-        let planLabel = "";
+        const licRef = doc(db, "licenses", code);
+        const licSnap = await getDoc(licRef);
+        if (!licSnap.exists()) {
+          throw new Error("Kode Lisensi tidak valid.");
+        }
+        const licData = licSnap.data();
+        if (licData.status !== "UNUSED") {
+          throw new Error("Kode Lisensi sudah pernah digunakan.");
+        }
 
-        await runTransaction(db, async (tx) => {
-          const licRef = doc(db, "licenses", code);
-          const licSnap = await tx.get(licRef);
-          if (!licSnap.exists()) {
-            throw new Error("Kode Lisensi tidak valid.");
-          }
-          const licData = licSnap.data();
-          if (licData.status !== "UNUSED") {
-            throw new Error("Kode Lisensi sudah terpakai.");
-          }
+        const uData = userSnap.data();
+        const days = Number(licData.durationDays || 30);
+        const isLife = days >= 36500;
+        const planLabel = licData.planLabel || getPlanTitleFromDays(days);
 
-          const freshUserSnap = await tx.get(doc(db, "users", uid));
-          const uData = freshUserSnap.data();
-          const days = Number(licData.durationDays || 30);
-          const isLife = days >= 36500;
-          planLabel = licData.planLabel || getPlanTitleFromDays(days);
+        const baseTime = (!isLife && uData.expiresAt && new Date(uData.expiresAt).getTime() > Date.now())
+          ? new Date(uData.expiresAt).getTime()
+          : Date.now();
 
-          const baseTime = (!isLife && uData.expiresAt && new Date(uData.expiresAt).getTime() > Date.now())
-            ? new Date(uData.expiresAt).getTime()
-            : Date.now();
+        const newExpiresAt = isLife
+          ? "2099-12-31T23:59:59.000Z"
+          : new Date(baseTime + days * 24 * 60 * 60 * 1000).toISOString();
 
-          const newExpiresAt = isLife
-            ? "2099-12-31T23:59:59.000Z"
-            : new Date(baseTime + days * 24 * 60 * 60 * 1000).toISOString();
+        let devices = Array.isArray(uData.devices) ? [...uData.devices] : [];
+        if (!devices.includes(deviceId) && devices.length < 2) {
+          devices.push(deviceId);
+        }
 
-          let devices = Array.isArray(uData.devices) ? [...uData.devices] : [];
-          if (!devices.includes(deviceId) && devices.length < 2) {
-            devices.push(deviceId);
-          }
-
-          updatedProfile = {
-            ...uData,
-            status: "ACTIVE",
-            planName: planLabel,
-            expiresAt: newExpiresAt,
-            isLifetime: isLife || Boolean(uData.isLifetime),
-            maxDevices: 2,
-            devices
-          };
-
-          tx.update(licRef, {
-            status: "USED",
-            usedByEmail: email,
-            usedByUid: uid,
-            usedAt: new Date().toISOString()
-          });
-          tx.update(doc(db, "users", uid), {
-            status: updatedProfile.status,
-            planName: updatedProfile.planName,
-            expiresAt: updatedProfile.expiresAt,
-            isLifetime: updatedProfile.isLifetime,
-            maxDevices: 2,
-            devices: updatedProfile.devices
-          });
+        await updateDoc(licRef, {
+          status: "USED",
+          usedByEmail: uData.email || email,
+          usedByUid: uid,
+          usedAt: new Date().toISOString()
         });
 
-        const isCurrentUser = auth.currentUser && auth.currentUser.uid === uid;
+        const updatedFields = {
+          status: "ACTIVE",
+          planName: planLabel,
+          expiresAt: newExpiresAt,
+          isLifetime: isLife || Boolean(uData.isLifetime),
+          maxDevices: 2,
+          devices
+        };
+        await updateDoc(userRef, updatedFields);
+
+        const merged = { ...uData, ...updatedFields };
         return {
-          message: `Lisensi ${planLabel} berhasil diaktifkan untuk akun ${email}!`,
-          sessionUser: isCurrentUser ? buildSessionUser(uid, email, updatedProfile) : null
+          message: `Lisensi ${planLabel} berhasil diaktifkan!`,
+          sessionUser: buildSessionUser(uid, uData.email || email, merged)
         };
       },
 
@@ -4257,7 +4236,6 @@
         if (auth.currentUser) await signOut(auth);
       },
 
-      // --- PRICING ---
       async getPublicPricing() {
         const snap = await getDoc(doc(db, "settings", "pricing"));
         if (snap.exists() && Array.isArray(snap.data().plans)) {
@@ -4273,7 +4251,6 @@
         });
       },
 
-      // --- SUPER ADMIN ---
       async getSuperAdminDashboardData() {
         const [usersSnap, licSnap, pricingPlans] = await Promise.all([
           getDocs(collection(db, "users")),
@@ -4382,7 +4359,6 @@
         return `${count} kode lisensi berhasil dihapus.`;
       },
 
-      // --- ALBUMS & CLIENT SELECTIONS ---
       async createAlbumConfig(payload) {
         const rand = Math.random().toString(36).substring(2, 8).toUpperCase();
         const albumId = `ALB-${rand}`;
@@ -4488,15 +4464,16 @@
       errorMessage(error) {
         const code = error && error.code ? error.code : "";
         const messages = {
-          "auth/email-already-in-use": "Email sudah terdaftar. Silakan masuk menggunakan akun tersebut.",
+          "auth/email-already-in-use": "Email sudah terdaftar. Silakan klik tab Masuk.",
           "auth/invalid-email": "Format email tidak valid.",
           "auth/weak-password": "Kata sandi terlalu lemah. Gunakan minimal 6 karakter.",
           "auth/invalid-credential": "Email atau kata sandi salah.",
-          "auth/user-not-found": "Akun tidak ditemukan.",
+          "auth/user-not-found": "Akun tidak ditemukan. Silakan daftar terlebih dahulu.",
           "auth/wrong-password": "Kata sandi salah.",
+          "auth/operation-not-allowed": "Login Email/Password belum diaktifkan di Firebase Authentication.",
           "auth/requires-recent-login": "Demi keamanan, silakan keluar dan masuk ulang sebelum mengganti kata sandi.",
           "auth/too-many-requests": "Terlalu banyak percobaan. Coba lagi beberapa saat.",
-          "permission-denied": "Akses Firestore ditolak. Periksa Firestore Security Rules."
+          "permission-denied": "Akses Firestore ditolak. Pastikan Rules di Firebase Console sudah di-Publish."
         };
         return messages[code] || (error && error.message ? error.message : "Terjadi kesalahan sistem.");
       }
@@ -4508,19 +4485,13 @@
       if (!user) return;
       try {
         const snap = await getDoc(doc(db, "users", user.uid));
-        if (!snap.exists()) {
-          await signOut(auth);
-          return;
-        }
+        if (!snap.exists()) return;
         const profile = snap.data();
-        const deviceId = typeof window.getOrCreateDeviceId === "function" ? window.getOrCreateDeviceId() : "UNKNOWN";
-        validateDeviceAccess(profile, deviceId);
         if (typeof window.setAdminAuthenticated === "function") {
           window.setAdminAuthenticated(buildSessionUser(user.uid, user.email, profile), true);
         }
       } catch (err) {
         console.warn("Auto-session check:", err);
-        try { await signOut(auth); } catch (_) {}
       }
     });
   </script>
