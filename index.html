@@ -89,12 +89,10 @@
       </nav>
 
       <div class="flex items-center gap-1.5 sm:gap-2">
-        <!-- PILIHAN BAHASA RINGKAS (ID / EN) -->
         <button type="button" id="btnLangToggle" onclick="toggleAppLanguage()" title="Ganti Bahasa / Switch Language" class="px-2.5 py-1.5 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#4A4337] dark:text-[#D4AF37] border border-[#DFD8C8] dark:border-zinc-800 text-[11px] font-extrabold tracking-wider transition cursor-pointer">
           ID
         </button>
 
-        <!-- THEME TOGGLE -->
         <button type="button" onclick="toggleColorTheme()" title="Siang / Malam" class="p-2 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-[#4A4337] dark:text-[#D4AF37] border border-[#DFD8C8] dark:border-zinc-800 transition cursor-pointer">
           <svg class="hidden dark:block h-4 w-4 text-[#D4AF37]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="5"></circle>
@@ -450,6 +448,11 @@
             <input type="text" id="driveLinkInput" placeholder="https://drive.google.com/drive/folders/1A2B3C..." class="w-full px-4 py-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37] text-sm">
           </div>
 
+          <div class="md:col-span-2">
+            <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1.5">Judul Album / Nama Klien (Opsional)</label>
+            <input type="text" id="albumCustomTitleInput" placeholder="Contoh: Prewedding Dimas & Nabila" class="w-full px-4 py-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37] text-sm">
+          </div>
+
           <div>
             <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1.5">Kuota Maksimal Pilihan Foto (Opsional)</label>
             <input type="number" id="albumMaxLimitInput" min="0" placeholder="Contoh: 20 (Kosongkan / 0 = Tanpa Batas)" class="w-full px-4 py-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-[#1C1B18] dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#B5945B] dark:focus:border-[#D4AF37] text-sm">
@@ -601,11 +604,11 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-2xl p-6 shadow-xs">
             <h3 class="text-base font-bold text-[#1C1B18] dark:text-white mb-1">Profil Studio & Kontak WhatsApp</h3>
-            <p class="text-xs text-[#6E6556] dark:text-zinc-400 mb-4">Perbarui email login, kata sandi, serta nomor WhatsApp penerima rekap pilihan klien.</p>
+            <p class="text-xs text-[#6E6556] dark:text-zinc-400 mb-4">Perbarui nomor WhatsApp penerima rekap pilihan klien atau kata sandi akun Anda.</p>
             <div class="space-y-3">
               <div>
-                <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Email Studio</label>
-                <input type="email" id="settingAdminEmail" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white">
+                <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Email Studio (ID Login)</label>
+                <input type="email" id="settingAdminEmail" readonly class="w-full px-4 py-2.5 rounded-xl bg-[#EFECE6] dark:bg-zinc-900 border border-[#DFD8C8] dark:border-zinc-800 text-sm text-[#6E6556] dark:text-zinc-400 cursor-not-allowed">
               </div>
               <div>
                 <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Nomor WhatsApp Penerima Rekap *</label>
@@ -614,7 +617,7 @@
               <div>
                 <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Kata Sandi Baru (Kosongkan jika tetap)</label>
                 <div class="relative">
-                  <input type="password" id="settingAdminPass" autocomplete="new-password" placeholder="Masukkan sandi baru" class="w-full px-4 py-2.5 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white">
+                  <input type="password" id="settingAdminPass" autocomplete="new-password" placeholder="Minimal 6 karakter" class="w-full px-4 py-2.5 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white">
                   <button type="button" onclick="togglePasswordVisibility('settingAdminPass', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                   </button>
@@ -754,7 +757,7 @@
         </div>
       </div>
 
-      <!-- FIXED BOTTOM TAB NAVIGATION BAR (TETAP SAAT SCROLL) -->
+      <!-- FIXED BOTTOM TAB NAVIGATION BAR -->
       <nav id="studioBottomNav" class="fixed bottom-0 inset-x-0 z-30 bg-white/95 dark:bg-[#131316]/95 backdrop-blur-lg border-t border-[#E5DFD3] dark:border-zinc-800 shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
         <div class="max-w-lg mx-auto px-2 h-16 flex items-center justify-around">
           <button type="button" onclick="switchAdminTab('create')" id="tabBtnCreate" class="flex-1 flex flex-col items-center justify-center gap-1 h-full relative text-[#1C1B18] dark:text-[#D4AF37] transition cursor-pointer">
@@ -903,8 +906,8 @@
 
       <div id="authRegisterForm" class="hidden space-y-3">
         <div class="p-3 rounded-xl bg-[#B5945B]/10 border border-[#B5945B]/25 text-[11px] text-[#6B5E4A] dark:text-[#E3C14B] leading-relaxed">
-- <strong>Tanpa Kode Lisensi:</strong> Trial Gratis 7 Hari (khusus 1 perangkat).<br>
-- <strong>Dengan Kode Lisensi:</strong> Aktif untuk <strong>2 perangkat</strong> (rotasi pindah perangkat 3x / 7 hari).
+          • <strong>Tanpa Kode Lisensi:</strong> Trial Gratis 7 Hari otomatis aktif (khusus 1 perangkat).<br>
+          • <strong>Dengan Kode Lisensi:</strong> Langsung aktif untuk <strong>2 perangkat</strong> (rotasi pindah perangkat 3x / 7 hari).
         </div>
         <div>
           <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Nama Studio / Fotografer *</label>
@@ -1092,7 +1095,6 @@
       </button>
     </div>
 
-    <!-- BAR CATATAN REVISI PER FOTO -->
     <div id="lightboxNoteBar" class="px-4 py-2.5 bg-zinc-950/95 border-t border-zinc-800 flex items-center justify-center">
       <div class="max-w-xl w-full flex items-center gap-2">
         <input type="text" id="lightboxPhotoNoteInput" oninput="saveCurrentPhotoNote(this.value)" placeholder="Catatan revisi untuk foto ini (opsional, mis: crop lebih dekat / retouch)..." class="flex-1 px-3.5 py-2 rounded-full bg-zinc-900 border border-zinc-700 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-[#D4AF37]">
@@ -1398,7 +1400,7 @@
     }
 
     // ==========================================
-    // KONEKSI DATABASE SPREADSHEET (GOOGLE APPS SCRIPT API) + FALLBACK MOCK
+    // DATA DEMO CADANGAN & API DRIVE (VERCEL / GAS)
     // ==========================================
     var MOCK_SAMPLE_PHOTOS = [
       { id: 'DEMO_IMG_01', name: 'MGL_PREWED_0101.jpg', thumb: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80', full: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=90' },
@@ -1409,107 +1411,65 @@
       { id: 'DEMO_IMG_06', name: 'MGL_PREWED_0106.jpg', thumb: 'https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&w=700&q=80', full: 'https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&w=1800&q=90' }
     ];
 
-    function initMockDatabase() {
-      var raw = localStorage.getItem('mgl_pro_mock_db_v1');
-      if (raw) {
-        try { return JSON.parse(raw); } catch (e) {}
+    var DEFAULT_PRICING_PLANS = [
+      { planKey: '7', planTitle: '7 Hari', subtitle: '', originalPrice: 'Rp 25.000', currentPrice: 'Rp 15.000', badge: 'HEMAT' },
+      { planKey: '14', planTitle: '14 Hari', subtitle: '', originalPrice: 'Rp 45.000', currentPrice: 'Rp 25.000', badge: 'POPULER' },
+      { planKey: '30', planTitle: '1 Bulan', subtitle: '', originalPrice: 'Rp 75.000', currentPrice: 'Rp 45.000', badge: 'TERLARIS' },
+      { planKey: '90', planTitle: '3 Bulan', subtitle: '', originalPrice: 'Rp 200.000', currentPrice: 'Rp 115.000', badge: 'HEMAT 40%' },
+      { planKey: '365', planTitle: '1 Tahun', subtitle: '', originalPrice: 'Rp 600.000', currentPrice: 'Rp 299.000', badge: 'SUPER HEMAT' },
+      { planKey: '36500', planTitle: 'Lifetime', subtitle: '', originalPrice: 'Rp 1.500.000', currentPrice: 'Rp 699.000', badge: 'BEST VALUE' }
+    ];
+
+    // Endpoint Drive Sementara (Stage 5 akan dipindah ke Vercel /api/drive)
+    var GAS_DRIVE_PROXY_URL = 'https://script.google.com/macros/s/AKfycbxIhyP0oYBUAviIT3Q7dmuOgO63-UsI_qPW4X-o3sCd55i_En1NEwfCdVEyjAfWSZFb/exec';
+
+    function extractDriveFolderId(input) {
+      var str = String(input || '').trim();
+      var match = str.match(/folders\/([a-zA-Z0-9_-]+)/) || str.match(/id=([a-zA-Z0-9_-]+)/);
+      if (match) return match[1];
+      if (/^[a-zA-Z0-9_-]{15,}$/.test(str)) return str;
+      return '';
+    }
+
+    async function fetchDriveFolderPhotos(folderInput) {
+      var folderId = extractDriveFolderId(folderInput);
+      if (!folderId) {
+        return { success: false, message: 'Format tautan atau ID folder Google Drive tidak valid.' };
       }
-      var initialDb = {
-        users: [
-          {
-            email: 'admin@mageniclens.com',
-            password: 'admin123',
-            name: 'Super Admin Mageniclens',
-            whatsapp: '6287881273759',
-            role: 'SUPERADMIN',
-            planName: 'LIFETIME_OWNER',
-            expiresAt: '2099-12-31T23:59:59.000Z',
-            deviceId: 'ANY_DEVICE',
-            status: 'ACTIVE',
-            createdAt: new Date().toISOString(),
-            switchHistory: []
-          }
-        ],
-        licenses: [
-          { code: 'MGL-30D-DEMO-2026', durationDays: 30, planLabel: 'Paket 1 Bulan', status: 'UNUSED', usedByEmail: '', usedAt: '', createdAt: new Date().toISOString() }
-        ],
-        trialDevices: [],
-        pricing: [
-          { planKey: '7', planTitle: '7 Hari', subtitle: '', originalPrice: 'Rp 25.000', currentPrice: 'Rp 15.000', badge: 'HEMAT' },
-          { planKey: '14', planTitle: '14 Hari', subtitle: '', originalPrice: 'Rp 45.000', currentPrice: 'Rp 25.000', badge: 'POPULER' },
-          { planKey: '30', planTitle: '1 Bulan', subtitle: '', originalPrice: 'Rp 75.000', currentPrice: 'Rp 45.000', badge: 'TERLARIS' },
-          { planKey: '90', planTitle: '3 Bulan', subtitle: '', originalPrice: 'Rp 200.000', currentPrice: 'Rp 115.000', badge: 'HEMAT 40%' },
-          { planKey: '365', planTitle: '1 Tahun', subtitle: '', originalPrice: 'Rp 600.000', currentPrice: 'Rp 299.000', badge: 'SUPER HEMAT' },
-          { planKey: '36500', planTitle: 'Lifetime', subtitle: '', originalPrice: 'Rp 1.500.000', currentPrice: 'Rp 699.000', badge: 'BEST VALUE' }
-        ],
-        albums: [],
-        selections: []
-      };
-      localStorage.setItem('mgl_pro_mock_db_v1', JSON.stringify(initialDb));
-      return initialDb;
-    }
 
-    function saveMockDatabase(db) {
-      try { localStorage.setItem('mgl_pro_mock_db_v1', JSON.stringify(db)); } catch (e) {}
-    }
-
-    var GAS_API_URL = 'https://script.google.com/macros/s/AKfycbxIhyP0oYBUAviIT3Q7dmuOgO63-UsI_qPW4X-o3sCd55i_En1NEwfCdVEyjAfWSZFb/exec';
-    var IS_LIVE_SPREADSHEET = GAS_API_URL.indexOf('https://script.google.com/') === 0;
-
-    if (typeof window.google === 'undefined' || !window.google.script || !window.google.script.run) {
-      window.google = {
-        script: {
-          url: {
-            getLocation: function(cb) {
-              var search = new URLSearchParams(window.location.search);
-              cb({
-                parameter: {
-                  album: search.get('album') || '',
-                  folder: search.get('folder') || ''
-                }
-              });
-            }
-          },
-          run: (function() {
-            function createRunner(successCb, failureCb) {
-              var handlers = {
-                withSuccessHandler: function(fn) { return createRunner(fn, failureCb); },
-                withFailureHandler: function(fn) { return createRunner(successCb, fn); }
-              };
-
-              var methods = [
-                'getPublicPricing', 'saveAdminPricing', 'registerNewUser', 'loginAdmin',
-                'activateLicenseForUser', 'updateAdminCredentials', 'getSuperAdminDashboardData',
-                'generateLicenseCodesBatch', 'adminManageMember', 'deleteLicenseCode',
-                'deleteAllLicenseCodes', 'createAlbumConfig', 'getAlbumConfig',
-                'verifyAlbumAndLoadPhotos', 'getDrivePhotos', 'getPhotoFileData',
-                'submitClientSelection', 'updateSelectionWorkStatus', 'getSelectionHistory',
-                'deleteAlbumHistory', 'deleteAllAlbumsHistory', 'deleteSelectionHistory',
-                'deleteAllSelectionsHistory'
-              ];
-
-              methods.forEach(function(methodName) {
-                handlers[methodName] = function() {
-                  var args = Array.prototype.slice.call(arguments);
-                  if (IS_LIVE_SPREADSHEET) {
-                    fetch(GAS_API_URL, {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                      body: JSON.stringify({ action: methodName, args: args })
-                    })
-                    .then(function(res) { return res.json(); })
-                    .then(function(data) { if (successCb) successCb(data); })
-                    .catch(function(err) { if (failureCb) failureCb(err); });
-                  }
-                };
-              });
-
-              return handlers;
-            }
-            return createRunner(null, null);
-          })()
+      try {
+        var res = await fetch(GAS_DRIVE_PROXY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'getDrivePhotos', args: [folderId] })
+        });
+        var data = await res.json();
+        if (data && data.success) {
+          return data;
         }
-      };
+        return {
+          success: false,
+          message: (data && data.message) || 'Folder tidak dapat diakses. Pastikan izin folder Drive diatur ke "Siapa saja yang memiliki link".'
+        };
+      } catch (err) {
+        return {
+          success: false,
+          message: 'Gagal terhubung ke layanan pembaca Google Drive: ' + err.message
+        };
+      }
+    }
+
+    async function fetchDrivePhotoBase64(fileId) {
+      try {
+        var res = await fetch(GAS_DRIVE_PROXY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'getPhotoFileData', args: [fileId] })
+        });
+        return await res.json();
+      } catch (err) {
+        return { success: false, message: err.message };
+      }
     }
 
     // ==========================================
@@ -1524,6 +1484,7 @@
     var currentFolderName = '';
     var currentFolderId = '';
     var currentAlbumId = '';
+    var currentAlbumOwnerUid = '';
     var currentMaxLimit = 0;
     var currentAllowDownload = true;
     var currentEnableWatermark = false;
@@ -1534,6 +1495,7 @@
     var currentLightboxIndex = -1;
 
     var isAdminLoggedIn = false;
+    var currentAdminUid = '';
     var currentAdminEmail = '';
     var currentAdminWhatsapp = DEFAULT_STUDIO_WA;
     var currentAdminRole = 'MEMBER';
@@ -1605,6 +1567,12 @@
       return fp;
     }
 
+    function normalizeWhatsappNumber(wa) {
+      var digits = String(wa || '').replace(/\D/g, '');
+      if (digits.startsWith('0')) digits = '62' + digits.slice(1);
+      return digits;
+    }
+
     function setLandingNavVisible(visible) {
       var nav = document.getElementById('landingNavLinks');
       if (!nav) return;
@@ -1652,7 +1620,7 @@
       loadVendorHistory();
     }
 
-    function bootApplication() {
+    async function bootApplication() {
       var savedLang = safeGetItem('mgl_ui_lang') || 'id';
       applyLanguage(savedLang);
 
@@ -1670,37 +1638,31 @@
       var clientPass = document.getElementById('clientAlbumPassInput');
       if (clientPass) clientPass.addEventListener('keydown', function(e) { if (e.key === 'Enter') unlockClientAlbum(); });
 
-      loadPublicPricingPlans();
-
-      // Sesi login tidak lagi dipercaya dari localStorage.
-      // Firebase Authentication menjadi sumber status login.
-      var savedUserObj = null;
-
-      if (savedUserObj) {
-        setAdminAuthenticated(savedUserObj, true);
+      try {
+        if (window.mglFirebaseReady) await window.mglFirebaseReady;
+      } catch (e) {
+        console.error('Firebase init warning:', e);
       }
 
-      if (typeof google !== 'undefined' && google.script && google.script.url) {
-        google.script.url.getLocation(function(loc) {
-          var params = loc && loc.parameter ? loc.parameter : {};
-          var albumParam = params.album || '';
-          var folderParam = params.folder || '';
+      loadPublicPricingPlans();
 
-          if (albumParam) {
-            document.getElementById('welcomeLandingSection').classList.add('hidden');
-            setLandingNavVisible(false);
-            document.getElementById('adminDashboard').classList.add('hidden');
-            initClientAlbum(albumParam.trim());
-          } else if (folderParam) {
-            document.getElementById('welcomeLandingSection').classList.add('hidden');
-            setLandingNavVisible(false);
-            document.getElementById('adminDashboard').classList.add('hidden');
-            loadGalleryFromDrive(folderParam.trim());
-          } else {
-            document.getElementById('welcomeLandingSection').classList.remove('hidden');
-            setLandingNavVisible(true);
-          }
-        });
+      var urlParams = new URLSearchParams(window.location.search);
+      var albumParam = (urlParams.get('album') || '').trim();
+      var folderParam = (urlParams.get('folder') || '').trim();
+
+      if (albumParam) {
+        document.getElementById('welcomeLandingSection').classList.add('hidden');
+        setLandingNavVisible(false);
+        document.getElementById('adminDashboard').classList.add('hidden');
+        initClientAlbum(albumParam);
+      } else if (folderParam) {
+        document.getElementById('welcomeLandingSection').classList.add('hidden');
+        setLandingNavVisible(false);
+        document.getElementById('adminDashboard').classList.add('hidden');
+        loadGalleryFromDrive(folderParam);
+      } else {
+        document.getElementById('welcomeLandingSection').classList.remove('hidden');
+        setLandingNavVisible(true);
       }
 
       initLightboxInteractions();
@@ -1709,17 +1671,25 @@
     window.addEventListener('load', bootApplication);
 
     // ==========================================
-    // RENDER HARGA CORET & HARGA TERKINI
+    // RENDER HARGA CORET & HARGA TERKINI (FIRESTORE)
     // ==========================================
-    function loadPublicPricingPlans() {
-      if (typeof google === 'undefined' || !google.script || !google.script.run) return;
-      google.script.run.withSuccessHandler(function(res) {
-        if (res && res.success && Array.isArray(res.plans)) {
-          cachedPricingPlans = res.plans;
-          renderPublicPricingCards(res.plans);
-          renderMemberPricingCards(res.plans);
+    async function loadPublicPricingPlans() {
+      try {
+        if (!window.mglFirebase) {
+          cachedPricingPlans = DEFAULT_PRICING_PLANS;
+          renderPublicPricingCards(DEFAULT_PRICING_PLANS);
+          renderMemberPricingCards(DEFAULT_PRICING_PLANS);
+          return;
         }
-      }).getPublicPricing();
+        var plans = await window.mglFirebase.getPublicPricing();
+        cachedPricingPlans = plans && plans.length ? plans : DEFAULT_PRICING_PLANS;
+        renderPublicPricingCards(cachedPricingPlans);
+        renderMemberPricingCards(cachedPricingPlans);
+      } catch (e) {
+        cachedPricingPlans = DEFAULT_PRICING_PLANS;
+        renderPublicPricingCards(DEFAULT_PRICING_PLANS);
+        renderMemberPricingCards(DEFAULT_PRICING_PLANS);
+      }
     }
 
     function renderPublicPricingCards(plans) {
@@ -1865,7 +1835,7 @@
     }
 
     // ==========================================
-    // OTENTIKASI, TRIAL 1 PERANGKAT & LISENSI 2 PERANGKAT
+    // OTENTIKASI, TRIAL 1 PERANGKAT & LISENSI 2 PERANGKAT (FIREBASE)
     // ==========================================
     function openAdminGate(defaultTab) {
       if (isAdminLoggedIn) {
@@ -1914,12 +1884,13 @@
       });
     }
 
-    function handleRegisterUser() {
+    async function handleRegisterUser() {
       var name = document.getElementById('regNameInput').value.trim();
       var email = document.getElementById('regEmailInput').value.trim().toLowerCase();
-      var whatsapp = document.getElementById('regWaInput').value.trim();
+      var whatsapp = normalizeWhatsappNumber(document.getElementById('regWaInput').value.trim());
       var pass = document.getElementById('regPassInput').value;
       var confirmPass = document.getElementById('regConfirmPassInput').value;
+      var licenseCode = document.getElementById('regLicenseInput').value.trim().toUpperCase();
       var errEl = document.getElementById('registerErrorMsg');
       var btn = document.getElementById('btnRegisterUser');
 
@@ -1929,12 +1900,12 @@
         return;
       }
       if (pass.length < 6) {
-        errEl.textContent = 'Kata sandi Firebase minimal 6 karakter.';
+        errEl.textContent = 'Kata sandi minimal 6 karakter.';
         errEl.classList.remove('hidden');
         return;
       }
       if (pass !== confirmPass) {
-        errEl.textContent = 'Konfirmasi password tidak cocok!';
+        errEl.textContent = 'Konfirmasi kata sandi tidak cocok!';
         errEl.classList.remove('hidden');
         return;
       }
@@ -1943,38 +1914,32 @@
       btn.disabled = true;
       btn.textContent = 'Memproses Pendaftaran...';
 
-      (async function() {
-        try {
-          if (!window.mglFirebaseReady) throw new Error('Firebase belum siap. Muat ulang halaman dan coba lagi.');
-          await window.mglFirebaseReady;
-          await window.mglFirebase.registerUser({
-            name: name,
-            email: email,
-            whatsapp: whatsapp,
-            password: pass
-          });
+      try {
+        await window.mglFirebaseReady;
+        var res = await window.mglFirebase.registerUser({
+          name: name,
+          email: email,
+          whatsapp: whatsapp,
+          password: pass,
+          licenseCode: licenseCode,
+          deviceId: getOrCreateDeviceId()
+        });
 
-          document.getElementById('regPassInput').value = '';
-          document.getElementById('regConfirmPassInput').value = '';
-          document.getElementById('regLicenseInput').value = '';
-          showNotice(
-            'Akun berhasil dibuat. Status akun saat ini MENUNGGU AKTIVASI ADMIN. Fitur paket, trial, dan kode lisensi akan dihubungkan pada tahap migrasi berikutnya.',
-            'Pendaftaran Berhasil'
-          );
-          switchAuthTab('login');
-          document.getElementById('loginEmailInput').value = email;
-        } catch (err) {
-          var message = err && err.message ? err.message : String(err);
-          errEl.textContent = message;
-          errEl.classList.remove('hidden');
-        } finally {
-          btn.disabled = false;
-          btn.textContent = 'Daftarkan Akun Studio';
-        }
-      })();
+        document.getElementById('regPassInput').value = '';
+        document.getElementById('regConfirmPassInput').value = '';
+        document.getElementById('regLicenseInput').value = '';
+        showNotice(res.message, 'Pendaftaran Berhasil');
+        setAdminAuthenticated(res.sessionUser, true);
+      } catch (err) {
+        errEl.textContent = window.mglFirebase.errorMessage(err);
+        errEl.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Daftarkan Akun Studio';
+      }
     }
 
-    function handleEmailLogin() {
+    async function handleEmailLogin() {
       var email = document.getElementById('loginEmailInput').value.trim().toLowerCase();
       var pass = document.getElementById('loginPassInput').value;
       var errEl = document.getElementById('loginErrorMsg');
@@ -1990,55 +1955,23 @@
       btn.textContent = 'Memverifikasi Akun...';
       errEl.classList.add('hidden');
 
-      (async function() {
-        try {
-          if (!window.mglFirebaseReady) throw new Error('Firebase belum siap. Muat ulang halaman dan coba lagi.');
-          await window.mglFirebaseReady;
-          var result = await window.mglFirebase.loginUser(email, pass);
-          var profile = result.profile || {};
-
-          if (String(profile.status || '').toUpperCase() !== 'ACTIVE') {
-            await window.mglFirebase.logoutUser();
-            throw new Error('Akun ditemukan, tetapi belum aktif. Silakan tunggu admin mengaktifkan akun Anda.');
-          }
-
-          if (!profile.planName || profile.planName === 'PENDING') {
-            await window.mglFirebase.logoutUser();
-            throw new Error('Paket akun belum ditetapkan oleh admin. Akun belum dapat masuk ke Ruang Studio.');
-          }
-
-          var userForDashboard = {
-            email: result.user.email,
-            name: profile.name || result.user.email,
-            whatsapp: profile.whatsapp || '',
-            role: profile.role || 'MEMBER',
-            planName: profile.planName,
-            expiresAt: profile.expiresAt || '',
-            isLifetime: Boolean(profile.isLifetime),
-            remainingDays: Number(profile.remainingDays || 0),
-            usedDevicesCount: Number(profile.usedDevicesCount || 1),
-            maxDevices: Number(profile.maxDevices || 1),
-            switchesUsed7d: Number(profile.switchesUsed7d || 0),
-            maxSwitches7d: Number(profile.maxSwitches7d || 3)
-          };
-          document.getElementById('loginPassInput').value = '';
-          setAdminAuthenticated(userForDashboard, true);
-        } catch (err) {
-          errEl.textContent = window.mglFirebase && window.mglFirebase.errorMessage
-            ? window.mglFirebase.errorMessage(err)
-            : (err && err.message ? err.message : 'Login gagal. Periksa email dan kata sandi.');
-          errEl.classList.remove('hidden');
-        } finally {
-          btn.disabled = false;
-          btn.textContent = 'Masuk ke Ruang Studio';
-        }
-      })();
+      try {
+        await window.mglFirebaseReady;
+        var sessionUser = await window.mglFirebase.loginUser(email, pass, getOrCreateDeviceId());
+        document.getElementById('loginPassInput').value = '';
+        setAdminAuthenticated(sessionUser, true);
+      } catch (err) {
+        errEl.textContent = window.mglFirebase.errorMessage(err);
+        errEl.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Masuk ke Ruang Studio';
+      }
     }
 
-    function handleActivateLicenseModal() {
-      var email = document.getElementById('actEmailInput').value.trim();
-      var code = document.getElementById('actLicenseInput').value.trim();
-      var deviceId = getOrCreateDeviceId();
+    async function handleActivateLicenseModal() {
+      var email = document.getElementById('actEmailInput').value.trim().toLowerCase();
+      var code = document.getElementById('actLicenseInput').value.trim().toUpperCase();
       var errEl = document.getElementById('activateErrorMsg');
       var btn = document.getElementById('btnActivateLicense');
 
@@ -2050,47 +1983,50 @@
 
       btn.disabled = true;
       btn.textContent = 'Mengaktifkan Lisensi...';
+      errEl.classList.add('hidden');
 
-      google.script.run
-        .withSuccessHandler(function(res) {
-          btn.disabled = false;
-          btn.textContent = 'Aktivasi Lisensi & Masuk';
-          if (res.success) {
-            showNotice(res.message, 'Aktivasi Berhasil');
-            setAdminAuthenticated(res, true);
-          } else {
-            errEl.textContent = res.message;
-            errEl.classList.remove('hidden');
-          }
-        })
-        .withFailureHandler(function(err) {
-          btn.disabled = false;
-          btn.textContent = 'Aktivasi Lisensi & Masuk';
-          errEl.textContent = 'Error: ' + err.message;
-          errEl.classList.remove('hidden');
-        })
-        .activateLicenseForUser(email, code, deviceId);
+      try {
+        await window.mglFirebaseReady;
+        var res = await window.mglFirebase.activateLicenseByEmail(email, code, getOrCreateDeviceId());
+        showNotice(res.message, 'Aktivasi Berhasil');
+        document.getElementById('actLicenseInput').value = '';
+        if (res.sessionUser) {
+          setAdminAuthenticated(res.sessionUser, true);
+        } else {
+          switchAuthTab('login');
+          document.getElementById('loginEmailInput').value = email;
+        }
+      } catch (err) {
+        errEl.textContent = window.mglFirebase.errorMessage(err);
+        errEl.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Aktivasi Lisensi & Masuk';
+      }
     }
 
-    function redeemLicenseInsidePanel() {
-      var code = document.getElementById('redeemInsideCodeInput').value.trim();
-      var deviceId = getOrCreateDeviceId();
+    async function redeemLicenseInsidePanel() {
+      var code = document.getElementById('redeemInsideCodeInput').value.trim().toUpperCase();
       if (!code) {
         showNotice('Masukkan kode lisensi terlebih dahulu.');
         return;
       }
 
-      google.script.run.withSuccessHandler(function(res) {
-        showNotice(res.message);
-        if (res.success) {
-          document.getElementById('redeemInsideCodeInput').value = '';
-          setAdminAuthenticated(res, true);
+      try {
+        var res = await window.mglFirebase.activateLicenseByEmail(currentAdminEmail, code, getOrCreateDeviceId());
+        showNotice(res.message, 'Lisensi Diperbarui');
+        document.getElementById('redeemInsideCodeInput').value = '';
+        if (res.sessionUser) {
+          setAdminAuthenticated(res.sessionUser, true);
         }
-      }).activateLicenseForUser(currentAdminEmail, code, deviceId);
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err), 'Aktivasi Gagal');
+      }
     }
 
     function setAdminAuthenticated(userObj, openPanel) {
       isAdminLoggedIn = true;
+      currentAdminUid = userObj.uid || '';
       currentAdminEmail = userObj.email;
       currentAdminWhatsapp = userObj.whatsapp || DEFAULT_STUDIO_WA;
       currentAdminRole = (userObj.role || 'MEMBER').toUpperCase();
@@ -2102,19 +2038,6 @@
       currentMaxDevices = userObj.maxDevices || (currentPlanName.toLowerCase().indexOf('trial') !== -1 ? 1 : 2);
       currentSwitchesUsed7d = userObj.switchesUsed7d || 0;
       currentMaxSwitches7d = userObj.maxSwitches7d || 3;
-
-      safeSetItem('mageniclens_admin_email', currentAdminEmail);
-      safeSetItem('mageniclens_admin_name', userObj.name || currentAdminEmail);
-      safeSetItem('mageniclens_admin_wa', currentAdminWhatsapp);
-      safeSetItem('mageniclens_admin_role', currentAdminRole);
-      safeSetItem('mageniclens_admin_plan', currentPlanName);
-      safeSetItem('mageniclens_admin_exp', currentExpiresAt);
-      safeSetItem('mageniclens_admin_life', currentIsLifetime ? '1' : '0');
-      safeSetItem('mageniclens_admin_rem', String(currentRemainingDays));
-      safeSetItem('mageniclens_admin_udev', String(currentUsedDevices));
-      safeSetItem('mageniclens_admin_mdev', String(currentMaxDevices));
-      safeSetItem('mageniclens_admin_swu', String(currentSwitchesUsed7d));
-      safeSetItem('mageniclens_admin_swm', String(currentMaxSwitches7d));
 
       document.getElementById('adminLoginModal').classList.add('hidden');
       document.getElementById('welcomeLandingSection').classList.add('hidden');
@@ -2187,29 +2110,20 @@
       }
     }
 
-    function logoutAdmin() {
-      if (window.mglFirebase && window.mglFirebase.logoutUser) {
-        window.mglFirebase.logoutUser().catch(function(err) {
-          console.warn('Firebase sign-out:', err);
-        });
+    async function logoutAdmin() {
+      try {
+        if (window.mglFirebase && window.mglFirebase.logoutUser) {
+          await window.mglFirebase.logoutUser();
+        }
+      } catch (err) {
+        console.warn('Firebase sign-out:', err);
       }
       isAdminLoggedIn = false;
+      currentAdminUid = '';
       currentAdminEmail = '';
       currentAdminWhatsapp = DEFAULT_STUDIO_WA;
       currentAdminRole = 'MEMBER';
       currentIsLifetime = false;
-      safeRemoveItem('mageniclens_admin_email');
-      safeRemoveItem('mageniclens_admin_name');
-      safeRemoveItem('mageniclens_admin_wa');
-      safeRemoveItem('mageniclens_admin_role');
-      safeRemoveItem('mageniclens_admin_plan');
-      safeRemoveItem('mageniclens_admin_exp');
-      safeRemoveItem('mageniclens_admin_life');
-      safeRemoveItem('mageniclens_admin_rem');
-      safeRemoveItem('mageniclens_admin_udev');
-      safeRemoveItem('mageniclens_admin_mdev');
-      safeRemoveItem('mageniclens_admin_swu');
-      safeRemoveItem('mageniclens_admin_swm');
 
       document.getElementById('adminDashboard').classList.add('hidden');
       document.getElementById('btnLogoutAdmin').classList.add('hidden');
@@ -2253,28 +2167,28 @@
       if (tab === 'superadmin') loadSuperAdminData();
     }
 
-    function saveAdminSettings() {
-      var newEmail = document.getElementById('settingAdminEmail').value.trim();
-      var newWa = document.getElementById('settingAdminWa').value.trim();
+    async function saveAdminSettings() {
+      var newWa = normalizeWhatsappNumber(document.getElementById('settingAdminWa').value.trim());
       var newPass = document.getElementById('settingAdminPass').value.trim();
 
-      if (!newEmail || !newWa) {
-        showNotice('Email dan Nomor WhatsApp wajib diisi.');
+      if (!newWa) {
+        showNotice('Nomor WhatsApp wajib diisi.');
+        return;
+      }
+      if (newPass && newPass.length < 6) {
+        showNotice('Kata sandi baru minimal 6 karakter.');
         return;
       }
 
-      google.script.run.withSuccessHandler(function(res) {
-        showNotice(res.message);
-        if (res.success) {
-          currentAdminEmail = res.email;
-          currentAdminWhatsapp = res.whatsapp;
-          safeSetItem('mageniclens_admin_email', res.email);
-          safeSetItem('mageniclens_admin_wa', res.whatsapp);
-          document.getElementById('adminLoggedBadge').textContent = 'Halo, ' + res.email;
-          document.getElementById('albumOwnerWaInput').value = res.whatsapp;
-          document.getElementById('settingAdminPass').value = '';
-        }
-      }).updateAdminCredentials(currentAdminEmail, newEmail, newPass, newWa);
+      try {
+        await window.mglFirebase.updateProfileSettings(currentAdminUid, newWa, newPass);
+        currentAdminWhatsapp = newWa;
+        document.getElementById('albumOwnerWaInput').value = newWa;
+        document.getElementById('settingAdminPass').value = '';
+        showNotice('Pengaturan profil dan WhatsApp berhasil disimpan.');
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err), 'Gagal Menyimpan');
+      }
     }
 
     // ==========================================
@@ -2290,7 +2204,6 @@
         box.className = 'p-4 rounded-2xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 space-y-2.5 pricing-edit-card';
         box.dataset.plankey = p.planKey;
         box.dataset.plantitle = p.planTitle;
-        box.dataset.subtitle = p.subtitle || '';
 
         box.innerHTML =
           '<div class="flex items-center justify-between">' +
@@ -2314,7 +2227,7 @@
       });
     }
 
-    function handleSaveAdminPricing() {
+    async function handleSaveAdminPricing() {
       var cards = document.querySelectorAll('.pricing-edit-card');
       var payload = [];
       cards.forEach(function(card) {
@@ -2332,16 +2245,18 @@
       btn.disabled = true;
       btn.textContent = 'Menyimpan Harga...';
 
-      google.script.run.withSuccessHandler(function(res) {
+      try {
+        await window.mglFirebase.savePublicPricing(payload);
+        cachedPricingPlans = payload;
+        renderPublicPricingCards(payload);
+        renderMemberPricingCards(payload);
+        showNotice('Daftar harga paket berhasil diperbarui ke Firestore.');
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err), 'Gagal Menyimpan Harga');
+      } finally {
         btn.disabled = false;
         btn.textContent = 'Simpan Perubahan Harga';
-        showNotice(res.message);
-        if (res.success) {
-          cachedPricingPlans = payload;
-          renderPublicPricingCards(payload);
-          renderMemberPricingCards(payload);
-        }
-      }).saveAdminPricing(currentAdminEmail, payload);
+      }
     }
 
     function renderSuperAdminMembersFiltered() {
@@ -2371,7 +2286,7 @@
         var isSuper = m.role === 'SUPERADMIN';
         var statusBadge = m.status === 'ACTIVE'
           ? '<span class="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold">ACTIVE</span>'
-          : '<span class="px-2 py-0.5 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 text-[10px] font-bold">SUSPENDED</span>';
+          : '<span class="px-2 py-0.5 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 text-[10px] font-bold">' + escapeHtmlAttr(m.status || 'SUSPENDED') + '</span>';
 
         var remText = isSuper ? 'Owner Unlimited' : (m.isLifetime ? 'LIFETIME' : (m.remainingDays > 0 ? m.remainingDays + ' hari tersisa' : 'EXPIRED'));
         var remColor = isSuper || m.isLifetime ? 'text-emerald-600 dark:text-emerald-400' : (m.remainingDays > 0 ? 'text-[#B5945B] dark:text-[#D4AF37]' : 'text-red-500');
@@ -2379,12 +2294,12 @@
         var actionsHtml = isSuper
           ? '<span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">Akun Pemilik Utama</span>'
           : '<div class="flex flex-wrap items-center gap-1.5">' +
-              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'EXTEND\', 7)" class="px-2.5 py-1.5 rounded-full bg-white dark:bg-zinc-800 border border-[#DFD8C8] dark:border-zinc-700 text-xs font-bold">+7 Hari</button>' +
-              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'EXTEND\', 30)" class="px-2.5 py-1.5 rounded-full bg-white dark:bg-zinc-800 border border-[#DFD8C8] dark:border-zinc-700 text-xs font-bold text-[#B5945B] dark:text-[#D4AF37]">+30 Hari</button>' +
-              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'EXTEND\', 36500)" class="px-2.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 text-xs font-extrabold">+Lifetime</button>' +
-              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'RESET_DEVICE\', 0)" class="px-2.5 py-1.5 rounded-full bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-500/30 text-xs font-bold">Reset Perangkat</button>' +
-              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'TOGGLE_STATUS\', 0)" class="px-2.5 py-1.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-xs font-bold">' + (m.status === 'ACTIVE' ? 'Blokir' : 'Aktifkan') + '</button>' +
-              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.email) + '\', \'DELETE_USER\', 0)" class="px-2.5 py-1.5 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 text-xs font-bold">Hapus</button>' +
+              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.uid) + '\', \'EXTEND\', 7)" class="px-2.5 py-1.5 rounded-full bg-white dark:bg-zinc-800 border border-[#DFD8C8] dark:border-zinc-700 text-xs font-bold">+7 Hari</button>' +
+              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.uid) + '\', \'EXTEND\', 30)" class="px-2.5 py-1.5 rounded-full bg-white dark:bg-zinc-800 border border-[#DFD8C8] dark:border-zinc-700 text-xs font-bold text-[#B5945B] dark:text-[#D4AF37]">+30 Hari</button>' +
+              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.uid) + '\', \'EXTEND\', 36500)" class="px-2.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 text-xs font-extrabold">+Lifetime</button>' +
+              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.uid) + '\', \'RESET_DEVICE\', 0)" class="px-2.5 py-1.5 rounded-full bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-500/30 text-xs font-bold">Reset Perangkat</button>' +
+              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.uid) + '\', \'TOGGLE_STATUS\', 0)" class="px-2.5 py-1.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-xs font-bold">' + (m.status === 'ACTIVE' ? 'Blokir' : 'Aktifkan') + '</button>' +
+              '<button type="button" onclick="execMemberAction(\'' + escapeHtmlAttr(m.uid) + '\', \'DELETE_USER\', 0)" class="px-2.5 py-1.5 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 text-xs font-bold">Hapus</button>' +
             '</div>';
 
         row.innerHTML =
@@ -2394,7 +2309,7 @@
               statusBadge +
               '<span class="text-xs font-bold ' + remColor + '">(' + remText + ')</span>' +
             '</div>' +
-            '<p class="text-xs text-[#6E6556] dark:text-zinc-400 break-all">Email: ' + escapeHtmlAttr(m.email) + ' • WA: +' + m.whatsapp + '</p>' +
+            '<p class="text-xs text-[#6E6556] dark:text-zinc-400 break-all">Email: ' + escapeHtmlAttr(m.email) + ' • WA: +' + escapeHtmlAttr(m.whatsapp) + ' • Paket: ' + escapeHtmlAttr(m.planName || '-') + '</p>' +
           '</div>' +
           actionsHtml;
 
@@ -2402,23 +2317,21 @@
       });
     }
 
-    function loadSuperAdminData() {
+    async function loadSuperAdminData() {
       var membersBox = document.getElementById('superAdminMembersList');
       var licBox = document.getElementById('superAdminLicensesList');
       var licBulkBox = document.getElementById('licenseBulkActions');
-      membersBox.innerHTML = '<p class="text-xs text-zinc-500">Memuat data member...</p>';
+      membersBox.innerHTML = '<p class="text-xs text-zinc-500">Memuat data dari Firestore...</p>';
 
-      google.script.run.withSuccessHandler(function(res) {
-        if (!res.success) {
-          membersBox.innerHTML = '<p class="text-xs text-red-500">' + res.message + '</p>';
-          return;
-        }
-
+      try {
+        var res = await window.mglFirebase.getSuperAdminDashboardData();
         if (res.pricing && res.pricing.length > 0) {
           cachedPricingPlans = res.pricing;
           renderAdminPricingEditor(res.pricing);
           renderPublicPricingCards(res.pricing);
           renderMemberPricingCards(res.pricing);
+        } else {
+          renderAdminPricingEditor(DEFAULT_PRICING_PLANS);
         }
 
         cachedSuperAdminMembers = res.members || [];
@@ -2441,6 +2354,7 @@
               '<div class="min-w-0">' +
                 '<code class="font-mono font-extrabold text-sm ' + (isUnused ? 'text-emerald-700 dark:text-emerald-300' : 'text-zinc-400 line-through') + '">' + escapeHtmlAttr(lic.code) + '</code>' +
                 '<span class="ml-2 px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 border border-[#DFD8C8] dark:border-zinc-700 text-[11px]">' + escapeHtmlAttr(lic.planLabel) + '</span>' +
+                (lic.usedByEmail ? '<span class="ml-2 text-[11px] text-zinc-500">(' + escapeHtmlAttr(lic.usedByEmail) + ')</span>' : '') +
               '</div>' +
               '<div class="flex items-center gap-2 shrink-0">' +
                 (isUnused ? '<button type="button" onclick="copyTextSafe(\'' + escapeHtmlAttr(lic.code) + '\'); showToast(\'Kode lisensi disalin!\');" class="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 text-[#1C1B18] dark:text-[#D4AF37] border border-[#DFD8C8] dark:border-zinc-700 font-bold">Salin Kode</button>' : '') +
@@ -2449,10 +2363,12 @@
             licBox.appendChild(item);
           });
         }
-      }).getSuperAdminDashboardData(currentAdminEmail);
+      } catch (err) {
+        membersBox.innerHTML = '<p class="text-xs text-red-500">' + window.mglFirebase.errorMessage(err) + '</p>';
+      }
     }
 
-    function handleGenerateLicenses() {
+    async function handleGenerateLicenses() {
       var days = parseInt(document.getElementById('genLicenseDuration').value, 10) || 30;
       var qty = parseInt(document.getElementById('genLicenseQty').value, 10) || 1;
       var btn = document.getElementById('btnGenLicenses');
@@ -2460,17 +2376,17 @@
       btn.disabled = true;
       btn.textContent = 'Membuat Kode...';
 
-      google.script.run.withSuccessHandler(function(res) {
+      try {
+        var codes = await window.mglFirebase.generateLicenseCodesBatch(days, qty);
+        document.getElementById('newlyGeneratedTextarea').value = codes.join(NL);
+        document.getElementById('newlyGeneratedBox').classList.remove('hidden');
+        loadSuperAdminData();
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err));
+      } finally {
         btn.disabled = false;
         btn.textContent = '+ Terbitkan Kode Lisensi';
-        if (res.success) {
-          document.getElementById('newlyGeneratedTextarea').value = res.codes.join(NL);
-          document.getElementById('newlyGeneratedBox').classList.remove('hidden');
-          loadSuperAdminData();
-        } else {
-          showNotice(res.message);
-        }
-      }).generateLicenseCodesBatch(currentAdminEmail, days, qty);
+      }
     }
 
     function copyNewLicenses() {
@@ -2479,22 +2395,28 @@
       showToast('Seluruh kode lisensi baru berhasil disalin!');
     }
 
-    async function execMemberAction(targetEmail, action, extraDays) {
-      var ok = await showConfirm('Lanjutkan tindakan "' + action + '" untuk member ' + targetEmail + '?');
+    async function execMemberAction(targetUid, action, extraDays) {
+      var ok = await showConfirm('Lanjutkan tindakan "' + action + '" untuk member ini?');
       if (!ok) return;
 
-      google.script.run.withSuccessHandler(function(res) {
-        showNotice(res.message);
-        if (res.success) loadSuperAdminData();
-      }).adminManageMember(currentAdminEmail, targetEmail, action, extraDays);
+      try {
+        var msg = await window.mglFirebase.adminManageMember(targetUid, action, extraDays);
+        showNotice(msg);
+        loadSuperAdminData();
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err));
+      }
     }
 
     async function removeLicenseCode(code) {
       var ok = await showConfirm('Hapus kode lisensi ' + code + '?');
       if (!ok) return;
-      google.script.run.withSuccessHandler(function(res) {
-        if (res.success) loadSuperAdminData();
-      }).deleteLicenseCode(currentAdminEmail, code);
+      try {
+        await window.mglFirebase.deleteLicenseCode(code);
+        loadSuperAdminData();
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err));
+      }
     }
 
     async function confirmDeleteAllLicenses(onlyUsed) {
@@ -2504,14 +2426,13 @@
       var ok = await showConfirm(msg);
       if (!ok) return;
 
-      google.script.run.withSuccessHandler(function(res) {
-        if (res.success) {
-          showNotice(res.message);
-          loadSuperAdminData();
-        } else {
-          showNotice(res.message);
-        }
-      }).deleteAllLicenseCodes(currentAdminEmail, onlyUsed);
+      try {
+        var resMsg = await window.mglFirebase.deleteAllLicenseCodes(onlyUsed);
+        showNotice(resMsg);
+        loadSuperAdminData();
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err));
+      }
     }
 
     // ==========================================
@@ -2538,7 +2459,7 @@
     }
 
     // ==========================================
-    // ADMIN: BUAT LINK ALBUM KLIEN + TEMPLATE PESAN
+    // ADMIN: BUAT LINK ALBUM KLIEN (FIRESTORE) + TEMPLATE PESAN
     // ==========================================
     function buildInvitationMessage(folderName, shareUrl, password, maxLimit) {
       var passText = password ? password : 'Tanpa Password (Langsung Masuk)';
@@ -2559,11 +2480,12 @@
       ].join(NL);
     }
 
-    function generateClientAlbum() {
+    async function generateClientAlbum() {
       var linkVal = document.getElementById('driveLinkInput').value.trim();
+      var customTitle = document.getElementById('albumCustomTitleInput').value.trim();
       var maxLimit = parseInt(document.getElementById('albumMaxLimitInput').value, 10) || 0;
       var password = document.getElementById('albumPassInput').value.trim();
-      var ownerWa = document.getElementById('albumOwnerWaInput').value.trim() || currentAdminWhatsapp;
+      var ownerWa = normalizeWhatsappNumber(document.getElementById('albumOwnerWaInput').value.trim() || currentAdminWhatsapp);
       var allowDownload = document.getElementById('albumAllowDownloadToggle').checked;
       var enableWatermark = document.getElementById('albumEnableWatermarkToggle').checked;
       var watermarkText = document.getElementById('albumWatermarkTextInput').value.trim() || 'MAGENICLENS PREVIEW';
@@ -2573,6 +2495,11 @@
         showNotice('Silakan masukkan link folder Google Drive terlebih dahulu.');
         return;
       }
+      var folderId = extractDriveFolderId(linkVal);
+      if (!folderId) {
+        showNotice('Link folder Google Drive tidak valid. Pastikan Anda menyalin tautan folder Google Drive.');
+        return;
+      }
       if (!ownerWa) {
         showNotice('Silakan isi Nomor WhatsApp tujuan pengiriman seleksi klien.');
         return;
@@ -2580,48 +2507,69 @@
 
       var btn = document.getElementById('btnCreateAlbum');
       btn.disabled = true;
-      btn.textContent = 'Membuat Link & Memuat Galeri...';
+      btn.textContent = 'Memeriksa Folder & Simpan ke Firebase...';
 
-      google.script.run
-        .withSuccessHandler(function(res) {
-          btn.disabled = false;
-          btn.textContent = 'Buat Tautan Galeri & Muat Pratinjau';
-          if (res.success) {
-            document.getElementById('generatedShareLink').value = res.shareUrl;
-            var limitTxt = res.maxLimit > 0 ? 'Batas: ' + res.maxLimit + ' foto' : 'Tanpa Batas';
-            var passTxt = res.hasPassword ? 'Password: Aktif' : 'Tanpa Password';
-            var dlTxt = res.allowDownload ? 'Download: ON' : 'Download: OFF';
-            var wmTxt = res.enableWatermark ? 'Watermark: ON' : 'Watermark: OFF';
-            var waTxt = 'WA Tujuan: +' + res.ownerWhatsapp;
-            document.getElementById('shareRuleSummary').textContent = res.folderName + ' • ' + limitTxt + ' • ' + passTxt + ' • ' + dlTxt + ' • ' + wmTxt + ' • ' + waTxt;
+      try {
+        var driveRes = await fetchDriveFolderPhotos(folderId);
+        if (!driveRes.success) {
+          throw new Error(driveRes.message);
+        }
 
-            document.getElementById('invitationTemplateText').value = buildInvitationMessage(
-              res.folderName,
-              res.shareUrl,
-              res.password,
-              res.maxLimit
-            );
+        var finalFolderName = customTitle || driveRes.folderName || 'Galeri Klien';
+        var baseUrl = window.location.origin + window.location.pathname;
 
-            document.getElementById('shareLinkBox').classList.remove('hidden');
+        var albumDoc = await window.mglFirebase.createAlbumConfig({
+          ownerUid: currentAdminUid,
+          ownerEmail: currentAdminEmail,
+          folderId: folderId,
+          folderName: finalFolderName,
+          maxLimit: maxLimit,
+          password: password,
+          allowDownload: allowDownload,
+          enableWatermark: enableWatermark,
+          watermarkText: watermarkText,
+          watermarkSize: watermarkSize,
+          ownerWhatsapp: ownerWa,
+          baseUrl: baseUrl
+        });
 
-            currentAlbumId = res.albumId;
-            currentMaxLimit = res.maxLimit;
-            currentAllowDownload = res.allowDownload;
-            currentEnableWatermark = Boolean(res.enableWatermark);
-            currentWatermarkText = res.watermarkText || 'MAGENICLENS PREVIEW';
-            currentWatermarkSize = res.watermarkSize || 'medium';
-            currentAlbumTargetWa = res.ownerWhatsapp || currentAdminWhatsapp;
-            loadGalleryFromDrive(res.folderId);
-          } else {
-            showNotice(res.message);
-          }
-        })
-        .withFailureHandler(function(err) {
-          btn.disabled = false;
-          btn.textContent = 'Buat Tautan Galeri & Muat Pratinjau';
-          showNotice('Error: ' + err.message);
-        })
-        .createAlbumConfig(linkVal, maxLimit, password, allowDownload, enableWatermark, watermarkText, watermarkSize, ownerWa, currentAdminEmail);
+        document.getElementById('generatedShareLink').value = albumDoc.shareUrl;
+        var limitTxt = maxLimit > 0 ? 'Batas: ' + maxLimit + ' foto' : 'Tanpa Batas';
+        var passTxt = password ? 'Password: Aktif' : 'Tanpa Password';
+        var dlTxt = allowDownload ? 'Download: ON' : 'Download: OFF';
+        var wmTxt = enableWatermark ? 'Watermark: ON' : 'Watermark: OFF';
+        var waTxt = 'WA Tujuan: +' + ownerWa;
+        document.getElementById('shareRuleSummary').textContent = finalFolderName + ' • ' + limitTxt + ' • ' + passTxt + ' • ' + dlTxt + ' • ' + wmTxt + ' • ' + waTxt;
+
+        document.getElementById('invitationTemplateText').value = buildInvitationMessage(
+          finalFolderName,
+          albumDoc.shareUrl,
+          password,
+          maxLimit
+        );
+
+        document.getElementById('shareLinkBox').classList.remove('hidden');
+
+        currentAlbumId = albumDoc.albumId;
+        currentAlbumOwnerUid = currentAdminUid;
+        currentMaxLimit = maxLimit;
+        currentAllowDownload = allowDownload;
+        currentEnableWatermark = enableWatermark;
+        currentWatermarkText = watermarkText;
+        currentWatermarkSize = watermarkSize;
+        currentAlbumTargetWa = ownerWa;
+
+        renderGalleryData({
+          folderId: folderId,
+          folderName: finalFolderName,
+          photos: driveRes.photos
+        });
+      } catch (err) {
+        showNotice(err.message || 'Gagal membuat tautan galeri.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Buat Tautan Galeri & Muat Pratinjau';
+      }
     }
 
     function copyShareLink() {
@@ -2673,28 +2621,26 @@
     }
 
     // ==========================================
-    // VENDOR VIEW: HISTORI SELEKSI, STATUS PROGRES & RIWAYAT ALBUM
+    // VENDOR VIEW: HISTORI SELEKSI & RIWAYAT ALBUM (FIRESTORE)
     // ==========================================
-    function handleWorkStatusChange(selectionId, newStatus) {
-      google.script.run.withSuccessHandler(function(res) {
-        if (res && res.success) {
-          showToast('Status pengerjaan diperbarui: ' + newStatus);
-        }
-      }).updateSelectionWorkStatus(selectionId, newStatus);
+    async function handleWorkStatusChange(selectionId, newStatus) {
+      try {
+        await window.mglFirebase.updateSelectionWorkStatus(selectionId, newStatus);
+        showToast('Status pengerjaan diperbarui: ' + newStatus);
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err));
+      }
     }
 
-    function loadVendorHistory() {
+    async function loadVendorHistory() {
       var container = document.getElementById('vendorSelectionsList');
       var albumsContainer = document.getElementById('vendorAlbumsList');
       var btnDelAllSel = document.getElementById('btnDeleteAllSelections');
       var btnDelAllAlb = document.getElementById('btnDeleteAllAlbums');
-      container.innerHTML = '<p class="text-xs text-zinc-500">Mengambil data dari database...</p>';
+      container.innerHTML = '<p class="text-xs text-zinc-500">Mengambil data dari Firestore...</p>';
 
-      google.script.run.withSuccessHandler(function(res) {
-        if (!res.success) {
-          container.innerHTML = '<p class="text-xs text-red-500">' + res.message + '</p>';
-          return;
-        }
+      try {
+        var res = await window.mglFirebase.getVendorHistory(currentAdminUid, currentAdminRole);
 
         if (res.selections.length === 0) {
           if (btnDelAllSel) btnDelAllSel.classList.add('hidden');
@@ -2703,22 +2649,22 @@
           if (btnDelAllSel) btnDelAllSel.classList.remove('hidden');
           container.innerHTML = '';
           res.selections.forEach(function(sel) {
-            var dateStr = new Date(sel.submittedAt).toLocaleString('id-ID');
+            var dateStr = sel.submittedAt ? new Date(sel.submittedAt).toLocaleString('id-ID') : '-';
             var card = document.createElement('div');
             card.className = 'p-4 sm:p-5 rounded-2xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 space-y-4';
 
             var selObjAttr = escapeHtmlAttr(JSON.stringify(sel));
-            var idsJsonAttr = escapeHtmlAttr(JSON.stringify(sel.photoIds));
-            var namesJsonAttr = escapeHtmlAttr(JSON.stringify(sel.photoNames));
+            var idsJsonAttr = escapeHtmlAttr(JSON.stringify(sel.photoIds || []));
+            var namesJsonAttr = escapeHtmlAttr(JSON.stringify(sel.photoNames || []));
             var safeFolderAttr = escapeHtmlAttr(sel.folderName);
             var safeZipNameAttr = escapeHtmlAttr(sel.folderName + '_' + sel.clientName);
             var notesObj = sel.photoNotes || {};
             var workStatus = sel.workStatus || 'Menunggu Edit';
 
             var gridHtml = '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">';
-            sel.photoIds.forEach(function(pid, pIdx) {
+            (sel.photoIds || []).forEach(function(pid, pIdx) {
               var numLabel = '#' + String(pIdx + 1).padStart(2, '0');
-              var rawName = sel.photoNames[pIdx] || ('Foto_' + (pIdx + 1) + '.jpg');
+              var rawName = (sel.photoNames && sel.photoNames[pIdx]) || ('Foto_' + (pIdx + 1) + '.jpg');
               var pname = escapeHtmlAttr(rawName);
               var noteText = notesObj[pid] ? escapeHtmlAttr(notesObj[pid]) : '';
               var demoPhoto = MOCK_SAMPLE_PHOTOS.find(function(mp) { return mp.id === pid; });
@@ -2788,7 +2734,9 @@
             albumsContainer.appendChild(row);
           });
         }
-      }).getSelectionHistory(currentAdminEmail);
+      } catch (err) {
+        container.innerHTML = '<p class="text-xs text-red-500">' + window.mglFirebase.errorMessage(err) + '</p>';
+      }
     }
 
     function openVendorSelectionDetailFromEl(el) {
@@ -2961,23 +2909,24 @@
       var folderName = el.dataset.folder;
       var ok = await showConfirm('Yakin ingin menghapus riwayat link album "' + folderName + '"?');
       if (!ok) return;
-      google.script.run.withSuccessHandler(function(res) {
-        if (res.success) loadVendorHistory();
-        else showNotice(res.message);
-      }).deleteAlbumHistory(albumId);
+      try {
+        await window.mglFirebase.deleteAlbumHistory(albumId);
+        loadVendorHistory();
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err));
+      }
     }
 
     async function confirmDeleteAllAlbums() {
       var ok = await showConfirm('Yakin ingin menghapus semua riwayat link album?');
       if (!ok) return;
-      google.script.run.withSuccessHandler(function(res) {
-        if (res.success) {
-          showNotice(res.message);
-          loadVendorHistory();
-        } else {
-          showNotice(res.message);
-        }
-      }).deleteAllAlbumsHistory(currentAdminEmail);
+      try {
+        var msg = await window.mglFirebase.deleteAllAlbumsHistory(currentAdminUid, currentAdminRole);
+        showNotice(msg);
+        loadVendorHistory();
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err));
+      }
     }
 
     async function confirmDeleteSelectionFromEl(el) {
@@ -2985,23 +2934,24 @@
       var folderName = el.dataset.folder;
       var ok = await showConfirm('Yakin ingin menghapus data seleksi klien untuk "' + folderName + '"?');
       if (!ok) return;
-      google.script.run.withSuccessHandler(function(res) {
-        if (res.success) loadVendorHistory();
-        else showNotice(res.message);
-      }).deleteSelectionHistory(selectionId);
+      try {
+        await window.mglFirebase.deleteSelectionHistory(selectionId);
+        loadVendorHistory();
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err));
+      }
     }
 
     async function confirmDeleteAllSelections() {
       var ok = await showConfirm('Yakin ingin menghapus SEMUA data seleksi foto klien?');
       if (!ok) return;
-      google.script.run.withSuccessHandler(function(res) {
-        if (res.success) {
-          showNotice(res.message);
-          loadVendorHistory();
-        } else {
-          showNotice(res.message);
-        }
-      }).deleteAllSelectionsHistory(currentAdminEmail);
+      try {
+        var msg = await window.mglFirebase.deleteAllSelectionsHistory(currentAdminUid, currentAdminRole);
+        showNotice(msg);
+        loadVendorHistory();
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err));
+      }
     }
 
     function copySavedAlbumTemplateFromEl(el) {
@@ -3166,37 +3116,27 @@
           job.progress = 45;
           renderDownloadQueueUI();
 
-          google.script.run
-            .withSuccessHandler(function(res) {
-              activeSingleWorkers = Math.max(0, activeSingleWorkers - 1);
-              if (job.cancelled) {
-                processSingleDownloadQueue();
-                return;
-              }
-              if (res && res.success && res.dataUrl) {
-                base64Cache[job.fileId] = res;
-                job.statusText = 'Menyimpan ke perangkat...';
-                job.progress = 100;
-                renderDownloadQueueUI();
-                burnWatermarkIntoDataUrl(res.dataUrl, currentWatermarkText, currentWatermarkSize).then(function(finalUrl) {
-                  triggerBrowserDownload(finalUrl, res.name || job.fileName);
-                  setTimeout(function() { removeDownloadJob(job.id); }, 700);
-                });
-              } else {
-                removeDownloadJob(job.id);
-                showNotice('Gagal mengunduh ' + job.fileName + ': ' + (res && res.message ? res.message : 'File tidak ditemukan'));
-              }
+          fetchDrivePhotoBase64(job.fileId).then(function(res) {
+            activeSingleWorkers = Math.max(0, activeSingleWorkers - 1);
+            if (job.cancelled) {
               processSingleDownloadQueue();
-            })
-            .withFailureHandler(function(err) {
-              activeSingleWorkers = Math.max(0, activeSingleWorkers - 1);
-              if (!job.cancelled) {
-                removeDownloadJob(job.id);
-                showNotice('Gagal mengunduh ' + job.fileName + ': ' + err.message);
-              }
-              processSingleDownloadQueue();
-            })
-            .getPhotoFileData(job.fileId);
+              return;
+            }
+            if (res && res.success && res.dataUrl) {
+              base64Cache[job.fileId] = res;
+              job.statusText = 'Menyimpan ke perangkat...';
+              job.progress = 100;
+              renderDownloadQueueUI();
+              burnWatermarkIntoDataUrl(res.dataUrl, currentWatermarkText, currentWatermarkSize).then(function(finalUrl) {
+                triggerBrowserDownload(finalUrl, res.name || job.fileName);
+                setTimeout(function() { removeDownloadJob(job.id); }, 700);
+              });
+            } else {
+              removeDownloadJob(job.id);
+              showNotice('Gagal mengunduh ' + job.fileName + ': ' + (res && res.message ? res.message : 'File tidak ditemukan'));
+            }
+            processSingleDownloadQueue();
+          });
         })(nextJob);
       }
     }
@@ -3265,30 +3205,24 @@
                   resolve();
                 });
               } else {
-                google.script.run
-                  .withSuccessHandler(function(fileData) {
-                    if (job.cancelled) return resolve();
-                    if (fileData && fileData.success) {
-                      base64Cache[pid] = fileData;
-                      burnWatermarkIntoDataUrl(fileData.dataUrl, currentWatermarkText, currentWatermarkSize).then(function(finalUrl) {
-                        var b64 = finalUrl.split(',')[1] || fileData.base64;
-                        zip.file(fileData.name || pname, b64, { base64: true });
-                        completed++;
-                        job.progress = Math.round((completed / total) * 85);
-                        job.statusText = 'Mengambil ' + completed + '/' + total + ': ' + pname;
-                        renderDownloadQueueUI();
-                        resolve();
-                      });
-                    } else {
+                fetchDrivePhotoBase64(pid).then(function(fileData) {
+                  if (job.cancelled) return resolve();
+                  if (fileData && fileData.success) {
+                    base64Cache[pid] = fileData;
+                    burnWatermarkIntoDataUrl(fileData.dataUrl, currentWatermarkText, currentWatermarkSize).then(function(finalUrl) {
+                      var b64 = finalUrl.split(',')[1] || fileData.base64;
+                      zip.file(fileData.name || pname, b64, { base64: true });
                       completed++;
+                      job.progress = Math.round((completed / total) * 85);
+                      job.statusText = 'Mengambil ' + completed + '/' + total + ': ' + pname;
+                      renderDownloadQueueUI();
                       resolve();
-                    }
-                  })
-                  .withFailureHandler(function() {
+                    });
+                  } else {
                     completed++;
                     resolve();
-                  })
-                  .getPhotoFileData(pid);
+                  }
+                });
               }
             });
             batchPromises.push(p);
@@ -3319,20 +3253,26 @@
     }
 
     // ==========================================
-    // KLIEN: BUKA ALBUM & VERIFIKASI PASSWORD
+    // KLIEN: BUKA ALBUM DARI FIRESTORE & VERIFIKASI PASSWORD
     // ==========================================
-    function initClientAlbum(albumId) {
+    var activeClientAlbumConfig = null;
+
+    async function initClientAlbum(albumId) {
       currentAlbumId = albumId;
       showLoading('Memeriksa akses album...');
 
-      google.script.run.withSuccessHandler(function(cfg) {
+      try {
+        await window.mglFirebaseReady;
+        var cfg = await window.mglFirebase.getAlbumConfig(albumId);
         hideLoading();
-        if (!cfg.success) {
-          showError(cfg.message);
+        if (!cfg) {
+          showError('Album tidak ditemukan atau tautan sudah tidak berlaku.');
           return;
         }
+        activeClientAlbumConfig = cfg;
+        currentAlbumOwnerUid = cfg.ownerUid || '';
         currentMaxLimit = cfg.maxLimit || 0;
-        currentAllowDownload = cfg.allowDownload;
+        currentAllowDownload = cfg.allowDownload !== false;
         currentEnableWatermark = Boolean(cfg.enableWatermark);
         currentWatermarkText = cfg.watermarkText || 'MAGENICLENS PREVIEW';
         currentWatermarkSize = cfg.watermarkSize || 'medium';
@@ -3341,46 +3281,53 @@
           document.getElementById('headerWaLink').href = 'https://wa.me/' + cfg.ownerWhatsapp;
         }
 
-        if (cfg.requiresPassword) {
-          document.getElementById('gateAlbumTitle').textContent = cfg.folderName;
+        if (cfg.password) {
+          document.getElementById('gateAlbumTitle').textContent = cfg.folderName || 'Galeri Privat';
           document.getElementById('clientPasswordGate').classList.remove('hidden');
         } else {
-          verifyAndOpenAlbum(albumId, '');
+          verifyAndOpenAlbum('');
         }
-      }).getAlbumConfig(albumId);
+      } catch (err) {
+        hideLoading();
+        showError('Gagal membuka album: ' + (err.message || err));
+      }
     }
 
     function unlockClientAlbum() {
       var pass = document.getElementById('clientAlbumPassInput').value;
-      verifyAndOpenAlbum(currentAlbumId, pass);
+      verifyAndOpenAlbum(pass);
     }
 
-    function verifyAndOpenAlbum(albumId, password) {
+    async function verifyAndOpenAlbum(password) {
       var errEl = document.getElementById('gatePassError');
       errEl.classList.add('hidden');
-      showLoading('Memuat galeri foto...');
 
-      google.script.run.withSuccessHandler(function(res) {
-        hideLoading();
-        if (res.success) {
-          document.getElementById('clientPasswordGate').classList.add('hidden');
-          currentMaxLimit = res.maxLimit || 0;
-          currentAllowDownload = res.allowDownload;
-          currentEnableWatermark = Boolean(res.enableWatermark);
-          currentWatermarkText = res.watermarkText || 'MAGENICLENS PREVIEW';
-          currentWatermarkSize = res.watermarkSize || 'medium';
-          if (res.ownerWhatsapp) {
-            currentAlbumTargetWa = res.ownerWhatsapp;
-            document.getElementById('headerWaLink').href = 'https://wa.me/' + res.ownerWhatsapp;
-          }
-          renderGalleryData(res);
-        } else if (res.wrongPassword) {
-          errEl.textContent = res.message;
-          errEl.classList.remove('hidden');
-        } else {
-          showError(res.message);
-        }
-      }).verifyAlbumAndLoadPhotos(albumId, password);
+      if (!activeClientAlbumConfig) {
+        showError('Konfigurasi album belum dimuat.');
+        return;
+      }
+
+      if (activeClientAlbumConfig.password && String(password) !== String(activeClientAlbumConfig.password)) {
+        errEl.textContent = 'Kata sandi galeri salah. Silakan periksa kembali.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      showLoading('Memuat galeri foto...');
+      var driveRes = await fetchDriveFolderPhotos(activeClientAlbumConfig.folderId);
+      hideLoading();
+
+      if (!driveRes.success) {
+        showError(driveRes.message);
+        return;
+      }
+
+      document.getElementById('clientPasswordGate').classList.add('hidden');
+      renderGalleryData({
+        folderId: activeClientAlbumConfig.folderId,
+        folderName: activeClientAlbumConfig.folderName || driveRes.folderName,
+        photos: driveRes.photos
+      });
     }
 
     // ==========================================
@@ -3395,33 +3342,23 @@
         return;
       }
 
-      google.script.run.withSuccessHandler(function(res) {
+      fetchDrivePhotoBase64(fileId).then(function(res) {
         if (res && res.success && res.dataUrl) {
           base64Cache[fileId] = res;
           imgEl.src = res.dataUrl;
         }
-      }).getPhotoFileData(fileId);
+      });
     }
 
-    function loadGalleryFromDrive(folderInput) {
+    async function loadGalleryFromDrive(folderInput) {
       showLoading('Mengambil daftar foto dari Google Drive...');
-      google.script.run
-        .withSuccessHandler(function(res) {
-          hideLoading();
-          if (res.success) {
-            if (!currentAlbumId && res.ownerWhatsapp) {
-              currentAlbumTargetWa = res.ownerWhatsapp;
-            }
-            renderGalleryData(res);
-          } else {
-            showError(res.message);
-          }
-        })
-        .withFailureHandler(function(err) {
-          hideLoading();
-          showError('Terjadi gangguan koneksi: ' + err.message);
-        })
-        .getDrivePhotos(folderInput);
+      var res = await fetchDriveFolderPhotos(folderInput);
+      hideLoading();
+      if (res.success) {
+        renderGalleryData(res);
+      } else {
+        showError(res.message);
+      }
     }
 
     function renderGalleryData(res) {
@@ -3439,24 +3376,9 @@
         localSaved.forEach(function(id) {
           if (validIds.has(id)) selectedPhotoIds.add(id);
         });
-      } else if (res.savedPhotoIds && Array.isArray(res.savedPhotoIds) && res.savedPhotoIds.length > 0) {
-        res.savedPhotoIds.forEach(function(id) {
-          if (validIds.has(id)) selectedPhotoIds.add(id);
-        });
-        saveSelectionsToLocal();
       }
 
       photoNotesMap = loadNotesFromLocal();
-      if (res.savedPhotoNotes && typeof res.savedPhotoNotes === 'object') {
-        Object.keys(res.savedPhotoNotes).forEach(function(k) {
-          if (!photoNotesMap[k]) photoNotesMap[k] = res.savedPhotoNotes[k];
-        });
-      }
-
-      if (res.savedClientName && res.savedClientName !== 'Klien (Tanpa Catatan)') {
-        document.getElementById('clientNameInput').value = res.savedClientName;
-      }
-
       showOnlySelected = false;
 
       document.getElementById('albumTitle').textContent = res.folderName;
@@ -3713,14 +3635,14 @@
           img.src = base64Cache[photo.id].dataUrl;
           return;
         }
-        google.script.run.withSuccessHandler(function(res) {
+        fetchDrivePhotoBase64(photo.id).then(function(res) {
           loader.classList.add('hidden');
           img.style.opacity = '1';
           if (res && res.success && res.dataUrl) {
             base64Cache[photo.id] = res;
             img.src = res.dataUrl;
           }
-        }).getPhotoFileData(photo.id);
+        });
       };
 
       img.src = base64Cache[photo.id] ? base64Cache[photo.id].dataUrl : photo.full;
@@ -3888,7 +3810,7 @@
     }
 
     // ==========================================
-    // KIRIM PILIHAN KLIEN KE DATABASE VENDOR & WA
+    // KIRIM PILIHAN KLIEN KE FIRESTORE & WHATSAPP
     // ==========================================
     function buildChosenLinesWithNotes(chosen) {
       return chosen.map(function(p, i) {
@@ -3916,7 +3838,7 @@
       setTimeout(function() { btn.textContent = 'Salin Daftar'; }, 2000);
     }
 
-    function submitToStudioAndCopy() {
+    async function submitToStudioAndCopy() {
       var chosen = allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); });
       var clientName = document.getElementById('clientNameInput').value.trim();
       var btn = document.getElementById('btnSubmitStudio');
@@ -3925,27 +3847,45 @@
       btn.disabled = true;
       btn.textContent = 'Mengirim ke Studio...';
 
-      google.script.run.withSuccessHandler(function(res) {
+      try {
+        await window.mglFirebase.submitClientSelection({
+          albumId: currentAlbumId,
+          ownerUid: currentAlbumOwnerUid,
+          folderName: currentFolderName,
+          clientName: clientName || 'Klien',
+          chosenPhotos: chosen,
+          photoNotes: photoNotesMap
+        });
+        copySelectedList();
+        showNotice('Pilihan foto & catatan revisi berhasil dikirim ke Studio!', 'Terkirim ke Studio');
+        closeSummaryModal();
+      } catch (err) {
+        showNotice('Gagal menyimpan ke database: ' + window.mglFirebase.errorMessage(err));
+      } finally {
         btn.disabled = false;
         btn.textContent = 'Simpan ke Studio & Salin';
-        copySelectedList();
-        if (res.success) {
-          showNotice('Pilihan foto & catatan revisi berhasil dikirim ke Studio!', 'Terkirim ke Studio');
-          closeSummaryModal();
-        } else {
-          showNotice('Gagal menyimpan ke database: ' + res.message);
-        }
-      }).submitClientSelection(currentAlbumId, currentFolderName, clientName, chosen, photoNotesMap);
+      }
     }
 
-    function submitAndSendWhatsApp() {
+    async function submitAndSendWhatsApp() {
       var chosen = allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); });
       var clientName = document.getElementById('clientNameInput').value.trim();
       var listText = buildChosenLinesWithNotes(chosen);
 
       saveSelectionsToLocal();
 
-      google.script.run.submitClientSelection(currentAlbumId, currentFolderName, clientName, chosen, photoNotesMap);
+      try {
+        await window.mglFirebase.submitClientSelection({
+          albumId: currentAlbumId,
+          ownerUid: currentAlbumOwnerUid,
+          folderName: currentFolderName,
+          clientName: clientName || 'Klien',
+          chosenPhotos: chosen,
+          photoNotes: photoNotesMap
+        });
+      } catch (err) {
+        console.warn('Firestore save warning before WA:', err);
+      }
 
       var targetWa = currentAlbumTargetWa || currentAdminWhatsapp || DEFAULT_STUDIO_WA;
 
@@ -3981,21 +3921,30 @@
     }
   </script>
 
+  <!-- FIREBASE MODULE (FULL FIRESTORE STAGE 4) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
     import {
       getAuth,
       createUserWithEmailAndPassword,
       signInWithEmailAndPassword,
+      updatePassword,
       signOut,
       deleteUser,
       onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
     import {
       getFirestore,
+      collection,
       doc,
       setDoc,
       getDoc,
+      getDocs,
+      updateDoc,
+      deleteDoc,
+      query,
+      where,
+      runTransaction,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
@@ -4009,138 +3958,570 @@
       measurementId: "G-Y4BN6LRQPJ"
     };
 
-    let app;
-    let auth;
-    let db;
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    window.mglFirebaseReady = (async function() {
-      app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      db = getFirestore(app);
+    function calcRemainingDays(expiresAtIso) {
+      if (!expiresAtIso) return 0;
+      const diff = new Date(expiresAtIso).getTime() - Date.now();
+      return diff > 0 ? Math.ceil(diff / (1000 * 60 * 60 * 24)) : 0;
+    }
 
-      window.mglFirebase = {
-        async registerUser(data) {
-          let credential = null;
-          try {
-            credential = await createUserWithEmailAndPassword(
-              auth,
-              data.email,
-              data.password
-            );
+    function buildSessionUser(uid, email, profile) {
+      const isSuper = String(profile.role || "").toUpperCase() === "SUPERADMIN";
+      const isLife = isSuper || Boolean(profile.isLifetime) || String(profile.planName || "").toLowerCase().includes("lifetime");
+      const remDays = isLife ? 36500 : calcRemainingDays(profile.expiresAt);
+      const devices = Array.isArray(profile.devices) ? profile.devices : [];
+      const isTrial = String(profile.planName || "").toLowerCase().includes("trial");
 
-            const profile = {
-              email: data.email,
-              name: data.name,
-              whatsapp: data.whatsapp,
-              role: "MEMBER",
-              planName: "PENDING",
-              expiresAt: null,
-              status: "PENDING",
-              createdAt: serverTimestamp()
-            };
+      return {
+        uid,
+        email,
+        name: profile.name || email,
+        whatsapp: profile.whatsapp || "",
+        role: isSuper ? "SUPERADMIN" : "MEMBER",
+        planName: profile.planName || "Trial Gratis 7 Hari",
+        expiresAt: profile.expiresAt || "",
+        isLifetime: isLife,
+        remainingDays: remDays,
+        usedDevicesCount: devices.length || 1,
+        maxDevices: isTrial ? 1 : (profile.maxDevices || 2),
+        switchesUsed7d: Number(profile.switchesUsed7d || 0),
+        maxSwitches7d: Number(profile.maxSwitches7d || 3)
+      };
+    }
 
-            await setDoc(doc(db, "users", credential.user.uid), profile);
-            await signOut(auth);
-            return { user: credential.user, profile };
-          } catch (error) {
-            // Jika akun Auth berhasil dibuat tetapi dokumen profil gagal,
-            // hapus akun Auth agar tidak meninggalkan akun setengah jadi.
-            if (credential && credential.user) {
-              try {
-                await deleteUser(credential.user);
-              } catch (deleteError) {
-                console.error("Gagal membersihkan akun Auth setelah pendaftaran gagal:", deleteError);
-                try { await signOut(auth); } catch (_) {}
-              }
-            }
-            throw error;
-          }
-        },
+    function validateDeviceAccess(profile, deviceId) {
+      const role = String(profile.role || "").toUpperCase();
+      if (role === "SUPERADMIN") return { allowed: true, updatedFields: null };
 
-        async loginUser(email, password) {
-          const credential = await signInWithEmailAndPassword(auth, email, password);
-          try {
-            const snap = await getDoc(doc(db, "users", credential.user.uid));
-            if (!snap.exists()) {
-              await signOut(auth);
-              throw new Error("Profil akun tidak ditemukan di database. Hubungi admin.");
-            }
-            return { user: credential.user, profile: snap.data() };
-          } catch (error) {
-            if (auth.currentUser) {
-              try { await signOut(auth); } catch (_) {}
-            }
-            throw error;
-          }
-        },
+      if (String(profile.status || "").toUpperCase() !== "ACTIVE") {
+        throw new Error("Akun Anda sedang dinonaktifkan / ditangguhkan oleh Admin.");
+      }
 
-        async logoutUser() {
-          if (auth.currentUser) await signOut(auth);
-        },
+      const isLife = Boolean(profile.isLifetime) || String(profile.planName || "").toLowerCase().includes("lifetime");
+      if (!isLife && calcRemainingDays(profile.expiresAt) <= 0) {
+        throw new Error("Masa aktif paket Anda telah berakhir. Silakan masukkan Kode Lisensi pada tab Input Lisensi.");
+      }
 
-        errorMessage(error) {
-          const code = error && error.code ? error.code : "";
-          const messages = {
-            "auth/email-already-in-use": "Email sudah terdaftar. Silakan masuk menggunakan akun tersebut.",
-            "auth/invalid-email": "Format email tidak valid.",
-            "auth/weak-password": "Kata sandi terlalu lemah. Gunakan minimal 6 karakter.",
-            "auth/invalid-credential": "Email atau kata sandi salah.",
-            "auth/user-not-found": "Akun tidak ditemukan.",
-            "auth/wrong-password": "Kata sandi salah.",
-            "auth/too-many-requests": "Terlalu banyak percobaan. Coba lagi beberapa saat.",
-            "permission-denied": "Akses Firestore ditolak. Periksa kembali Firestore Security Rules."
-          };
-          return messages[code] || (error && error.message ? error.message : "Terjadi kesalahan Firebase.");
+      const isTrial = String(profile.planName || "").toLowerCase().includes("trial");
+      const maxDevices = isTrial ? 1 : (profile.maxDevices || 2);
+      let devices = Array.isArray(profile.devices) ? [...profile.devices] : [];
+
+      if (devices.includes(deviceId)) {
+        return { allowed: true, updatedFields: null };
+      }
+
+      if (devices.length < maxDevices) {
+        devices.push(deviceId);
+        return { allowed: true, updatedFields: { devices } };
+      }
+
+      if (isTrial) {
+        throw new Error("Akun Trial 7 Hari terkunci pada 1 perangkat pertama yang didaftarkan.");
+      }
+
+      const now = Date.now();
+      const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+      let switchLogs = Array.isArray(profile.switchLogs)
+        ? profile.switchLogs.filter(ts => (now - Number(ts)) < sevenDaysMs)
+        : [];
+
+      if (switchLogs.length >= 3) {
+        throw new Error("Batas rotasi pindah perangkat (3x dalam 7 hari) telah tercapai. Hubungi Admin jika perlu reset perangkat.");
+      }
+
+      devices.shift();
+      devices.push(deviceId);
+      switchLogs.push(now);
+
+      return {
+        allowed: true,
+        updatedFields: {
+          devices,
+          switchLogs,
+          switchesUsed7d: switchLogs.length
         }
       };
+    }
 
-      // Pulihkan sesi hanya berdasarkan Firebase Auth dan profil Firestore,
-      // bukan berdasarkan data login yang tersimpan di localStorage.
-      onAuthStateChanged(auth, async function(user) {
-        if (!user) return;
+    function getPlanTitleFromDays(days) {
+      if (days >= 36500) return "Paket Lifetime";
+      if (days === 365) return "Paket 1 Tahun";
+      if (days === 90) return "Paket 3 Bulan";
+      if (days === 30) return "Paket 1 Bulan";
+      if (days === 14) return "Paket 14 Hari";
+      return `Paket ${days} Hari`;
+    }
+
+    window.mglFirebase = {
+      async registerUser({ name, email, whatsapp, password, licenseCode, deviceId }) {
+        // Cek apakah perangkat sudah pernah memakai Trial jika daftar tanpa lisensi
+        if (!licenseCode) {
+          const trialSnap = await getDoc(doc(db, "trial_devices", deviceId));
+          if (trialSnap.exists()) {
+            throw new Error("Perangkat ini sudah pernah menggunakan kuota Trial Gratis 7 Hari. Silakan masukkan Kode Lisensi untuk mendaftar.");
+          }
+        }
+
+        let credential = null;
         try {
-          const snap = await getDoc(doc(db, "users", user.uid));
+          credential = await createUserWithEmailAndPassword(auth, email, password);
+          const uid = credential.user.uid;
+
+          let planName = "Trial Gratis 7 Hari";
+          let durationDays = 7;
+          let isLifetime = false;
+          let maxDevices = 1;
+
+          if (licenseCode) {
+            await runTransaction(db, async (tx) => {
+              const licRef = doc(db, "licenses", licenseCode);
+              const licSnap = await tx.get(licRef);
+              if (!licSnap.exists()) {
+                throw new Error("Kode Lisensi tidak ditemukan. Periksa kembali penulisan kode.");
+              }
+              const licData = licSnap.data();
+              if (licData.status !== "UNUSED") {
+                throw new Error("Kode Lisensi ini sudah pernah digunakan.");
+              }
+
+              durationDays = Number(licData.durationDays || 30);
+              isLifetime = durationDays >= 36500;
+              planName = licData.planLabel || getPlanTitleFromDays(durationDays);
+              maxDevices = 2;
+
+              tx.update(licRef, {
+                status: "USED",
+                usedByEmail: email,
+                usedByUid: uid,
+                usedAt: new Date().toISOString()
+              });
+            });
+          } else {
+            await setDoc(doc(db, "trial_devices", deviceId), {
+              email,
+              uid,
+              claimedAt: new Date().toISOString()
+            });
+          }
+
+          const expiresAt = isLifetime
+            ? "2099-12-31T23:59:59.000Z"
+            : new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000).toISOString();
+
+          const profile = {
+            uid,
+            email,
+            name,
+            whatsapp,
+            role: "MEMBER",
+            status: "ACTIVE",
+            planName,
+            expiresAt,
+            isLifetime,
+            maxDevices,
+            devices: [deviceId],
+            switchLogs: [],
+            switchesUsed7d: 0,
+            maxSwitches7d: 3,
+            createdAt: serverTimestamp()
+          };
+
+          await setDoc(doc(db, "users", uid), profile);
+          const sessionUser = buildSessionUser(uid, email, profile);
+          return {
+            message: licenseCode
+              ? `Akun aktif dengan ${planName} (2 Perangkat)!`
+              : "Akun berhasil dibuat! Trial Gratis 7 Hari telah aktif.",
+            sessionUser
+          };
+        } catch (err) {
+          if (credential && credential.user) {
+            try { await deleteUser(credential.user); } catch (_) {}
+          }
+          throw err;
+        }
+      },
+
+      async loginUser(email, password, deviceId) {
+        const credential = await signInWithEmailAndPassword(auth, email, password);
+        const uid = credential.user.uid;
+        try {
+          const userRef = doc(db, "users", uid);
+          const snap = await getDoc(userRef);
           if (!snap.exists()) {
             await signOut(auth);
-            return;
+            throw new Error("Profil akun tidak ditemukan di Firestore.");
           }
           const profile = snap.data();
-          if (
-            String(profile.status || "").toUpperCase() !== "ACTIVE" ||
-            !profile.planName ||
-            profile.planName === "PENDING"
-          ) {
-            await signOut(auth);
-            return;
+          const check = validateDeviceAccess(profile, deviceId);
+          if (check.updatedFields) {
+            await updateDoc(userRef, check.updatedFields);
+            Object.assign(profile, check.updatedFields);
           }
-          if (typeof window.setAdminAuthenticated === "function") {
-            window.setAdminAuthenticated({
-              email: user.email,
-              name: profile.name || user.email,
-              whatsapp: profile.whatsapp || "",
-              role: profile.role || "MEMBER",
-              planName: profile.planName,
-              expiresAt: profile.expiresAt || "",
-              isLifetime: Boolean(profile.isLifetime),
-              remainingDays: Number(profile.remainingDays || 0),
-              usedDevicesCount: Number(profile.usedDevicesCount || 1),
-              maxDevices: Number(profile.maxDevices || 1),
-              switchesUsed7d: Number(profile.switchesUsed7d || 0),
-              maxSwitches7d: Number(profile.maxSwitches7d || 3)
-            }, true);
+          return buildSessionUser(uid, credential.user.email, profile);
+        } catch (err) {
+          if (auth.currentUser) {
+            try { await signOut(auth); } catch (_) {}
           }
-        } catch (error) {
-          console.error("Gagal memeriksa sesi Firebase:", error);
-          try { await signOut(auth); } catch (_) {}
+          throw err;
         }
-      });
+      },
 
-      return true;
-    })().catch(function(error) {
-      console.error("Firebase initialization failed:", error);
-      const message = "Firebase gagal dimuat: " + (error && error.message ? error.message : error);
-      window.mglFirebaseInitError = message;
-      throw error;
+      async activateLicenseByEmail(email, code, deviceId) {
+        const q = query(collection(db, "users"), where("email", "==", email));
+        const userQuerySnap = await getDocs(q);
+        if (userQuerySnap.empty) {
+          throw new Error("Email akun studio tidak ditemukan. Silakan daftar akun terlebih dahulu.");
+        }
+
+        const userDocSnap = userQuerySnap.docs[0];
+        const uid = userDocSnap.id;
+        let updatedProfile = null;
+        let planLabel = "";
+
+        await runTransaction(db, async (tx) => {
+          const licRef = doc(db, "licenses", code);
+          const licSnap = await tx.get(licRef);
+          if (!licSnap.exists()) {
+            throw new Error("Kode Lisensi tidak valid.");
+          }
+          const licData = licSnap.data();
+          if (licData.status !== "UNUSED") {
+            throw new Error("Kode Lisensi sudah terpakai.");
+          }
+
+          const freshUserSnap = await tx.get(doc(db, "users", uid));
+          const uData = freshUserSnap.data();
+          const days = Number(licData.durationDays || 30);
+          const isLife = days >= 36500;
+          planLabel = licData.planLabel || getPlanTitleFromDays(days);
+
+          const baseTime = (!isLife && uData.expiresAt && new Date(uData.expiresAt).getTime() > Date.now())
+            ? new Date(uData.expiresAt).getTime()
+            : Date.now();
+
+          const newExpiresAt = isLife
+            ? "2099-12-31T23:59:59.000Z"
+            : new Date(baseTime + days * 24 * 60 * 60 * 1000).toISOString();
+
+          let devices = Array.isArray(uData.devices) ? [...uData.devices] : [];
+          if (!devices.includes(deviceId) && devices.length < 2) {
+            devices.push(deviceId);
+          }
+
+          updatedProfile = {
+            ...uData,
+            status: "ACTIVE",
+            planName: planLabel,
+            expiresAt: newExpiresAt,
+            isLifetime: isLife || Boolean(uData.isLifetime),
+            maxDevices: 2,
+            devices
+          };
+
+          tx.update(licRef, {
+            status: "USED",
+            usedByEmail: email,
+            usedByUid: uid,
+            usedAt: new Date().toISOString()
+          });
+          tx.update(doc(db, "users", uid), {
+            status: updatedProfile.status,
+            planName: updatedProfile.planName,
+            expiresAt: updatedProfile.expiresAt,
+            isLifetime: updatedProfile.isLifetime,
+            maxDevices: 2,
+            devices: updatedProfile.devices
+          });
+        });
+
+        const isCurrentUser = auth.currentUser && auth.currentUser.uid === uid;
+        return {
+          message: `Lisensi ${planLabel} berhasil diaktifkan untuk akun ${email}!`,
+          sessionUser: isCurrentUser ? buildSessionUser(uid, email, updatedProfile) : null
+        };
+      },
+
+      async updateProfileSettings(uid, newWhatsapp, newPassword) {
+        if (!uid) throw new Error("Sesi tidak valid.");
+        await updateDoc(doc(db, "users", uid), { whatsapp: newWhatsapp });
+        if (newPassword && auth.currentUser) {
+          await updatePassword(auth.currentUser, newPassword);
+        }
+      },
+
+      async logoutUser() {
+        if (auth.currentUser) await signOut(auth);
+      },
+
+      // --- PRICING ---
+      async getPublicPricing() {
+        const snap = await getDoc(doc(db, "settings", "pricing"));
+        if (snap.exists() && Array.isArray(snap.data().plans)) {
+          return snap.data().plans;
+        }
+        return window.DEFAULT_PRICING_PLANS || [];
+      },
+
+      async savePublicPricing(plans) {
+        await setDoc(doc(db, "settings", "pricing"), {
+          plans,
+          updatedAt: new Date().toISOString()
+        });
+      },
+
+      // --- SUPER ADMIN ---
+      async getSuperAdminDashboardData() {
+        const [usersSnap, licSnap, pricingPlans] = await Promise.all([
+          getDocs(collection(db, "users")),
+          getDocs(collection(db, "licenses")),
+          this.getPublicPricing()
+        ]);
+
+        const members = [];
+        usersSnap.forEach((d) => {
+          const data = d.data();
+          const isLife = Boolean(data.isLifetime) || String(data.planName || "").toLowerCase().includes("lifetime");
+          members.push({
+            uid: d.id,
+            ...data,
+            isLifetime: isLife,
+            remainingDays: isLife ? 36500 : calcRemainingDays(data.expiresAt)
+          });
+        });
+
+        const licenses = [];
+        licSnap.forEach((d) => {
+          licenses.push({ code: d.id, ...d.data() });
+        });
+        licenses.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
+
+        return { members, licenses, pricing: pricingPlans };
+      },
+
+      async generateLicenseCodesBatch(days, qty) {
+        const codes = [];
+        const prefix = days >= 36500 ? "LIFE" : `${days}D`;
+        const planLabel = getPlanTitleFromDays(days);
+
+        for (let i = 0; i < qty; i++) {
+          const rand1 = Math.random().toString(36).substring(2, 6).toUpperCase();
+          const rand2 = Math.random().toString(36).substring(2, 6).toUpperCase();
+          const code = `MGL-${prefix}-${rand1}-${rand2}`;
+          await setDoc(doc(db, "licenses", code), {
+            code,
+            durationDays: days,
+            planLabel,
+            status: "UNUSED",
+            usedByEmail: "",
+            usedAt: "",
+            createdAt: new Date().toISOString()
+          });
+          codes.push(code);
+        }
+        return codes;
+      },
+
+      async adminManageMember(targetUid, action, extraDays) {
+        const userRef = doc(db, "users", targetUid);
+        const snap = await getDoc(userRef);
+        if (!snap.exists()) throw new Error("Member tidak ditemukan.");
+        const u = snap.data();
+
+        if (action === "EXTEND") {
+          const isLife = extraDays >= 36500;
+          const base = (!isLife && u.expiresAt && new Date(u.expiresAt).getTime() > Date.now())
+            ? new Date(u.expiresAt).getTime()
+            : Date.now();
+          const nextExp = isLife ? "2099-12-31T23:59:59.000Z" : new Date(base + extraDays * 86400000).toISOString();
+          await updateDoc(userRef, {
+            status: "ACTIVE",
+            planName: isLife ? "Paket Lifetime (Admin)" : `Perpanjangan +${extraDays} Hari`,
+            expiresAt: nextExp,
+            isLifetime: isLife || Boolean(u.isLifetime),
+            maxDevices: 2
+          });
+          return `Masa aktif member ${u.email} berhasil diperpanjang.`;
+        }
+
+        if (action === "RESET_DEVICE") {
+          await updateDoc(userRef, { devices: [], switchLogs: [], switchesUsed7d: 0 });
+          return `Slot perangkat member ${u.email} berhasil di-reset.`;
+        }
+
+        if (action === "TOGGLE_STATUS") {
+          const nextStatus = u.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE";
+          await updateDoc(userRef, { status: nextStatus });
+          return `Status member ${u.email} diubah menjadi ${nextStatus}.`;
+        }
+
+        if (action === "DELETE_USER") {
+          await deleteDoc(userRef);
+          return `Data profil member ${u.email} dihapus dari Firestore.`;
+        }
+
+        return "Tindakan selesai.";
+      },
+
+      async deleteLicenseCode(code) {
+        await deleteDoc(doc(db, "licenses", code));
+      },
+
+      async deleteAllLicenseCodes(onlyUsed) {
+        const snap = await getDocs(collection(db, "licenses"));
+        let count = 0;
+        for (const d of snap.docs) {
+          if (!onlyUsed || d.data().status === "USED") {
+            await deleteDoc(d.ref);
+            count++;
+          }
+        }
+        return `${count} kode lisensi berhasil dihapus.`;
+      },
+
+      // --- ALBUMS & CLIENT SELECTIONS ---
+      async createAlbumConfig(payload) {
+        const rand = Math.random().toString(36).substring(2, 8).toUpperCase();
+        const albumId = `ALB-${rand}`;
+        const shareUrl = `${payload.baseUrl}?album=${albumId}`;
+
+        const docData = {
+          albumId,
+          ownerUid: payload.ownerUid,
+          ownerEmail: payload.ownerEmail,
+          folderId: payload.folderId,
+          folderName: payload.folderName,
+          maxLimit: payload.maxLimit,
+          password: payload.password,
+          allowDownload: payload.allowDownload,
+          enableWatermark: payload.enableWatermark,
+          watermarkText: payload.watermarkText,
+          watermarkSize: payload.watermarkSize,
+          ownerWhatsapp: payload.ownerWhatsapp,
+          shareUrl,
+          createdAt: new Date().toISOString()
+        };
+
+        await setDoc(doc(db, "albums", albumId), docData);
+        return docData;
+      },
+
+      async getAlbumConfig(albumId) {
+        const snap = await getDoc(doc(db, "albums", albumId));
+        return snap.exists() ? snap.data() : null;
+      },
+
+      async submitClientSelection({ albumId, ownerUid, folderName, clientName, chosenPhotos, photoNotes }) {
+        const rand = Math.random().toString(36).substring(2, 8).toUpperCase();
+        const selectionId = `SEL-${rand}`;
+        const photoIds = chosenPhotos.map(p => p.id);
+        const photoNames = chosenPhotos.map(p => p.name);
+
+        await setDoc(doc(db, "selections", selectionId), {
+          selectionId,
+          albumId: albumId || "DIRECT",
+          ownerUid: ownerUid || "",
+          folderName,
+          clientName,
+          photoIds,
+          photoNames,
+          photoNotes: photoNotes || {},
+          totalSelected: photoIds.length,
+          workStatus: "Menunggu Edit",
+          submittedAt: new Date().toISOString()
+        });
+      },
+
+      async updateSelectionWorkStatus(selectionId, workStatus) {
+        await updateDoc(doc(db, "selections", selectionId), { workStatus });
+      },
+
+      async getVendorHistory(ownerUid, role) {
+        const isSuper = String(role || "").toUpperCase() === "SUPERADMIN";
+        const albumsQ = isSuper
+          ? collection(db, "albums")
+          : query(collection(db, "albums"), where("ownerUid", "==", ownerUid));
+        const selectionsQ = isSuper
+          ? collection(db, "selections")
+          : query(collection(db, "selections"), where("ownerUid", "==", ownerUid));
+
+        const [albSnap, selSnap] = await Promise.all([getDocs(albumsQ), getDocs(selectionsQ)]);
+
+        const albums = [];
+        albSnap.forEach(d => albums.push(d.data()));
+        albums.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
+
+        const selections = [];
+        selSnap.forEach(d => selections.push(d.data()));
+        selections.sort((a, b) => String(b.submittedAt || "").localeCompare(String(a.submittedAt || "")));
+
+        return { albums, selections };
+      },
+
+      async deleteAlbumHistory(albumId) {
+        await deleteDoc(doc(db, "albums", albumId));
+      },
+
+      async deleteAllAlbumsHistory(ownerUid, role) {
+        const isSuper = String(role || "").toUpperCase() === "SUPERADMIN";
+        const q = isSuper ? collection(db, "albums") : query(collection(db, "albums"), where("ownerUid", "==", ownerUid));
+        const snap = await getDocs(q);
+        for (const d of snap.docs) await deleteDoc(d.ref);
+        return `${snap.size} arsip galeri berhasil dihapus.`;
+      },
+
+      async deleteSelectionHistory(selectionId) {
+        await deleteDoc(doc(db, "selections", selectionId));
+      },
+
+      async deleteAllSelectionsHistory(ownerUid, role) {
+        const isSuper = String(role || "").toUpperCase() === "SUPERADMIN";
+        const q = isSuper ? collection(db, "selections") : query(collection(db, "selections"), where("ownerUid", "==", ownerUid));
+        const snap = await getDocs(q);
+        for (const d of snap.docs) await deleteDoc(d.ref);
+        return `${snap.size} riwayat kurasi klien berhasil dihapus.`;
+      },
+
+      errorMessage(error) {
+        const code = error && error.code ? error.code : "";
+        const messages = {
+          "auth/email-already-in-use": "Email sudah terdaftar. Silakan masuk menggunakan akun tersebut.",
+          "auth/invalid-email": "Format email tidak valid.",
+          "auth/weak-password": "Kata sandi terlalu lemah. Gunakan minimal 6 karakter.",
+          "auth/invalid-credential": "Email atau kata sandi salah.",
+          "auth/user-not-found": "Akun tidak ditemukan.",
+          "auth/wrong-password": "Kata sandi salah.",
+          "auth/requires-recent-login": "Demi keamanan, silakan keluar dan masuk ulang sebelum mengganti kata sandi.",
+          "auth/too-many-requests": "Terlalu banyak percobaan. Coba lagi beberapa saat.",
+          "permission-denied": "Akses Firestore ditolak. Periksa Firestore Security Rules."
+        };
+        return messages[code] || (error && error.message ? error.message : "Terjadi kesalahan sistem.");
+      }
+    };
+
+    window.mglFirebaseReady = Promise.resolve(true);
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return;
+      try {
+        const snap = await getDoc(doc(db, "users", user.uid));
+        if (!snap.exists()) {
+          await signOut(auth);
+          return;
+        }
+        const profile = snap.data();
+        const deviceId = typeof window.getOrCreateDeviceId === "function" ? window.getOrCreateDeviceId() : "UNKNOWN";
+        validateDeviceAccess(profile, deviceId);
+        if (typeof window.setAdminAuthenticated === "function") {
+          window.setAdminAuthenticated(buildSessionUser(user.uid, user.email, profile), true);
+        }
+      } catch (err) {
+        console.warn("Auto-session check:", err);
+        try { await signOut(auth); } catch (_) {}
+      }
     });
   </script>
 
