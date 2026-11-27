@@ -1688,7 +1688,6 @@
         document.getElementById('adminDashboard').classList.add('hidden');
         loadGalleryFromDrive(folderParam);
       } else {
-        // Tunggu verifikasi sesi login Firebase selesai agar tetap login saat refresh
         if (window.mglAuthInitialCheckDone) {
           try {
             await withTimeout(window.mglAuthInitialCheckDone, 6000, 'Memulihkan sesi');
@@ -4007,14 +4006,18 @@
       writeBatch
     } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
+    // =========================================================================
+    // TEMPEL / GANTI NILAI firebaseConfig DARI FIREBASE CONSOLE ANDA DI BAWAH INI
+    // =========================================================================
     const firebaseConfig = {
-      apiKey: "AIzaSyBc8eP52iO1M4R7jC2Z9hX0wN6vK3pL8yQ",
-      authDomain: "mageniclens-share.firebaseapp.com",
-      projectId: "mageniclens-share",
-      storageBucket: "mageniclens-share.firebasestorage.app",
-      messagingSenderId: "849201746321",
-      appId: "1:849201746321:web:9f8e7d6c5b4a3f2e1d0c9b"
+      apiKey: "PASTE_API_KEY_ANDA_DI_SINI",
+      authDomain: "PASTE_AUTH_DOMAIN_ANDA_DI_SINI",
+      projectId: "PASTE_PROJECT_ID_ANDA_DI_SINI",
+      storageBucket: "PASTE_STORAGE_BUCKET_ANDA_DI_SINI",
+      messagingSenderId: "PASTE_MESSAGING_SENDER_ID_ANDA_DI_SINI",
+      appId: "PASTE_APP_ID_ANDA_DI_SINI"
     };
+    // =========================================================================
 
     const SUPER_ADMIN_EMAIL = "muhammadhidayatsyah669@gmail.com";
     const SUPER_ADMIN_WA = "6287881273759";
