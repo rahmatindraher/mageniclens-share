@@ -1668,8 +1668,16 @@
         document.getElementById('adminDashboard').classList.add('hidden');
         loadGalleryFromDrive(folderParam);
       } else {
-        document.getElementById('welcomeLandingSection').classList.remove('hidden');
-        setLandingNavVisible(true);
+        // Tunggu verifikasi sesi login Firebase selesai agar tidak ter-reset saat refresh
+        if (window.mglAuthInitialCheckDone) {
+          try {
+            await withTimeout(window.mglAuthInitialCheckDone, 4000, 'Memulihkan sesi');
+          } catch (e) {}
+        }
+        if (!isAdminLoggedIn) {
+          document.getElementById('welcomeLandingSection').classList.remove('hidden');
+          setLandingNavVisible(true);
+        }
       }
 
       initLightboxInteractions();
@@ -3939,11 +3947,13 @@
     }
   </script>
 
-  <!-- FIREBASE MODULE (PRODUCTION FINAL) -->
+  <!-- FIREBASE MODULE (PRODUCTION FINAL + PERSISTENT AUTH SESSION) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
     import {
       getAuth,
+      setPersistence,
+      browserLocalPersistence,
       createUserWithEmailAndPassword,
       signInWithEmailAndPassword,
       updatePassword,
@@ -3977,6 +3987,11 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+
+    // Pastikan sesi login tersimpan secara permanen di browser sampai user menekan Keluar
+    setPersistence(auth, browserLocalPersistence).catch((err) => {
+      console.warn("Auth persistence warning:", err);
+    });
 
     function calcRemainingDays(expiresAtIso) {
       if (!expiresAtIso) return 0;
@@ -4480,17 +4495,41 @@
 
     window.mglFirebaseReady = Promise.resolve(true);
 
+    let resolveInitialAuth;
+    window.mglAuthInitialCheckDone = new Promise((resolve) => {
+      resolveInitialAuth = resolve;
+    });
+
     onAuthStateChanged(auth, async (user) => {
-      if (!user) return;
       try {
+        if (!user) {
+          if (resolveInitialAuth) {
+            resolveInitialAuth(null);
+            resolveInitialAuth = null;
+          }
+          return;
+        }
         const snap = await getDoc(doc(db, "users", user.uid));
-        if (!snap.exists()) return;
+        if (!snap.exists()) {
+          if (resolveInitialAuth) {
+            resolveInitialAuth(null);
+            resolveInitialAuth = null;
+          }
+          return;
+        }
         const profile = snap.data();
+        const urlParams = new URLSearchParams(window.location.search);
+        const isClientView = Boolean(urlParams.get('album') || urlParams.get('folder'));
         if (typeof window.setAdminAuthenticated === "function") {
-          window.setAdminAuthenticated(buildSessionUser(user.uid, user.email, profile), true);
+          window.setAdminAuthenticated(buildSessionUser(user.uid, user.email, profile), !isClientView);
         }
       } catch (err) {
         console.warn("Auto-session check:", err);
+      } finally {
+        if (resolveInitialAuth) {
+          resolveInitialAuth(user || null);
+          resolveInitialAuth = null;
+        }
       }
     });
   </script>
