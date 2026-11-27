@@ -864,7 +864,7 @@
     </div>
   </div>
 
-  <!-- MODAL LOGIN, DAFTAR (TRIAL / LISENSI) & AKTIVASI PERPANJANGAN -->
+  <!-- MODAL LOGIN, LUPA PASSWORD, DAFTAR (TRIAL / LISENSI) & AKTIVASI PERPANJANGAN -->
   <div id="adminLoginModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 rounded-3xl max-w-md w-full p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
       <div class="flex items-center justify-between mb-4">
@@ -886,16 +886,33 @@
 
       <div id="authLoginForm" class="space-y-4">
         <div class="space-y-2.5">
-          <input type="email" id="loginEmailInput" autocomplete="off" placeholder="Email Studio Anda" class="w-full px-4 py-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
+          <input type="email" id="loginEmailInput" autocomplete="email" placeholder="Email Studio Anda" class="w-full px-4 py-3 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
           <div class="relative">
-            <input type="password" id="loginPassInput" autocomplete="new-password" placeholder="Kata Sandi" class="w-full px-4 py-3 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
+            <input type="password" id="loginPassInput" autocomplete="current-password" placeholder="Kata Sandi" class="w-full px-4 py-3 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
             <button type="button" onclick="togglePasswordVisibility('loginPassInput', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
             </button>
           </div>
+          <div class="flex justify-end">
+            <button type="button" onclick="toggleForgotPasswordPanel()" class="text-xs font-semibold text-[#B5945B] dark:text-[#D4AF37] hover:underline cursor-pointer">
+              Lupa Kata Sandi?
+            </button>
+          </div>
           <div id="loginErrorMsg" class="hidden text-xs text-red-600 dark:text-red-400 bg-red-500/10 border border-red-500/25 p-2.5 rounded-xl"></div>
-          <button type="button" id="btnEmailLogin" onclick="handleEmailLogin()" class="w-full py-3 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black font-bold text-sm transition">
+          <button type="button" id="btnEmailLogin" onclick="handleEmailLogin()" class="w-full py-3 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black font-bold text-sm transition cursor-pointer">
             Masuk ke Ruang Studio
+          </button>
+        </div>
+
+        <!-- PANEL LUPA PASSWORD -->
+        <div id="forgotPasswordPanel" class="hidden p-3.5 rounded-2xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-800 space-y-2.5">
+          <p class="text-[11px] text-[#5C5549] dark:text-zinc-400 leading-relaxed">
+            Masukkan email studio Anda yang terdaftar. Tautan untuk mengatur ulang kata sandi akan dikirim ke email tersebut.
+          </p>
+          <input type="email" id="resetEmailInput" autocomplete="email" placeholder="Email akun studio Anda" class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-zinc-900 border border-[#DFD8C8] dark:border-zinc-700 text-xs text-[#1C1B18] dark:text-white focus:outline-none">
+          <div id="resetPassFeedback" class="hidden text-xs p-2.5 rounded-xl leading-relaxed"></div>
+          <button type="button" id="btnSendResetPass" onclick="handleSendPasswordReset()" class="w-full py-2.5 rounded-full bg-[#1C1B18] hover:bg-[#33312B] text-[#F7F5F0] dark:bg-[#D4AF37] dark:hover:bg-[#E3C14B] dark:text-black font-bold text-xs transition cursor-pointer">
+            Kirim Link Reset Password
           </button>
         </div>
 
@@ -1639,6 +1656,9 @@
       var loginPass = document.getElementById('loginPassInput');
       if (loginPass) loginPass.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleEmailLogin(); });
 
+      var resetEmail = document.getElementById('resetEmailInput');
+      if (resetEmail) resetEmail.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleSendPasswordReset(); });
+
       var regConfirm = document.getElementById('regConfirmPassInput');
       if (regConfirm) regConfirm.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleRegisterUser(); });
 
@@ -1668,10 +1688,10 @@
         document.getElementById('adminDashboard').classList.add('hidden');
         loadGalleryFromDrive(folderParam);
       } else {
-        // Tunggu verifikasi sesi login Firebase selesai agar tidak ter-reset saat refresh
+        // Tunggu verifikasi sesi login Firebase selesai agar tetap login saat refresh
         if (window.mglAuthInitialCheckDone) {
           try {
-            await withTimeout(window.mglAuthInitialCheckDone, 4000, 'Memulihkan sesi');
+            await withTimeout(window.mglAuthInitialCheckDone, 6000, 'Memulihkan sesi');
           } catch (e) {}
         }
         if (!isAdminLoggedIn) {
@@ -1683,7 +1703,11 @@
       initLightboxInteractions();
     }
 
-    window.addEventListener('load', bootApplication);
+    if (document.readyState === 'complete') {
+      bootApplication();
+    } else {
+      window.addEventListener('load', bootApplication);
+    }
 
     // ==========================================
     // RENDER HARGA CORET & HARGA TERKINI (FIRESTORE)
@@ -1850,7 +1874,7 @@
     }
 
     // ==========================================
-    // OTENTIKASI, TRIAL 1 PERANGKAT & LISENSI 2 PERANGKAT (FIREBASE)
+    // OTENTIKASI, LUPA PASSWORD, TRIAL 1 PERANGKAT & LISENSI 2 PERANGKAT (FIREBASE)
     // ==========================================
     function openAdminGate(defaultTab) {
       if (isAdminLoggedIn) {
@@ -1863,6 +1887,8 @@
       } else {
         document.getElementById('loginEmailInput').value = '';
         document.getElementById('loginPassInput').value = '';
+        var forgotPanel = document.getElementById('forgotPasswordPanel');
+        if (forgotPanel) forgotPanel.classList.add('hidden');
         switchAuthTab(defaultTab || 'login');
         document.getElementById('adminLoginModal').classList.remove('hidden');
       }
@@ -1897,6 +1923,58 @@
           btns[k].className = 'py-2 rounded-full text-xs font-bold text-[#6E6556] dark:text-zinc-400 hover:text-[#1C1B18] dark:hover:text-white transition';
         }
       });
+    }
+
+    function toggleForgotPasswordPanel() {
+      var panel = document.getElementById('forgotPasswordPanel');
+      var loginEmail = document.getElementById('loginEmailInput');
+      var resetEmail = document.getElementById('resetEmailInput');
+      var feedback = document.getElementById('resetPassFeedback');
+      if (!panel) return;
+
+      panel.classList.toggle('hidden');
+      if (feedback) {
+        feedback.classList.add('hidden');
+        feedback.textContent = '';
+      }
+      if (!panel.classList.contains('hidden') && loginEmail && resetEmail && !resetEmail.value) {
+        resetEmail.value = loginEmail.value.trim();
+      }
+    }
+
+    async function handleSendPasswordReset() {
+      var emailInput = document.getElementById('resetEmailInput');
+      var feedback = document.getElementById('resetPassFeedback');
+      var btn = document.getElementById('btnSendResetPass');
+      var email = (emailInput ? emailInput.value : '').trim().toLowerCase();
+
+      if (!email) {
+        feedback.className = 'text-xs p-2.5 rounded-xl bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/25 leading-relaxed';
+        feedback.textContent = 'Silakan masukkan alamat email terdaftar terlebih dahulu.';
+        feedback.classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Mengirim Email...';
+      feedback.classList.add('hidden');
+
+      try {
+        if (!window.mglFirebase || !window.mglFirebase.sendResetPassword) {
+          throw new Error('Layanan autentikasi belum siap. Muat ulang halaman.');
+        }
+        await withTimeout(window.mglFirebase.sendResetPassword(email), 12000, 'Reset password');
+        feedback.className = 'text-xs p-2.5 rounded-xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 leading-relaxed';
+        feedback.textContent = 'Tautan reset password telah dikirim ke ' + email + '. Silakan periksa Inbox atau folder Spam email Anda.';
+        feedback.classList.remove('hidden');
+      } catch (err) {
+        feedback.className = 'text-xs p-2.5 rounded-xl bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/25 leading-relaxed';
+        feedback.textContent = window.mglFirebase ? window.mglFirebase.errorMessage(err) : (err.message || String(err));
+        feedback.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Kirim Link Reset Password';
+      }
     }
 
     async function handleRegisterUser() {
@@ -2719,45 +2797,50 @@
                   '<select onchange="handleWorkStatusChange(\'' + sel.selectionId + '\', this.value)" class="px-2.5 py-0.5 rounded-full bg-white dark:bg-zinc-900 border border-[#DFD8C8] dark:border-zinc-700 text-[11px] font-bold text-[#1C1B18] dark:text-zinc-200 focus:outline-none">' +
                     '<option value="Menunggu Edit" ' + (workStatus === 'Menunggu Edit' ? 'selected' : '') + '>🟡 Menunggu Edit</option>' +
                     '<option value="Proses Grading" ' + (workStatus === 'Proses Grading' ? 'selected' : '') + '>🔵 Proses Grading</option>' +
-                    '<option value="Selesai & Terkirim" ' + (workStatus === 'Selesai & Terkirim' ? 'selected' : '') + '>🟢 Selesai & Terkirim</option>' +
+                    '<option value="Revisi Klien" ' + (workStatus === 'Revisi Klien' ? 'selected' : '') + '>🟠 Revisi Klien</option>' +
+                    '<option value="Selesai" ' + (workStatus === 'Selesai' ? 'selected' : '') + '>🟢 Selesai</option>' +
                   '</select>' +
+                  '<span class="text-xs text-[#6E6556] dark:text-zinc-400">' + dateStr + '</span>' +
                 '</div>' +
-                '<h4 class="text-base font-extrabold text-[#1C1B18] dark:text-white mt-1.5 break-words">' + escapeHtmlAttr(sel.folderName) + ' — <span class="text-[#B5945B] dark:text-[#D4AF37]">' + escapeHtmlAttr(sel.clientName) + '</span></h4>' +
-                '<p class="text-[11px] text-[#6E6556] dark:text-zinc-400 mt-0.5">Dikirim pada: ' + dateStr + ' • ID: ' + sel.selectionId + '</p>' +
+                '<h4 class="text-base font-extrabold text-[#1C1B18] dark:text-white mt-1.5">' + escapeHtmlAttr(sel.folderName) + ' <span class="text-[#6E6556] dark:text-zinc-400 font-normal text-xs">— Klien: <strong class="text-[#1C1B18] dark:text-zinc-200">' + escapeHtmlAttr(sel.clientName) + '</strong></span></h4>' +
               '</div>' +
-              '<div class="flex flex-wrap gap-2">' +
-                '<button type="button" data-sel="' + selObjAttr + '" data-format="with_ext" onclick="openVendorSelectionDetailFromEl(this)" class="px-3.5 py-2 rounded-full bg-white dark:bg-zinc-800 hover:bg-[#EFECE6] dark:hover:bg-zinc-700 text-[#1C1B18] dark:text-[#D4AF37] text-xs font-bold border border-[#DFD8C8] dark:border-[#D4AF37]/40 transition">Daftar Foto & Salin Kode</button>' +
-                '<button type="button" data-pids="' + idsJsonAttr + '" data-pnames="' + namesJsonAttr + '" data-zipname="' + safeZipNameAttr + '" onclick="downloadVendorZipFromEl(this)" class="px-3.5 py-2 rounded-full bg-[#1C1B18] text-white dark:bg-[#D4AF37] dark:text-black text-xs font-extrabold transition">Download ZIP</button>' +
-                '<button type="button" data-selid="' + sel.selectionId + '" data-folder="' + safeFolderAttr + '" onclick="confirmDeleteSelectionFromEl(this)" class="px-3 py-2 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/25 text-xs font-bold transition">Hapus</button>' +
-              '</div></div>' +
-              gridHtml;
+              '<div class="flex flex-wrap items-center gap-2 shrink-0">' +
+                '<button type="button" data-selobj="' + selObjAttr + '" onclick="openVendorSelectionDetailFromEl(this)" class="px-4 py-2 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black font-extrabold text-xs transition">' +
+                  'Ekspor Kode File' +
+                '</button>' +
+                '<button type="button" data-pids="' + idsJsonAttr + '" data-pnames="' + namesJsonAttr + '" data-zipname="' + safeZipNameAttr + '" onclick="downloadVendorZipFromEl(this)" class="px-3.5 py-2 rounded-full bg-white dark:bg-zinc-800 hover:bg-[#EFECE6] text-[#1C1B18] dark:text-[#D4AF37] border border-[#DFD8C8] dark:border-zinc-700 text-xs font-bold transition">' +
+                  'Unduh ZIP' +
+                '</button>' +
+                '<button type="button" data-selid="' + sel.selectionId + '" data-folder="' + safeFolderAttr + '" onclick="confirmDeleteSelectionFromEl(this)" title="Hapus riwayat seleksi ini" class="px-3 py-2 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/25 text-xs font-bold transition">' +
+                  'Hapus' +
+                '</button>' +
+              '</div>' +
+            '</div>' + gridHtml;
 
             container.appendChild(card);
           });
         }
 
-        albumsContainer.innerHTML = '';
         if (res.albums.length === 0) {
           if (btnDelAllAlb) btnDelAllAlb.classList.add('hidden');
-          albumsContainer.innerHTML = '<p class="text-xs text-zinc-500">Belum ada album yang dibuat.</p>';
+          albumsContainer.innerHTML = '<p class="text-xs text-zinc-500">Belum ada tautan album yang tersimpan.</p>';
         } else {
           if (btnDelAllAlb) btnDelAllAlb.classList.remove('hidden');
+          albumsContainer.innerHTML = '';
           res.albums.forEach(function(alb) {
-            var row = document.createElement('div');
-            row.className = 'flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3.5 rounded-2xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 text-xs overflow-hidden';
-            var limitLabel = alb.maxLimit > 0 ? alb.maxLimit + ' foto' : 'Bebas';
-            var passLabel = alb.password ? alb.password : '-';
-            row.innerHTML =
-              '<div class="min-w-0 flex-1 space-y-0.5">' +
-                '<p class="font-bold text-[#1C1B18] dark:text-white truncate">' + escapeHtmlAttr(alb.folderName) + ' <span class="text-zinc-400 font-normal">(' + alb.albumId + ')</span></p>' +
-                '<p class="text-[11px] text-[#6E6556] dark:text-zinc-400 truncate">Batas: ' + limitLabel + ' • Pass: ' + escapeHtmlAttr(passLabel) + ' • WA: +' + alb.ownerWhatsapp + '</p>' +
-              '</div>' +
-              '<div class="flex flex-wrap items-center gap-1.5 shrink-0">' +
-                '<button type="button" data-url="' + escapeHtmlAttr(alb.shareUrl) + '" onclick="copyTextSafe(this.dataset.url); showToast(\'Link album disalin!\');" class="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 text-[#1C1B18] dark:text-[#D4AF37] font-semibold border border-[#DFD8C8] dark:border-zinc-700">Salin Link</button>' +
-                '<button type="button" data-folder="' + escapeHtmlAttr(alb.folderName) + '" data-url="' + escapeHtmlAttr(alb.shareUrl) + '" data-pass="' + escapeHtmlAttr(alb.password || '') + '" data-limit="' + alb.maxLimit + '" onclick="copySavedAlbumTemplateFromEl(this)" class="px-3 py-1.5 rounded-full bg-white dark:bg-zinc-800 text-[#4A4337] dark:text-zinc-200 font-semibold border border-[#DFD8C8] dark:border-zinc-700">Salin Pesan</button>' +
-                '<button type="button" data-albumid="' + alb.albumId + '" data-folder="' + escapeHtmlAttr(alb.folderName) + '" onclick="confirmDeleteAlbumFromEl(this)" class="px-2.5 py-1.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/25 font-bold transition">Hapus</button>' +
-              '</div>';
-            albumsContainer.appendChild(row);
+            var baseUrl = window.location.origin + window.location.pathname;
+            var shortUrl = baseUrl + '?album=' + alb.albumId;
+            var div = document.createElement('div');
+            div.className = 'p-3.5 rounded-2xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 flex flex-wrap items-center justify-between gap-2 text-xs';
+            div.innerHTML = '<div class="min-w-0">' +
+              '<p class="font-bold text-[#1C1B18] dark:text-white truncate">' + escapeHtmlAttr(alb.folderName) + ' <span class="text-[#B5945B] dark:text-[#D4AF37]">(' + (alb.maxLimit > 0 ? 'Batas ' + alb.maxLimit + ' foto' : 'Tanpa Batas') + ')</span></p>' +
+              '<p class="text-[#6E6556] dark:text-zinc-500 truncate mt-0.5">' + shortUrl + ' • Sandi: ' + (alb.hasPassword ? 'Aktif' : 'Tidak ada') + '</p>' +
+            '</div>' +
+            '<div class="flex items-center gap-2 shrink-0">' +
+              '<button type="button" onclick="copyTextSafe(\'' + shortUrl + '\'); showToast(\'Tautan galeri disalin!\');" class="px-3.5 py-1.5 rounded-full bg-white dark:bg-zinc-800 text-[#1C1B18] dark:text-[#D4AF37] border border-[#DFD8C8] dark:border-zinc-700 font-semibold">Salin Link</button>' +
+              '<button type="button" data-albumid="' + alb.albumId + '" data-folder="' + escapeHtmlAttr(alb.folderName) + '" onclick="confirmDeleteAlbumFromEl(this)" title="Hapus album ini" class="px-3 py-1.5 rounded-full bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/25 font-bold transition">Hapus</button>' +
+            '</div>';
+            albumsContainer.appendChild(div);
           });
         }
       } catch (err) {
@@ -2765,28 +2848,28 @@
       }
     }
 
-    function openVendorSelectionDetailFromEl(el) {
-      var sel = JSON.parse(el.dataset.sel || '{}');
-      var initialFormat = el.dataset.format || 'with_ext';
-      openVendorSelectionDetail(sel, initialFormat);
+    function openVendorSelectionDetailFromEl(btn) {
+      var sel = JSON.parse(btn.getAttribute('data-selobj') || '{}');
+      openVendorSelectionDetail(sel);
     }
 
-    function openVendorSelectionDetail(sel, initialFormat) {
+    function openVendorSelectionDetail(sel) {
       currentDetailSelection = sel;
-      var total = (sel.photoIds || []).length;
-      document.getElementById('detailModalClientBadge').textContent = (sel.folderName || 'Album') + ' • ' + (sel.clientName || 'Klien');
-      document.getElementById('detailModalHeading').textContent = 'Daftar Foto Terkurasi (' + total + ' Foto)';
-      document.getElementById('detailPillCount').textContent = total;
+      currentOutputFormat = 'with_ext';
+      document.getElementById('detailModalClientBadge').textContent = 'Klien: ' + (sel.clientName || 'Klien');
+      document.getElementById('detailModalHeading').textContent = 'Daftar Foto Terkurasi (' + (sel.totalSelected || 0) + ' Foto)';
+      document.getElementById('detailPillCount').textContent = sel.totalSelected || 0;
       document.getElementById('detailSearchInput').value = '';
       document.getElementById('detailSortSelect').value = 'selected';
 
-      selectOutputFormat(initialFormat || 'with_ext');
+      selectOutputFormat('with_ext');
       renderDetailCardsGrid();
       document.getElementById('vendorSelectionDetailModal').classList.remove('hidden');
     }
 
     function closeVendorSelectionDetail() {
       document.getElementById('vendorSelectionDetailModal').classList.add('hidden');
+      currentDetailSelection = null;
     }
 
     function selectOutputFormat(mode) {
@@ -2803,62 +2886,56 @@
         var btn = document.getElementById('fmtBtn_' + m);
         if (!btn) return;
         if (m === mode) {
-          btn.className = 'px-3 py-1.5 rounded-full bg-[#1C1B18] text-white dark:bg-[#D4AF37] dark:text-black text-[11px] font-bold transition';
+          btn.className = 'px-3 py-1.5 rounded-full bg-[#1C1B18] text-[#F7F5F0] dark:bg-[#D4AF37] dark:text-black text-[11px] font-bold transition shadow';
         } else {
-          btn.className = 'px-3 py-1.5 rounded-full bg-[#EFECE6] dark:bg-zinc-800 text-[#4A4337] dark:text-zinc-200 text-[11px] font-bold transition';
+          btn.className = 'px-3 py-1.5 rounded-full bg-[#EFECE6] hover:bg-[#E5DFD3] dark:bg-zinc-800 dark:hover:bg-zinc-700 text-[#4A4337] dark:text-zinc-200 text-[11px] font-bold transition';
         }
       });
 
-      var labelEl = document.getElementById('previewFormatLabel');
-      if (labelEl) labelEl.textContent = labels[mode] || mode;
-
-      var previewBox = document.getElementById('outputPreviewTextarea');
-      if (previewBox && currentDetailSelection) {
-        previewBox.value = formatPhotoNamesList(currentDetailSelection.photoNames || [], mode);
-      }
+      document.getElementById('previewFormatLabel').textContent = labels[mode] || '';
+      var names = (currentDetailSelection && currentDetailSelection.photoNames) || [];
+      document.getElementById('outputPreviewTextarea').value = formatPhotoNamesList(names, mode);
     }
 
     function copyPreviewOutputText() {
-      var previewBox = document.getElementById('outputPreviewTextarea');
-      if (!previewBox || !previewBox.value) return;
-      copyTextSafe(previewBox.value);
-
+      var ta = document.getElementById('outputPreviewTextarea');
+      if (!ta || !ta.value) return;
+      copyTextSafe(ta.value);
       var btn = document.getElementById('btnConfirmCopyPreview');
-      var origHtml = btn.innerHTML;
-      btn.classList.remove('bg-emerald-700', 'hover:bg-emerald-600');
-      btn.classList.add('bg-[#1C1B18]', 'text-white');
-      btn.innerHTML = '<span>✓ Teks Berhasil Disalin!</span>';
-      setTimeout(function() {
-        btn.classList.remove('bg-[#1C1B18]', 'text-white');
-        btn.classList.add('bg-emerald-700', 'hover:bg-emerald-600');
-        btn.innerHTML = origHtml;
-      }, 1800);
+      var orig = btn.innerHTML;
+      btn.innerHTML = '<span>✓ Tersalin!</span>';
+      setTimeout(function() { btn.innerHTML = orig; }, 2000);
+      showToast('Daftar kode file berhasil disalin!');
     }
 
     function renderDetailCardsGrid() {
       if (!currentDetailSelection) return;
       var container = document.getElementById('detailCardsContainer');
-      var query = document.getElementById('detailSearchInput').value.trim().toLowerCase();
-      var sortBy = document.getElementById('detailSortSelect').value;
+      var query = (document.getElementById('detailSearchInput').value || '').trim().toLowerCase();
+      var sortMode = document.getElementById('detailSortSelect').value;
 
-      var items = (currentDetailSelection.photoIds || []).map(function(pid, idx) {
+      var pids = currentDetailSelection.photoIds || [];
+      var pnames = currentDetailSelection.photoNames || [];
+      var notesObj = currentDetailSelection.photoNotes || {};
+      var items = pids.map(function(id, idx) {
         return {
-          id: pid,
-          name: (currentDetailSelection.photoNames && currentDetailSelection.photoNames[idx]) || ('Foto_' + (idx + 1) + '.jpg'),
-          originalIndex: idx
+          id: id,
+          name: pnames[idx] || ('Foto_' + (idx + 1) + '.jpg'),
+          note: notesObj[id] || '',
+          origIndex: idx
         };
       });
 
       if (query) {
-        items = items.filter(function(item) {
-          return item.name.toLowerCase().indexOf(query) !== -1 ||
-                 extractTrailingNumber(item.name).indexOf(query) !== -1;
+        items = items.filter(function(it) {
+          return it.name.toLowerCase().indexOf(query) !== -1 ||
+                 extractTrailingNumber(it.name).toLowerCase().indexOf(query) !== -1;
         });
       }
 
-      if (sortBy === 'name_asc') {
+      if (sortMode === 'name_asc') {
         items.sort(function(a, b) { return a.name.localeCompare(b.name, undefined, { numeric: true }); });
-      } else if (sortBy === 'name_desc') {
+      } else if (sortMode === 'name_desc') {
         items.sort(function(a, b) { return b.name.localeCompare(a.name, undefined, { numeric: true }); });
       }
 
@@ -2868,100 +2945,67 @@
         return;
       }
 
-      var allIds = items.map(function(it) { return it.id; });
-      var allNames = items.map(function(it) { return it.name; });
-      var idsJsonAttr = escapeHtmlAttr(JSON.stringify(allIds));
-      var namesJsonAttr = escapeHtmlAttr(JSON.stringify(allNames));
+      var filteredIdsJson = escapeHtmlAttr(JSON.stringify(items.map(function(x) { return x.id; })));
+      var filteredNamesJson = escapeHtmlAttr(JSON.stringify(items.map(function(x) { return x.name; })));
 
-      items.forEach(function(item, viewIdx) {
-        var badgeNum = '#' + String(item.originalIndex + 1).padStart(2, '0');
+      items.forEach(function(item, idx) {
         var safeName = escapeHtmlAttr(item.name);
+        var noExtName = escapeHtmlAttr(stripExtension(item.name));
+        var numOnly = escapeHtmlAttr(extractTrailingNumber(item.name));
         var demoPhoto = MOCK_SAMPLE_PHOTOS.find(function(mp) { return mp.id === item.id; });
         var thumbSrc = demoPhoto ? demoPhoto.thumb : ('https://lh3.googleusercontent.com/d/' + item.id + '=s700');
 
         var card = document.createElement('div');
-        card.className = 'rounded-2xl overflow-hidden bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 hover:border-[#B5945B] dark:hover:border-[#D4AF37] shadow-xs flex flex-col transition group';
-        card.innerHTML = '<div data-pids="' + idsJsonAttr + '" data-pnames="' + namesJsonAttr + '" data-idx="' + viewIdx + '" onclick="openVendorLightboxFromEl(this)" class="relative aspect-[4/3] w-full bg-zinc-200 dark:bg-zinc-900 overflow-hidden cursor-pointer">' +
-          '<img src="' + thumbSrc + '" onerror="handleThumbFallback(this, \'' + item.id + '\')" alt="' + safeName + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">' +
-          '<span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-sm text-white text-xs font-extrabold tracking-wide">' + badgeNum + '</span>' +
-        '</div>' +
-        '<div class="px-3.5 py-3 flex items-center justify-between gap-2 bg-white dark:bg-zinc-900/90 border-t border-[#EFECE6] dark:border-zinc-800">' +
-          '<span class="text-xs font-bold text-[#1C1B18] dark:text-zinc-100 font-mono truncate" title="' + safeName + '">' + safeName + '</span>' +
-          '<button type="button" data-filename="' + safeName + '" onclick="copySingleFileName(this)" title="Salin nama file ini" class="p-1.5 rounded-lg bg-[#EFECE6] hover:bg-[#1C1B18] text-[#4A4337] hover:text-white dark:bg-zinc-800 dark:hover:bg-[#D4AF37] dark:text-zinc-300 dark:hover:text-black transition shrink-0">' +
-            '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>' +
-          '</button>' +
-        '</div>';
+        card.className = 'rounded-2xl overflow-hidden bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 hover:border-[#B5945B] dark:hover:border-[#D4AF37] transition flex flex-col shadow-xs';
+        card.innerHTML =
+          '<div data-pids="' + filteredIdsJson + '" data-pnames="' + filteredNamesJson + '" data-idx="' + idx + '" onclick="openVendorLightboxFromEl(this)" class="relative aspect-[4/3] w-full bg-zinc-200 dark:bg-zinc-900 overflow-hidden cursor-pointer group">' +
+            '<img src="' + thumbSrc + '" onerror="handleThumbFallback(this, \'' + item.id + '\')" alt="' + safeName + '" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">' +
+            '<span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/80 text-white text-xs font-extrabold">#' + String(item.origIndex + 1).padStart(2, '0') + '</span>' +
+          '</div>' +
+          '<div class="p-3.5 space-y-2.5 flex-grow flex flex-col justify-between bg-white dark:bg-[#131316]">' +
+            '<div>' +
+              '<p class="text-[11px] text-[#6E6556] dark:text-zinc-400">Nama File:</p>' +
+              '<p class="text-xs font-bold text-[#1C1B18] dark:text-white font-mono break-all mt-0.5">' + safeName + '</p>' +
+              (item.note ? '<p class="text-[11px] text-[#6B5E4A] dark:text-[#E3C14B] bg-[#B5945B]/10 px-2.5 py-1 rounded-lg mt-1.5">📝 ' + escapeHtmlAttr(item.note) + '</p>' : '') +
+            '</div>' +
+            '<div class="flex flex-wrap items-center gap-1.5 pt-2 border-t border-[#EFECE6] dark:border-zinc-800">' +
+              '<button type="button" data-filename="' + noExtName + '" onclick="copySingleFileName(this)" class="flex-1 py-1.5 px-2 rounded-lg bg-[#EFECE6] hover:bg-[#1C1B18] text-[#1C1B18] hover:text-white dark:bg-zinc-800 dark:hover:bg-[#D4AF37] dark:text-zinc-200 dark:hover:text-black text-[11px] font-bold transition text-center">' +
+                'Salin Nama' +
+              '</button>' +
+              '<button type="button" data-filename="' + numOnly + '" onclick="copySingleFileName(this)" class="py-1.5 px-2.5 rounded-lg bg-[#EFECE6] hover:bg-[#1C1B18] text-[#B5945B] hover:text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-[#D4AF37] text-[11px] font-bold transition">' +
+                '#' + numOnly +
+              '</button>' +
+            '</div>' +
+          '</div>';
         container.appendChild(card);
       });
     }
 
-    function copySingleFileName(btn) {
-      var fname = btn.dataset.filename || '';
-      copyTextSafe(fname);
-      var origHtml = btn.innerHTML;
-      btn.classList.add('bg-emerald-600', 'text-white');
-      btn.innerHTML = '<span class="text-[10px] font-extrabold px-1">✓</span>';
-      setTimeout(function() {
-        btn.classList.remove('bg-emerald-600', 'text-white');
-        btn.innerHTML = origHtml;
-      }, 1200);
-    }
-
     function downloadDetailModalZip() {
       if (!currentDetailSelection) return;
-      downloadVendorZip(
-        currentDetailSelection.photoIds,
-        currentDetailSelection.photoNames,
-        (currentDetailSelection.folderName || 'Album') + '_' + (currentDetailSelection.clientName || 'Klien')
-      );
+      var pids = currentDetailSelection.photoIds || [];
+      var pnames = currentDetailSelection.photoNames || [];
+      var zipName = (currentDetailSelection.folderName || 'Seleksi') + '_' + (currentDetailSelection.clientName || 'Klien');
+      var items = pids.map(function(id, i) {
+        return { id: id, name: pnames[i] || ('Foto_' + (i + 1) + '.jpg') };
+      });
+      startBackgroundZipDownload(items, zipName, false);
     }
 
-    function openVendorLightboxFromEl(el) {
-      var pids = JSON.parse(el.dataset.pids || '[]');
-      var pnames = JSON.parse(el.dataset.pnames || '[]');
-      var idx = parseInt(el.dataset.idx, 10) || 0;
-      openVendorLightbox(pids, pnames, idx);
+    function copySingleFileName(btn) {
+      var fname = btn.getAttribute('data-filename') || '';
+      copyTextSafe(fname);
+      showToast('Tersalin: ' + fname);
     }
 
-    function downloadVendorZipFromEl(el) {
-      var pids = JSON.parse(el.dataset.pids || '[]');
-      var pnames = JSON.parse(el.dataset.pnames || '[]');
-      var zipname = el.dataset.zipname || 'Mageniclens_Selection';
-      downloadVendorZip(pids, pnames, zipname);
-    }
-
-    async function confirmDeleteAlbumFromEl(el) {
-      var albumId = el.dataset.albumid;
-      var folderName = el.dataset.folder;
-      var ok = await showConfirm('Yakin ingin menghapus riwayat link album "' + folderName + '"?');
+    async function confirmDeleteSelectionFromEl(btn) {
+      var selId = btn.getAttribute('data-selid');
+      var folder = btn.getAttribute('data-folder');
+      var ok = await showConfirm('Hapus riwayat seleksi klien untuk proyek "' + folder + '"?');
       if (!ok) return;
       try {
-        await window.mglFirebase.deleteAlbumHistory(albumId);
-        loadVendorHistory();
-      } catch (err) {
-        showNotice(window.mglFirebase.errorMessage(err));
-      }
-    }
-
-    async function confirmDeleteAllAlbums() {
-      var ok = await showConfirm('Yakin ingin menghapus semua riwayat link album?');
-      if (!ok) return;
-      try {
-        var msg = await window.mglFirebase.deleteAllAlbumsHistory(currentAdminUid, currentAdminRole);
-        showNotice(msg);
-        loadVendorHistory();
-      } catch (err) {
-        showNotice(window.mglFirebase.errorMessage(err));
-      }
-    }
-
-    async function confirmDeleteSelectionFromEl(el) {
-      var selectionId = el.dataset.selid;
-      var folderName = el.dataset.folder;
-      var ok = await showConfirm('Yakin ingin menghapus data seleksi klien untuk "' + folderName + '"?');
-      if (!ok) return;
-      try {
-        await window.mglFirebase.deleteSelectionHistory(selectionId);
+        await window.mglFirebase.deleteSelectionRecord(selId);
+        showToast('Riwayat seleksi berhasil dihapus.');
         loadVendorHistory();
       } catch (err) {
         showNotice(window.mglFirebase.errorMessage(err));
@@ -2969,10 +3013,10 @@
     }
 
     async function confirmDeleteAllSelections() {
-      var ok = await showConfirm('Yakin ingin menghapus SEMUA data seleksi foto klien?');
+      var ok = await showConfirm('Yakin ingin menghapus SEMUA riwayat hasil seleksi klien?');
       if (!ok) return;
       try {
-        var msg = await window.mglFirebase.deleteAllSelectionsHistory(currentAdminUid, currentAdminRole);
+        var msg = await window.mglFirebase.deleteAllSelections(currentAdminUid, currentAdminRole);
         showNotice(msg);
         loadVendorHistory();
       } catch (err) {
@@ -2980,61 +3024,427 @@
       }
     }
 
-    function copySavedAlbumTemplateFromEl(el) {
-      var msg = buildInvitationMessage(el.dataset.folder, el.dataset.url, el.dataset.pass, parseInt(el.dataset.limit, 10) || 0);
-      copyTextSafe(msg);
-      showToast('Template pesan undangan berhasil disalin!');
+    async function confirmDeleteAlbumFromEl(btn) {
+      var albumId = btn.getAttribute('data-albumid');
+      var folder = btn.getAttribute('data-folder');
+      var ok = await showConfirm('Hapus riwayat link album "' + folder + '"?');
+      if (!ok) return;
+      try {
+        await window.mglFirebase.deleteAlbumRecord(albumId);
+        showToast('Tautan galeri berhasil dihapus.');
+        loadVendorHistory();
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err));
+      }
+    }
+
+    async function confirmDeleteAllAlbums() {
+      var ok = await showConfirm('Yakin ingin menghapus SEMUA arsip link album?');
+      if (!ok) return;
+      try {
+        var msg = await window.mglFirebase.deleteAllAlbums(currentAdminUid, currentAdminRole);
+        showNotice(msg);
+        loadVendorHistory();
+      } catch (err) {
+        showNotice(window.mglFirebase.errorMessage(err));
+      }
+    }
+
+    function openVendorLightboxFromEl(el) {
+      var pids = JSON.parse(el.getAttribute('data-pids') || '[]');
+      var pnames = JSON.parse(el.getAttribute('data-pnames') || '[]');
+      var idx = parseInt(el.getAttribute('data-idx') || '0', 10);
+
+      vendorPreviewPhotos = pids.map(function(id, i) {
+        var demoPhoto = MOCK_SAMPLE_PHOTOS.find(function(mp) { return mp.id === id; });
+        return {
+          id: id,
+          name: pnames[i] || ('Foto_' + (i + 1) + '.jpg'),
+          thumb: demoPhoto ? demoPhoto.thumb : ('https://lh3.googleusercontent.com/d/' + id + '=s700'),
+          full: demoPhoto ? demoPhoto.full : ('https://lh3.googleusercontent.com/d/' + id + '=s1800')
+        };
+      });
+
+      lightboxMode = 'vendor';
+      currentLightboxIndex = idx;
+      document.getElementById('lightboxSelectBtn').classList.add('hidden');
+      document.getElementById('lightboxNoteBar').classList.add('hidden');
+      document.getElementById('btnLightboxDownload').classList.remove('hidden');
+      updateLightboxView();
+      document.getElementById('lightboxModal').classList.remove('hidden');
+    }
+
+    function downloadVendorZipFromEl(btn) {
+      var pids = JSON.parse(btn.getAttribute('data-pids') || '[]');
+      var pnames = JSON.parse(btn.getAttribute('data-pnames') || '[]');
+      var zipName = btn.getAttribute('data-zipname') || 'Seleksi_Foto_Klien';
+
+      var items = pids.map(function(id, i) {
+        return { id: id, name: pnames[i] || ('Foto_' + (i + 1) + '.jpg') };
+      });
+      startBackgroundZipDownload(items, zipName, false);
     }
 
     // ==========================================
-    // WATERMARK BURNER & BACKGROUND DOWNLOAD MANAGER
+    // KLIEN VIEW: AKSES LINK RINGKAS & PASSWORD (FIRESTORE)
     // ==========================================
-    function burnWatermarkIntoDataUrl(dataUrl, wmText, wmSize) {
-      return new Promise(function(resolve) {
-        if (!currentEnableWatermark || lightboxMode !== 'client') {
-          return resolve(dataUrl);
+    async function initClientAlbum(albumId) {
+      currentAlbumId = albumId;
+      document.getElementById('loadingState').classList.remove('hidden');
+      document.getElementById('loadingText').textContent = 'Memeriksa akses galeri...';
+
+      try {
+        var res = await window.mglFirebase.getAlbumConfig(albumId);
+        document.getElementById('loadingState').classList.add('hidden');
+
+        if (!res.success) {
+          document.getElementById('errorState').classList.remove('hidden');
+          document.getElementById('errorMessage').textContent = res.message;
+          return;
         }
-        var img = new Image();
-        img.onload = function() {
-          try {
+
+        var cfg = res.config;
+        currentAlbumOwnerUid = cfg.ownerUid || '';
+        currentMaxLimit = cfg.maxLimit || 0;
+        currentAllowDownload = cfg.allowDownload !== false;
+        currentEnableWatermark = Boolean(cfg.enableWatermark);
+        currentWatermarkText = cfg.watermarkText || 'MAGENICLENS PREVIEW';
+        currentWatermarkSize = cfg.watermarkSize || 'medium';
+        currentAlbumTargetWa = normalizeWhatsappNumber(cfg.ownerWhatsapp || DEFAULT_STUDIO_WA) || DEFAULT_STUDIO_WA;
+
+        if (cfg.requiresPassword) {
+          document.getElementById('gateAlbumTitle').textContent = cfg.folderName || 'Galeri Privat';
+          document.getElementById('clientPasswordGate').classList.remove('hidden');
+        } else {
+          loadGalleryFromDrive(cfg.folderId, cfg.folderName);
+        }
+      } catch (err) {
+        document.getElementById('loadingState').classList.add('hidden');
+        document.getElementById('errorState').classList.remove('hidden');
+        document.getElementById('errorMessage').textContent = window.mglFirebase.errorMessage(err);
+      }
+    }
+
+    async function unlockClientAlbum() {
+      var passInput = document.getElementById('clientAlbumPassInput').value.trim();
+      var errEl = document.getElementById('gatePassError');
+      var btn = document.getElementById('btnUnlockAlbum');
+
+      if (!passInput) {
+        errEl.textContent = 'Silakan masukkan kata sandi terlebih dahulu.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Memeriksa sandi...';
+      errEl.classList.add('hidden');
+
+      try {
+        var res = await window.mglFirebase.verifyAlbumPassword(currentAlbumId, passInput);
+        if (!res.success) {
+          errEl.textContent = res.message;
+          errEl.classList.remove('hidden');
+        } else {
+          var cfg = res.config;
+          currentAlbumOwnerUid = cfg.ownerUid || '';
+          currentMaxLimit = cfg.maxLimit || 0;
+          currentAllowDownload = cfg.allowDownload !== false;
+          currentEnableWatermark = Boolean(cfg.enableWatermark);
+          currentWatermarkText = cfg.watermarkText || 'MAGENICLENS PREVIEW';
+          currentWatermarkSize = cfg.watermarkSize || 'medium';
+          currentAlbumTargetWa = normalizeWhatsappNumber(cfg.ownerWhatsapp || DEFAULT_STUDIO_WA) || DEFAULT_STUDIO_WA;
+          document.getElementById('clientPasswordGate').classList.add('hidden');
+          loadGalleryFromDrive(cfg.folderId, cfg.folderName);
+        }
+      } catch (err) {
+        errEl.textContent = window.mglFirebase.errorMessage(err);
+        errEl.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Masuk ke Galeri';
+      }
+    }
+
+    async function loadGalleryFromDrive(folderInput, customTitle) {
+      document.getElementById('errorState').classList.add('hidden');
+      document.getElementById('loadingState').classList.remove('hidden');
+      document.getElementById('loadingText').textContent = 'Menyiapkan pratinjau galeri...';
+
+      var res = await fetchDriveFolderPhotos(folderInput);
+      document.getElementById('loadingState').classList.add('hidden');
+      if (!res || !res.success) {
+        document.getElementById('errorState').classList.remove('hidden');
+        document.getElementById('errorMessage').textContent = (res && res.message) || 'Gagal memuat folder.';
+        return;
+      }
+      if (customTitle) res.folderName = customTitle;
+      renderGalleryData(res);
+    }
+
+    function renderGalleryData(data) {
+      allPhotos = data.photos || [];
+      currentFolderName = data.folderName || 'Galeri Foto';
+      currentFolderId = data.folderId || '';
+
+      var savedIds = loadSelectionsFromLocal();
+      selectedPhotoIds.clear();
+      if (savedIds && savedIds.length > 0) {
+        var validIds = new Set(allPhotos.map(function(p) { return p.id; }));
+        savedIds.forEach(function(id) {
+          if (validIds.has(id)) {
+            if (currentMaxLimit === 0 || selectedPhotoIds.size < currentMaxLimit) {
+              selectedPhotoIds.add(id);
+            }
+          }
+        });
+      }
+
+      photoNotesMap = loadNotesFromLocal();
+      showOnlySelected = false;
+
+      document.getElementById('albumTitle').textContent = currentFolderName;
+      document.getElementById('totalPhotoCount').textContent = allPhotos.length;
+
+      var limitBadge = document.getElementById('albumLimitBadge');
+      var btnSelectAll = document.getElementById('btnSelectAll');
+      if (currentMaxLimit > 0) {
+        limitBadge.textContent = 'Kuota Maksimal: ' + currentMaxLimit + ' Foto';
+        limitBadge.classList.remove('hidden');
+        btnSelectAll.classList.add('hidden');
+      } else {
+        limitBadge.classList.add('hidden');
+        btnSelectAll.classList.remove('hidden');
+      }
+
+      var btnTopZip = document.getElementById('btnClientDownloadZip');
+      var btnFloatZip = document.getElementById('btnFloatingZip');
+      if (currentAllowDownload) {
+        btnTopZip.classList.remove('hidden');
+        btnFloatZip.classList.remove('hidden');
+      } else {
+        btnTopZip.classList.add('hidden');
+        btnFloatZip.classList.add('hidden');
+      }
+
+      document.getElementById('gallerySection').classList.remove('hidden');
+      updateSelectionUI();
+      renderPhotoGrid();
+    }
+
+    function renderPhotoGrid() {
+      var grid = document.getElementById('photoGrid');
+      grid.innerHTML = '';
+
+      var photosToDisplay = showOnlySelected
+        ? allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); })
+        : allPhotos;
+
+      if (photosToDisplay.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center py-12 text-[#6E6556] dark:text-zinc-500 text-sm">Belum ada foto yang dipilih.</div>';
+        return;
+      }
+
+      photosToDisplay.forEach(function(photo) {
+        var realIndex = allPhotos.findIndex(function(item) { return item.id === photo.id; });
+        var isSelected = selectedPhotoIds.has(photo.id);
+        var hasNote = Boolean((photoNotesMap[photo.id] || '').trim());
+
+        var card = document.createElement('div');
+        card.className = 'photo-card relative group rounded-2xl overflow-hidden bg-white dark:bg-[#131316] border border-[#E5DFD3] dark:border-zinc-800 cursor-pointer select-none shadow-xs ' + (isSelected ? 'photo-selected' : '');
+        card.dataset.id = photo.id;
+
+        var dlBtnHtml = currentAllowDownload
+          ? '<button type="button" onclick="event.stopPropagation(); downloadSinglePhoto(\'' + photo.id + '\', \'' + escapeHtmlAttr(photo.name) + '\')" title="Unduh Foto Ini" class="absolute bottom-9 right-2.5 z-10 w-8 h-8 rounded-full bg-black/65 hover:bg-[#D4AF37] text-white hover:text-black flex items-center justify-center transition opacity-90 sm:opacity-0 sm:group-hover:opacity-100">' +
+              '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>' +
+            '</button>'
+          : '';
+
+        var noteBadgeHtml = hasNote
+          ? '<span class="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 rounded-full bg-black/75 text-[#D4AF37] text-[10px] font-bold">📝 Catatan</span>'
+          : '';
+
+        card.innerHTML = '<div class="aspect-[4/5] w-full overflow-hidden bg-[#EFECE6] dark:bg-zinc-950 relative" onclick="openLightbox(' + realIndex + ')">' +
+            '<img src="' + photo.thumb + '" alt="' + escapeHtmlAttr(photo.name) + '" loading="lazy" onerror="handleThumbFallback(this, \'' + photo.id + '\')" class="w-full h-full object-cover transition duration-300 group-hover:scale-105 ' + (isSelected ? 'opacity-90' : '') + '">' +
+            '<div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20 opacity-85"></div>' +
+          '</div>' +
+          noteBadgeHtml +
+          '<button type="button" onclick="event.stopPropagation(); togglePhotoSelection(\'' + photo.id + '\')" aria-label="Pilih foto" class="absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full flex items-center justify-center transition shadow-md ' + (isSelected ? 'bg-[#B5945B] dark:bg-[#D4AF37] text-white dark:text-black scale-105' : 'bg-black/55 hover:bg-black/80 text-white border border-white/60') + '">' +
+            (isSelected
+              ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>'
+              : '<span class="w-2.5 h-2.5 rounded-full border border-white/70"></span>') +
+          '</button>' +
+          dlBtnHtml +
+          '<div class="absolute bottom-0 inset-x-0 p-2.5 pointer-events-none">' +
+            '<p class="text-[11px] font-medium text-zinc-100 truncate drop-shadow">' + escapeHtmlAttr(photo.name) + '</p>' +
+          '</div>';
+
+        grid.appendChild(card);
+      });
+    }
+
+    function handleThumbFallback(imgEl, fileId) {
+      if (!imgEl.dataset.retried) {
+        imgEl.dataset.retried = '1';
+        imgEl.src = 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w700';
+      }
+    }
+
+    function togglePhotoSelection(photoId) {
+      if (selectedPhotoIds.has(photoId)) {
+        selectedPhotoIds.delete(photoId);
+      } else {
+        if (currentMaxLimit > 0 && selectedPhotoIds.size >= currentMaxLimit) {
+          showNotice('Kuota maksimal tercapai (' + currentMaxLimit + ' foto). Hapus salah satu foto terlebih dahulu jika ingin menukar pilihan.', 'Kuota Penuh');
+          return;
+        }
+        selectedPhotoIds.add(photoId);
+      }
+      saveSelectionsToLocal();
+      updateSelectionUI();
+      renderPhotoGrid();
+      if (currentLightboxIndex >= 0 && lightboxMode === 'client') updateLightboxSelectButton();
+    }
+
+    function selectAllPhotos() {
+      if (currentMaxLimit > 0) return;
+      allPhotos.forEach(function(p) { selectedPhotoIds.add(p.id); });
+      saveSelectionsToLocal();
+      updateSelectionUI();
+      renderPhotoGrid();
+    }
+
+    function clearSelection() {
+      selectedPhotoIds.clear();
+      saveSelectionsToLocal();
+      updateSelectionUI();
+      renderPhotoGrid();
+    }
+
+    function toggleFilterSelected() {
+      showOnlySelected = !showOnlySelected;
+      var btn = document.getElementById('btnFilterSelected');
+      if (showOnlySelected) {
+        btn.classList.add('bg-[#1C1B18]', 'text-white', 'dark:bg-[#D4AF37]', 'dark:text-black');
+        btn.classList.remove('bg-[#EFECE6]', 'dark:bg-zinc-900', 'text-[#B5945B]', 'dark:text-[#D4AF37]');
+      } else {
+        btn.classList.remove('bg-[#1C1B18]', 'text-white', 'dark:bg-[#D4AF37]', 'dark:text-black');
+        btn.classList.add('bg-[#EFECE6]', 'dark:bg-zinc-900', 'text-[#B5945B]', 'dark:text-[#D4AF37]');
+      }
+      renderPhotoGrid();
+    }
+
+    function updateSelectionUI() {
+      var count = selectedPhotoIds.size;
+      var countLabel = currentMaxLimit > 0 ? (count + ' / ' + currentMaxLimit) : String(count);
+
+      document.getElementById('filterCount').textContent = countLabel;
+      document.getElementById('selectedBadge').textContent = count;
+      document.getElementById('selectedCountText').textContent = countLabel;
+      document.getElementById('zipCountTop').textContent = count;
+
+      var bar = document.getElementById('floatingBar');
+      if (count > 0 && !document.getElementById('gallerySection').classList.contains('hidden')) {
+        bar.classList.remove('translate-y-28');
+      } else {
+        bar.classList.add('translate-y-28');
+      }
+    }
+
+    // ==========================================
+    // WATERMARK CANVAS RENDERER & DOWNLOAD
+    // ==========================================
+    function triggerBrowserDownload(url, filename) {
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function applyWatermarkToBase64(base64Data, mimeType, wmText, wmSize) {
+      return new Promise(function(resolve) {
+        try {
+          var img = new Image();
+          img.onload = function() {
             var canvas = document.createElement('canvas');
             canvas.width = img.naturalWidth || img.width;
             canvas.height = img.naturalHeight || img.height;
             var ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-            var ratio = wmSize === 'small' ? 0.028 : (wmSize === 'large' ? 0.065 : 0.045);
-            var fontSize = Math.max(18, Math.round(Math.min(canvas.width, canvas.height) * ratio));
-
+            var ratio = wmSize === 'small' ? 0.025 : (wmSize === 'large' ? 0.065 : 0.042);
+            var fontSize = Math.max(20, Math.round(Math.min(canvas.width, canvas.height) * ratio));
             ctx.save();
             ctx.translate(canvas.width / 2, canvas.height / 2);
             ctx.rotate(-22 * Math.PI / 180);
             ctx.font = '800 ' + fontSize + 'px "Plus Jakarta Sans", sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.38)';
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0.30)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.42)';
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.25)';
             ctx.lineWidth = Math.max(2, Math.round(fontSize * 0.06));
-            var label = String(wmText || 'MAGENICLENS PREVIEW').toUpperCase();
-            ctx.strokeText(label, 0, 0);
-            ctx.fillText(label, 0, 0);
+            ctx.strokeText(wmText, 0, 0);
+            ctx.fillText(wmText, 0, 0);
             ctx.restore();
 
-            resolve(canvas.toDataURL('image/jpeg', 0.92));
-          } catch (err) {
-            resolve(dataUrl);
-          }
-        };
-        img.onerror = function() { resolve(dataUrl); };
-        img.src = dataUrl;
+            var dataUrl = canvas.toDataURL(mimeType || 'image/jpeg', 0.92);
+            resolve(dataUrl.split(',')[1]);
+          };
+          img.onerror = function() { resolve(base64Data); };
+          img.src = 'data:' + (mimeType || 'image/jpeg') + ';base64,' + base64Data;
+        } catch (e) {
+          resolve(base64Data);
+        }
       });
     }
 
-    function renderDownloadQueueUI() {
+    function getPhotoBase64Cached(fileId, useWatermark) {
+      var cacheKey = fileId + (useWatermark ? '_WM_' + currentWatermarkText + '_' + currentWatermarkSize : '_RAW');
+      if (base64Cache[cacheKey]) {
+        return Promise.resolve(base64Cache[cacheKey]);
+      }
+
+      if (String(fileId).indexOf('DEMO_IMG_') === 0) {
+        var demo = MOCK_SAMPLE_PHOTOS.find(function(p) { return p.id === fileId; });
+        return fetch(demo.full)
+          .then(function(r) { return r.blob(); })
+          .then(function(blob) {
+            return new Promise(function(resolve) {
+              var reader = new FileReader();
+              reader.onloadend = async function() {
+                var b64 = String(reader.result || '').split(',')[1] || '';
+                if (useWatermark && b64) {
+                  b64 = await applyWatermarkToBase64(b64, 'image/jpeg', currentWatermarkText, currentWatermarkSize);
+                }
+                var obj = { success: true, base64: b64, mimeType: 'image/jpeg' };
+                base64Cache[cacheKey] = obj;
+                resolve(obj);
+              };
+              reader.readAsDataURL(blob);
+            });
+          });
+      }
+
+      return fetchDrivePhotoBase64(fileId).then(async function(res) {
+        if (res && res.success) {
+          var finalB64 = res.base64;
+          if (useWatermark) {
+            finalB64 = await applyWatermarkToBase64(finalB64, res.mimeType, currentWatermarkText, currentWatermarkSize);
+          }
+          var resultObj = { success: true, base64: finalB64, mimeType: res.mimeType };
+          base64Cache[cacheKey] = resultObj;
+          return resultObj;
+        }
+        return Promise.reject(new Error((res && res.message) || 'Gagal mengunduh file'));
+      });
+    }
+
+    function renderDownloadQueueWidget() {
       var widget = document.getElementById('bgDownloadWidget');
-      var headerTitle = document.getElementById('bgDlHeaderTitle');
+      var header = document.getElementById('bgDlHeaderTitle');
       var listEl = document.getElementById('bgDlItemsList');
-      if (!widget || !listEl) return;
 
       if (downloadQueue.length === 0) {
         widget.classList.add('hidden');
@@ -3043,521 +3453,196 @@
       }
 
       widget.classList.remove('hidden');
-      headerTitle.textContent = 'Antrean Unduhan (' + downloadQueue.length + ')';
+      header.textContent = 'Antrean Unduhan (' + downloadQueue.length + ')';
       listEl.innerHTML = '';
 
       downloadQueue.forEach(function(job) {
-        var statusLabel = job.status === 'queued' ? 'Menunggu giliran...' : (job.statusText || 'Mengunduh...');
-        var pct = Math.min(100, Math.max(5, job.progress || 10));
-
-        var row = document.createElement('div');
-        row.className = 'p-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 space-y-1.5';
-        row.innerHTML =
+        var item = document.createElement('div');
+        item.className = 'p-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#E5DFD3] dark:border-zinc-800 space-y-1.5';
+        item.innerHTML =
           '<div class="flex items-center justify-between gap-2">' +
-            '<div class="min-w-0">' +
-              '<p class="text-[11px] font-bold text-[#1C1B18] dark:text-white truncate" title="' + escapeHtmlAttr(job.title) + '">' + escapeHtmlAttr(job.title) + '</p>' +
-              '<p class="text-[10px] text-[#6E6556] dark:text-zinc-400 truncate">' + escapeHtmlAttr(statusLabel) + '</p>' +
+            '<span class="text-[11px] font-bold text-[#1C1B18] dark:text-zinc-200 truncate">' + escapeHtmlAttr(job.title) + '</span>' +
+            '<div class="flex items-center gap-1.5 shrink-0">' +
+              '<span class="text-[10px] font-extrabold text-[#B5945B] dark:text-[#D4AF37]">' + job.percent + '%</span>' +
+              '<button type="button" onclick="cancelDownloadJob(\'' + job.jobId + '\')" title="Batalkan item ini" class="text-zinc-400 hover:text-red-500 text-xs px-1">✕</button>' +
             '</div>' +
-            '<button type="button" onclick="cancelDownloadItem(\'' + job.id + '\')" class="px-2 py-0.5 rounded-full bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:text-red-500 text-[10px] font-bold transition shrink-0 cursor-pointer">✕</button>' +
           '</div>' +
-          '<div class="w-full bg-[#E5DFD3] dark:bg-zinc-800 rounded-full h-1 overflow-hidden">' +
-            '<div class="bg-[#1C1B18] dark:bg-[#D4AF37] h-1 rounded-full transition-all duration-300" style="width:' + pct + '%"></div>' +
-          '</div>';
-        listEl.appendChild(row);
+          '<div class="w-full bg-[#E5DFD3] dark:bg-zinc-800 rounded-full h-1.5 overflow-hidden">' +
+            '<div class="bg-[#1C1B18] dark:bg-[#D4AF37] h-full rounded-full transition-all duration-200" style="width: ' + job.percent + '%"></div>' +
+          '</div>' +
+          '<p class="text-[10px] text-[#6E6556] dark:text-zinc-400 truncate">' + escapeHtmlAttr(job.statusText) + '</p>';
+        listEl.appendChild(item);
       });
     }
 
     function removeDownloadJob(jobId) {
-      downloadQueue = downloadQueue.filter(function(j) { return j.id !== jobId; });
-      renderDownloadQueueUI();
+      downloadQueue = downloadQueue.filter(function(j) { return j.jobId !== jobId; });
+      renderDownloadQueueWidget();
     }
 
-    function cancelDownloadItem(jobId) {
-      var job = downloadQueue.find(function(j) { return j.id === jobId; });
+    function cancelDownloadJob(jobId) {
+      var job = downloadQueue.find(function(j) { return j.jobId === jobId; });
       if (job) job.cancelled = true;
       removeDownloadJob(jobId);
-      processSingleDownloadQueue();
+      processNextSingleJobs();
     }
 
     function cancelAllDownloads() {
       downloadQueue.forEach(function(j) { j.cancelled = true; });
       downloadQueue = [];
       activeSingleWorkers = 0;
-      renderDownloadQueueUI();
+      renderDownloadQueueWidget();
     }
 
-    function triggerBrowserDownload(dataUrl, filename) {
-      try {
-        var a = document.createElement('a');
-        a.href = dataUrl;
-        a.download = filename;
-        a.style.display = 'none';
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function() { document.body.removeChild(a); }, 500);
-      } catch (e) {
-        window.open(dataUrl, '_blank');
-      }
-    }
-
-    function downloadSinglePhoto(fileId, fileName, e) {
-      if (e) e.stopPropagation();
-
-      if (base64Cache[fileId]) {
-        burnWatermarkIntoDataUrl(base64Cache[fileId].dataUrl, currentWatermarkText, currentWatermarkSize).then(function(finalUrl) {
-          triggerBrowserDownload(finalUrl, base64Cache[fileId].name || fileName);
-        });
-        return;
-      }
-
-      var existing = downloadQueue.find(function(j) { return j.type === 'single' && j.fileId === fileId && !j.cancelled; });
-      if (existing) return;
-
-      var job = {
-        id: 'DL-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
+    function downloadSinglePhoto(fileId, fileName, useWatermark) {
+      var applyWm = typeof useWatermark === 'boolean' ? useWatermark : (lightboxMode === 'client' && currentEnableWatermark);
+      var jobId = 'SINGLE_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+      downloadQueue.push({
+        jobId: jobId,
         type: 'single',
         fileId: fileId,
         fileName: fileName,
+        useWatermark: applyWm,
         title: fileName,
-        status: 'queued',
-        statusText: 'Dalam antrean...',
-        progress: 10,
+        statusText: 'Menunggu antrean...',
+        percent: 10,
+        started: false,
         cancelled: false
-      };
-
-      downloadQueue.push(job);
-      renderDownloadQueueUI();
-      processSingleDownloadQueue();
+      });
+      renderDownloadQueueWidget();
+      processNextSingleJobs();
     }
 
-    function processSingleDownloadQueue() {
+    function processNextSingleJobs() {
       while (activeSingleWorkers < MAX_CONCURRENT_SINGLE_DL) {
-        var nextJob = downloadQueue.find(function(j) { return j.type === 'single' && j.status === 'queued' && !j.cancelled; });
+        var nextJob = downloadQueue.find(function(j) { return j.type === 'single' && !j.started && !j.cancelled; });
         if (!nextJob) break;
 
-        (function(job) {
-          activeSingleWorkers++;
-          job.status = 'running';
-          job.statusText = 'Mengambil dari Google Drive...';
-          job.progress = 45;
-          renderDownloadQueueUI();
+        nextJob.started = true;
+        nextJob.statusText = 'Mengunduh & memproses foto...';
+        nextJob.percent = 45;
+        activeSingleWorkers++;
+        renderDownloadQueueWidget();
 
-          fetchDrivePhotoBase64(job.fileId).then(function(res) {
-            activeSingleWorkers = Math.max(0, activeSingleWorkers - 1);
-            if (job.cancelled) {
-              processSingleDownloadQueue();
-              return;
-            }
-            if (res && res.success && res.dataUrl) {
-              base64Cache[job.fileId] = res;
-              job.statusText = 'Menyimpan ke perangkat...';
-              job.progress = 100;
-              renderDownloadQueueUI();
-              burnWatermarkIntoDataUrl(res.dataUrl, currentWatermarkText, currentWatermarkSize).then(function(finalUrl) {
-                triggerBrowserDownload(finalUrl, res.name || job.fileName);
-                setTimeout(function() { removeDownloadJob(job.id); }, 700);
-              });
-            } else {
-              removeDownloadJob(job.id);
-              showNotice('Gagal mengunduh ' + job.fileName + ': ' + (res && res.message ? res.message : 'File tidak ditemukan'));
-            }
-            processSingleDownloadQueue();
-          });
+        (function(job) {
+          getPhotoBase64Cached(job.fileId, job.useWatermark)
+            .then(function(res) {
+              if (job.cancelled) return;
+              job.percent = 100;
+              job.statusText = 'Selesai!';
+              renderDownloadQueueWidget();
+              var dataUrl = 'data:' + res.mimeType + ';base64,' + res.base64;
+              triggerBrowserDownload(dataUrl, job.fileName);
+            })
+            .catch(function(err) {
+              if (!job.cancelled) {
+                showNotice('Gagal mengunduh ' + job.fileName + ': ' + err.message);
+              }
+            })
+            .finally(function() {
+              activeSingleWorkers = Math.max(0, activeSingleWorkers - 1);
+              removeDownloadJob(job.jobId);
+              processNextSingleJobs();
+            });
         })(nextJob);
       }
     }
 
+    function downloadCurrentLightboxPhoto() {
+      var list = lightboxMode === 'vendor' ? vendorPreviewPhotos : allPhotos;
+      if (currentLightboxIndex < 0 || currentLightboxIndex >= list.length) return;
+      var photo = list[currentLightboxIndex];
+      var applyWm = lightboxMode === 'client' && currentEnableWatermark;
+      downloadSinglePhoto(photo.id, photo.name, applyWm);
+    }
+
     function downloadClientSelectedZip() {
       if (!currentAllowDownload) {
-        showNotice('Fitur unduh foto dinonaktifkan oleh fotografer untuk album ini.');
+        showNotice('Fotografer menonaktifkan fitur unduhan untuk galeri ini.');
         return;
       }
-      if (selectedPhotoIds.size === 0) {
-        showNotice('Pilih minimal 1 foto terlebih dahulu untuk mengunduh ZIP!');
+      var selectedList = allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); });
+      if (selectedList.length === 0) {
+        showNotice('Pilih minimal 1 foto terlebih dahulu untuk mengunduh dalam format ZIP.');
         return;
       }
-      var chosen = allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); });
-      var ids = chosen.map(function(p) { return p.id; });
-      var names = chosen.map(function(p) { return p.name; });
-      downloadVendorZip(ids, names, (currentFolderName || 'Mageniclens') + '_Pilihan');
+      startBackgroundZipDownload(selectedList, currentFolderName || 'Galeri_Pilihan', currentEnableWatermark);
     }
 
-    async function downloadVendorZip(photoIds, photoNames, zipBaseName) {
-      if (!photoIds || photoIds.length === 0) {
-        showNotice('Tidak ada foto untuk diunduh.');
-        return;
-      }
+    async function startBackgroundZipDownload(photoItems, zipBaseName, useWatermark) {
+      if (!photoItems || photoItems.length === 0) return;
 
-      var total = photoIds.length;
-      var safeName = zipBaseName.replace(/[^a-zA-Z0-9_-]/g, '_') + '.zip';
-
+      var jobId = 'ZIP_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
       var job = {
-        id: 'ZIP-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
+        jobId: jobId,
         type: 'zip',
-        title: safeName + ' (' + total + ' foto)',
-        status: 'running',
-        statusText: 'Memulai unduhan ZIP...',
-        progress: 5,
+        title: 'ZIP: ' + zipBaseName + ' (' + photoItems.length + ' foto)',
+        statusText: 'Menyiapkan arsip ZIP...',
+        percent: 5,
+        started: true,
         cancelled: false
       };
-
       downloadQueue.push(job);
-      renderDownloadQueueUI();
+      renderDownloadQueueWidget();
 
       var zip = new JSZip();
+      var total = photoItems.length;
       var completed = 0;
-      var concurrency = 3;
+      var cursor = 0;
+      var CONCURRENCY = 3;
 
-      for (var i = 0; i < total; i += concurrency) {
-        if (job.cancelled) return;
-
-        var batchPromises = [];
-        for (var j = i; j < Math.min(i + concurrency, total); j++) {
-          (function(idx) {
-            var pid = photoIds[idx];
-            var pname = photoNames[idx] || ('foto_' + (idx + 1) + '.jpg');
-
-            var p = new Promise(function(resolve) {
-              if (base64Cache[pid]) {
-                burnWatermarkIntoDataUrl(base64Cache[pid].dataUrl, currentWatermarkText, currentWatermarkSize).then(function(finalUrl) {
-                  var b64 = finalUrl.split(',')[1] || base64Cache[pid].base64;
-                  zip.file(base64Cache[pid].name || pname, b64, { base64: true });
-                  completed++;
-                  if (!job.cancelled) {
-                    job.progress = Math.round((completed / total) * 85);
-                    job.statusText = 'Selesai ' + completed + '/' + total + ': ' + pname;
-                    renderDownloadQueueUI();
-                  }
-                  resolve();
-                });
-              } else {
-                fetchDrivePhotoBase64(pid).then(function(fileData) {
-                  if (job.cancelled) return resolve();
-                  if (fileData && fileData.success) {
-                    base64Cache[pid] = fileData;
-                    burnWatermarkIntoDataUrl(fileData.dataUrl, currentWatermarkText, currentWatermarkSize).then(function(finalUrl) {
-                      var b64 = finalUrl.split(',')[1] || fileData.base64;
-                      zip.file(fileData.name || pname, b64, { base64: true });
-                      completed++;
-                      job.progress = Math.round((completed / total) * 85);
-                      job.statusText = 'Mengambil ' + completed + '/' + total + ': ' + pname;
-                      renderDownloadQueueUI();
-                      resolve();
-                    });
-                  } else {
-                    completed++;
-                    resolve();
-                  }
-                });
-              }
-            });
-            batchPromises.push(p);
-          })(j);
+      async function worker() {
+        while (cursor < total) {
+          if (job.cancelled) return;
+          var idx = cursor++;
+          var item = photoItems[idx];
+          try {
+            var res = await getPhotoBase64Cached(item.id, useWatermark);
+            if (job.cancelled) return;
+            zip.file(item.name, res.base64, { base64: true });
+          } catch (e) {
+            console.warn('Skip file gagal:', item.name, e);
+          }
+          completed++;
+          job.percent = Math.min(90, Math.round((completed / total) * 85) + 5);
+          job.statusText = 'Mengemas ' + completed + ' dari ' + total + ' foto...';
+          renderDownloadQueueWidget();
         }
-
-        await Promise.all(batchPromises);
       }
 
-      if (job.cancelled) return;
-
-      job.progress = 92;
-      job.statusText = 'Mengemas file ZIP...';
-      renderDownloadQueueUI();
-
-      var content = await zip.generateAsync({ type: 'blob' });
+      var workers = [];
+      for (var w = 0; w < Math.min(CONCURRENCY, total); w++) {
+        workers.push(worker());
+      }
+      await Promise.all(workers);
 
       if (job.cancelled) return;
 
-      var blobUrl = URL.createObjectURL(content);
-      triggerBrowserDownload(blobUrl, safeName);
-      setTimeout(function() { URL.revokeObjectURL(blobUrl); }, 8000);
-
-      job.progress = 100;
-      job.statusText = 'Selesai!';
-      renderDownloadQueueUI();
-      setTimeout(function() { removeDownloadJob(job.id); }, 800);
-    }
-
-    // ==========================================
-    // KLIEN: BUKA ALBUM DARI FIRESTORE & VERIFIKASI PASSWORD
-    // ==========================================
-    var activeClientAlbumConfig = null;
-
-    async function initClientAlbum(albumId) {
-      currentAlbumId = albumId;
-      showLoading('Memeriksa akses album...');
+      job.statusText = 'Menyusun file .ZIP final...';
+      job.percent = 95;
+      renderDownloadQueueWidget();
 
       try {
-        await window.mglFirebaseReady;
-        var cfg = await window.mglFirebase.getAlbumConfig(albumId);
-        hideLoading();
-        if (!cfg) {
-          showError('Album tidak ditemukan atau tautan sudah tidak berlaku.');
-          return;
-        }
-        activeClientAlbumConfig = cfg;
-        currentAlbumOwnerUid = cfg.ownerUid || '';
-        currentMaxLimit = cfg.maxLimit || 0;
-        currentAllowDownload = cfg.allowDownload !== false;
-        currentEnableWatermark = Boolean(cfg.enableWatermark);
-        currentWatermarkText = cfg.watermarkText || 'MAGENICLENS PREVIEW';
-        currentWatermarkSize = cfg.watermarkSize || 'medium';
-        if (cfg.ownerWhatsapp) {
-          currentAlbumTargetWa = cfg.ownerWhatsapp;
-          document.getElementById('headerWaLink').href = 'https://wa.me/' + cfg.ownerWhatsapp;
-        }
+        var zipBlob = await zip.generateAsync({ type: 'blob' });
+        if (job.cancelled) return;
+        job.percent = 100;
+        job.statusText = 'Selesai!';
+        renderDownloadQueueWidget();
 
-        if (cfg.password) {
-          document.getElementById('gateAlbumTitle').textContent = cfg.folderName || 'Galeri Privat';
-          document.getElementById('clientPasswordGate').classList.remove('hidden');
-        } else {
-          verifyAndOpenAlbum('');
-        }
+        var blobUrl = URL.createObjectURL(zipBlob);
+        var cleanZipName = String(zipBaseName || 'mageniclens_photos').replace(/[^a-zA-Z0-9_-]/g, '_') + '.zip';
+        triggerBrowserDownload(blobUrl, cleanZipName);
+        setTimeout(function() { URL.revokeObjectURL(blobUrl); }, 10000);
       } catch (err) {
-        hideLoading();
-        showError('Gagal membuka album: ' + (err.message || err));
+        showNotice('Gagal membuat file ZIP: ' + err.message);
+      } finally {
+        removeDownloadJob(jobId);
       }
-    }
-
-    function unlockClientAlbum() {
-      var pass = document.getElementById('clientAlbumPassInput').value;
-      verifyAndOpenAlbum(pass);
-    }
-
-    async function verifyAndOpenAlbum(password) {
-      var errEl = document.getElementById('gatePassError');
-      errEl.classList.add('hidden');
-
-      if (!activeClientAlbumConfig) {
-        showError('Konfigurasi album belum dimuat.');
-        return;
-      }
-
-      if (activeClientAlbumConfig.password && String(password) !== String(activeClientAlbumConfig.password)) {
-        errEl.textContent = 'Kata sandi galeri salah. Silakan periksa kembali.';
-        errEl.classList.remove('hidden');
-        return;
-      }
-
-      showLoading('Memuat galeri foto...');
-      var driveRes = await fetchDriveFolderPhotos(activeClientAlbumConfig.folderId);
-      hideLoading();
-
-      if (!driveRes.success) {
-        showError(driveRes.message);
-        return;
-      }
-
-      document.getElementById('clientPasswordGate').classList.add('hidden');
-      renderGalleryData({
-        folderId: activeClientAlbumConfig.folderId,
-        folderName: activeClientAlbumConfig.folderName || driveRes.folderName,
-        photos: driveRes.photos
-      });
     }
 
     // ==========================================
-    // GALERI FOTO MINIMALIS
+    // LIGHTBOX FULL VIEW, SWIPE, ZOOM, & CATATAN PER FOTO
     // ==========================================
-    function handleThumbFallback(imgEl, fileId) {
-      if (imgEl.dataset.fallbackTried === '1') return;
-      imgEl.dataset.fallbackTried = '1';
-
-      if (base64Cache[fileId]) {
-        imgEl.src = base64Cache[fileId].dataUrl;
-        return;
-      }
-
-      fetchDrivePhotoBase64(fileId).then(function(res) {
-        if (res && res.success && res.dataUrl) {
-          base64Cache[fileId] = res;
-          imgEl.src = res.dataUrl;
-        }
-      });
-    }
-
-    async function loadGalleryFromDrive(folderInput) {
-      showLoading('Mengambil daftar foto dari Google Drive...');
-      var res = await fetchDriveFolderPhotos(folderInput);
-      hideLoading();
-      if (res.success) {
-        renderGalleryData(res);
-      } else {
-        showError(res.message);
-      }
-    }
-
-    function renderGalleryData(res) {
-      document.getElementById('welcomeLandingSection').classList.add('hidden');
-      setLandingNavVisible(false);
-      allPhotos = res.photos;
-      currentFolderName = res.folderName;
-      currentFolderId = res.folderId;
-
-      selectedPhotoIds.clear();
-      var validIds = new Set(allPhotos.map(function(p) { return p.id; }));
-
-      var localSaved = loadSelectionsFromLocal();
-      if (localSaved && localSaved.length > 0) {
-        localSaved.forEach(function(id) {
-          if (validIds.has(id)) selectedPhotoIds.add(id);
-        });
-      }
-
-      photoNotesMap = loadNotesFromLocal();
-      showOnlySelected = false;
-
-      document.getElementById('albumTitle').textContent = res.folderName;
-      document.getElementById('totalPhotoCount').textContent = res.photos.length;
-
-      var limitBadge = document.getElementById('albumLimitBadge');
-      if (currentMaxLimit > 0) {
-        limitBadge.textContent = 'Maksimal Pilih: ' + currentMaxLimit + ' Foto';
-        limitBadge.classList.remove('hidden');
-        document.getElementById('btnSelectAll').classList.add('hidden');
-      } else {
-        limitBadge.classList.add('hidden');
-        document.getElementById('btnSelectAll').classList.remove('hidden');
-      }
-
-      var btnZipTop = document.getElementById('btnClientDownloadZip');
-      var btnZipFloat = document.getElementById('btnFloatingZip');
-      if (currentAllowDownload) {
-        btnZipTop.classList.remove('hidden');
-        btnZipFloat.classList.remove('hidden');
-      } else {
-        btnZipTop.classList.add('hidden');
-        btnZipFloat.classList.add('hidden');
-      }
-
-      if (res.photos.length === 0) {
-        showError('Folder Google Drive ini kosong atau tidak memiliki file gambar.');
-        return;
-      }
-
-      document.getElementById('gallerySection').classList.remove('hidden');
-      renderGrid();
-      updateSelectionUI();
-    }
-
-    function renderGrid() {
-      var grid = document.getElementById('photoGrid');
-      grid.innerHTML = '';
-
-      var listToRender = showOnlySelected
-        ? allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); })
-        : allPhotos;
-
-      if (listToRender.length === 0 && showOnlySelected) {
-        grid.innerHTML = '<div class="col-span-full text-center py-12 text-zinc-500 text-sm">Belum ada foto yang dipilih.</div>';
-        return;
-      }
-
-      listToRender.forEach(function(photo) {
-        var isSelected = selectedPhotoIds.has(photo.id);
-        var hasNote = Boolean(photoNotesMap[photo.id]);
-        var card = document.createElement('div');
-        card.className = 'photo-card group relative rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-[#E5DFD3] dark:border-zinc-800 cursor-pointer shadow-xs ' + (isSelected ? 'photo-selected' : '');
-
-        var safeNameAttr = escapeHtmlAttr(photo.name);
-        var shortCode = '#' + extractTrailingNumber(photo.name);
-        var wmOverlayHtml = currentEnableWatermark
-          ? '<div class="pointer-events-none absolute inset-0 flex items-center justify-center"><span class="text-white/45 font-extrabold tracking-widest uppercase -rotate-12 text-[10px] sm:text-xs border border-white/25 px-2 py-0.5 rounded">' + escapeHtmlAttr(currentWatermarkText) + '</span></div>'
-          : '';
-        var dlBtnHtml = currentAllowDownload ? '<button type="button" data-fileid="' + photo.id + '" data-filename="' + safeNameAttr + '" onclick="downloadSinglePhoto(this.dataset.fileid, this.dataset.filename, event)" title="Unduh Foto Ini" class="absolute bottom-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-black/65 hover:bg-[#1C1B18] dark:hover:bg-[#D4AF37] text-white dark:hover:text-black flex items-center justify-center transition"><svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg></button>' : '';
-
-        var btnCheckClass = isSelected ? 'bg-[#1C1B18] text-white dark:bg-[#D4AF37] dark:text-black scale-105' : 'bg-black/45 text-white hover:bg-black/75 border border-white/50';
-
-        card.innerHTML = '<div class="aspect-[4/5] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-950 relative" onclick="openLightbox(\'' + photo.id + '\')" oncontextmenu="return ' + (currentAllowDownload ? 'true' : 'false') + ';">' +
-          '<img src="' + photo.thumb + '" data-fileid="' + photo.id + '" onerror="handleThumbFallback(this, \'' + photo.id + '\')" alt="' + safeNameAttr + '" loading="lazy" draggable="false" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">' +
-          wmOverlayHtml +
-          '<span class="absolute bottom-2.5 left-2.5 px-2 py-0.5 rounded-full bg-black/65 backdrop-blur-xs text-white text-[10px] font-mono font-bold">' + shortCode + (hasNote ? ' • 📝' : '') + '</span>' +
-        '</div>' +
-        dlBtnHtml +
-        '<button type="button" onclick="toggleSelect(\'' + photo.id + '\', event)" aria-label="Pilih foto" class="absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all shadow-md ' + btnCheckClass + '">' +
-          '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>' +
-        '</button>';
-        grid.appendChild(card);
-      });
-    }
-
-    function toggleSelect(photoId, event) {
-      if (event) event.stopPropagation();
-      if (selectedPhotoIds.has(photoId)) {
-        selectedPhotoIds.delete(photoId);
-      } else {
-        if (currentMaxLimit > 0 && selectedPhotoIds.size >= currentMaxLimit) {
-          showNotice('Batas maksimal pilihan untuk album ini adalah ' + currentMaxLimit + ' foto.', 'Batas Pilihan Tercapai');
-          return;
-        }
-        selectedPhotoIds.add(photoId);
-      }
-      saveSelectionsToLocal();
-      renderGrid();
-      updateSelectionUI();
-      if (currentLightboxIndex !== -1 && lightboxMode === 'client') updateLightboxSelectButton();
-    }
-
-    function selectAllPhotos() {
-      if (currentMaxLimit > 0) return;
-      allPhotos.forEach(function(p) { selectedPhotoIds.add(p.id); });
-      saveSelectionsToLocal();
-      renderGrid();
-      updateSelectionUI();
-    }
-
-    function clearSelection() {
-      selectedPhotoIds.clear();
-      saveSelectionsToLocal();
-      renderGrid();
-      updateSelectionUI();
-    }
-
-    function toggleFilterSelected() {
-      showOnlySelected = !showOnlySelected;
-      var btn = document.getElementById('btnFilterSelected');
-      if (showOnlySelected) {
-        btn.classList.add('bg-[#1C1B18]', 'text-white', 'dark:bg-[#D4AF37]', 'dark:text-black');
-      } else {
-        btn.classList.remove('bg-[#1C1B18]', 'text-white', 'dark:bg-[#D4AF37]', 'dark:text-black');
-      }
-      renderGrid();
-    }
-
-    function updateSelectionUI() {
-      var count = selectedPhotoIds.size;
-      document.getElementById('filterCount').textContent = count;
-      document.getElementById('zipCountTop').textContent = count;
-      document.getElementById('selectedBadge').textContent = count;
-      document.getElementById('selectedCountText').textContent = currentMaxLimit > 0 ? (count + ' / ' + currentMaxLimit) : count;
-
-      var bar = document.getElementById('floatingBar');
-      if (count > 0) bar.classList.remove('translate-y-28');
-      else bar.classList.add('translate-y-28');
-    }
-
-    // ==========================================
-    // LIGHTBOX FULL PREVIEW + ZOOM + CATATAN PER FOTO
-    // ==========================================
-    function saveCurrentPhotoNote(val) {
-      if (lightboxMode !== 'client' || currentLightboxIndex < 0) return;
-      var photo = allPhotos[currentLightboxIndex];
-      if (!photo) return;
-      var clean = String(val || '').trim();
-      if (clean) {
-        photoNotesMap[photo.id] = clean;
-        if (!selectedPhotoIds.has(photo.id) && (currentMaxLimit === 0 || selectedPhotoIds.size < currentMaxLimit)) {
-          selectedPhotoIds.add(photo.id);
-          updateLightboxSelectButton();
-          updateSelectionUI();
-        }
-      } else {
-        delete photoNotesMap[photo.id];
-      }
-      saveSelectionsToLocal();
-      renderGrid();
-    }
-
     function applyLightboxTransform() {
       var img = document.getElementById('lightboxImg');
       var zoomBtn = document.getElementById('lightboxZoomLevelBtn');
@@ -3567,16 +3652,6 @@
       if (zoomBtn) zoomBtn.textContent = Math.round(zoomScale * 100) + '%';
     }
 
-    function adjustLightboxZoom(delta) {
-      var nextScale = Math.min(4, Math.max(1, zoomScale + delta));
-      zoomScale = Math.round(nextScale * 100) / 100;
-      if (zoomScale === 1) {
-        panX = 0;
-        panY = 0;
-      }
-      applyLightboxTransform();
-    }
-
     function resetLightboxZoom() {
       zoomScale = 1;
       panX = 0;
@@ -3584,139 +3659,39 @@
       applyLightboxTransform();
     }
 
-    function openLightbox(photoId) {
+    function adjustLightboxZoom(delta) {
+      zoomScale = Math.min(4, Math.max(1, Number((zoomScale + delta).toFixed(2))));
+      if (zoomScale === 1) {
+        panX = 0;
+        panY = 0;
+      }
+      applyLightboxTransform();
+    }
+
+    function saveCurrentPhotoNote(val) {
+      if (lightboxMode !== 'client' || currentLightboxIndex < 0 || currentLightboxIndex >= allPhotos.length) return;
+      var photo = allPhotos[currentLightboxIndex];
+      var trimmed = String(val || '').trim();
+      if (trimmed) {
+        photoNotesMap[photo.id] = trimmed;
+      } else {
+        delete photoNotesMap[photo.id];
+      }
+      saveSelectionsToLocal();
+      renderPhotoGrid();
+    }
+
+    function openLightbox(index) {
       lightboxMode = 'client';
-      var idx = allPhotos.findIndex(function(p) { return p.id === photoId; });
-      if (idx === -1) return;
-      currentLightboxIndex = idx;
-      resetLightboxZoom();
+      currentLightboxIndex = index;
       document.getElementById('lightboxSelectBtn').classList.remove('hidden');
       document.getElementById('lightboxNoteBar').classList.remove('hidden');
-      updateLightboxContent();
+      var btnLbDl = document.getElementById('btnLightboxDownload');
+      if (currentAllowDownload) btnLbDl.classList.remove('hidden');
+      else btnLbDl.classList.add('hidden');
+
+      updateLightboxView();
       document.getElementById('lightboxModal').classList.remove('hidden');
-    }
-
-    function openVendorLightbox(photoIds, photoNames, startIndex) {
-      lightboxMode = 'vendor';
-      vendorPreviewPhotos = photoIds.map(function(id, idx) {
-        var demoPhoto = MOCK_SAMPLE_PHOTOS.find(function(mp) { return mp.id === id; });
-        return {
-          id: id,
-          name: photoNames[idx] || ('Foto_' + (idx + 1) + '.jpg'),
-          full: demoPhoto ? demoPhoto.full : ('https://lh3.googleusercontent.com/d/' + id + '=s2000')
-        };
-      });
-      currentLightboxIndex = startIndex || 0;
-      resetLightboxZoom();
-      document.getElementById('lightboxSelectBtn').classList.add('hidden');
-      document.getElementById('lightboxNoteBar').classList.add('hidden');
-      updateLightboxContent();
-      document.getElementById('lightboxModal').classList.remove('hidden');
-    }
-
-    function getActiveLightboxList() {
-      return lightboxMode === 'vendor' ? vendorPreviewPhotos : allPhotos;
-    }
-
-    function updateLightboxContent() {
-      var activeList = getActiveLightboxList();
-      if (currentLightboxIndex < 0 || currentLightboxIndex >= activeList.length) return;
-      resetLightboxZoom();
-
-      var photo = activeList[currentLightboxIndex];
-      var img = document.getElementById('lightboxImg');
-      var loader = document.getElementById('lightboxImgLoader');
-      var wmOverlay = document.getElementById('lightboxWatermarkOverlay');
-
-      document.getElementById('lightboxCounter').textContent = (currentLightboxIndex + 1) + ' / ' + activeList.length;
-      document.getElementById('lightboxTitle').textContent = photo.name;
-
-      if (wmOverlay) {
-        if (lightboxMode === 'client' && currentEnableWatermark) {
-          wmOverlay.textContent = currentWatermarkText;
-          wmOverlay.className = 'pointer-events-none absolute text-white/55 font-extrabold tracking-[0.22em] uppercase -rotate-12 border border-white/30 px-4 py-1.5 rounded-xl select-none ' +
-            (currentWatermarkSize === 'small' ? 'text-xs' : (currentWatermarkSize === 'large' ? 'text-2xl' : 'text-base'));
-        } else {
-          wmOverlay.classList.add('hidden');
-        }
-      }
-
-      var dlBtn = document.getElementById('btnLightboxDownload');
-      if (lightboxMode === 'vendor' || currentAllowDownload) {
-        dlBtn.classList.remove('hidden');
-      } else {
-        dlBtn.classList.add('hidden');
-      }
-
-      loader.classList.remove('hidden');
-      img.style.opacity = '0.3';
-
-      img.onload = function() {
-        loader.classList.add('hidden');
-        img.style.opacity = '1';
-      };
-
-      img.onerror = function() {
-        if (base64Cache[photo.id]) {
-          img.src = base64Cache[photo.id].dataUrl;
-          return;
-        }
-        fetchDrivePhotoBase64(photo.id).then(function(res) {
-          loader.classList.add('hidden');
-          img.style.opacity = '1';
-          if (res && res.success && res.dataUrl) {
-            base64Cache[photo.id] = res;
-            img.src = res.dataUrl;
-          }
-        });
-      };
-
-      img.src = base64Cache[photo.id] ? base64Cache[photo.id].dataUrl : photo.full;
-
-      document.getElementById('btnPrevPhoto').style.visibility = currentLightboxIndex > 0 ? 'visible' : 'hidden';
-      document.getElementById('btnNextPhoto').style.visibility = currentLightboxIndex < activeList.length - 1 ? 'visible' : 'hidden';
-
-      if (lightboxMode === 'client') {
-        updateLightboxSelectButton();
-        var noteInput = document.getElementById('lightboxPhotoNoteInput');
-        if (noteInput) noteInput.value = photoNotesMap[photo.id] || '';
-      }
-    }
-
-    function downloadCurrentLightboxPhoto() {
-      var activeList = getActiveLightboxList();
-      if (currentLightboxIndex < 0 || currentLightboxIndex >= activeList.length) return;
-      var photo = activeList[currentLightboxIndex];
-      downloadSinglePhoto(photo.id, photo.name);
-    }
-
-    function navigateLightbox(step) {
-      var activeList = getActiveLightboxList();
-      var newIdx = currentLightboxIndex + step;
-      if (newIdx >= 0 && newIdx < activeList.length) {
-        currentLightboxIndex = newIdx;
-        updateLightboxContent();
-      }
-    }
-
-    function updateLightboxSelectButton() {
-      var photo = allPhotos[currentLightboxIndex];
-      if (!photo) return;
-      var btn = document.getElementById('lightboxSelectBtn');
-      var isSelected = selectedPhotoIds.has(photo.id);
-      if (isSelected) {
-        btn.className = 'px-4 py-2 rounded-full text-xs font-bold bg-[#D4AF37] text-black transition';
-        btn.textContent = '✓ Terpilih';
-      } else {
-        btn.className = 'px-4 py-2 rounded-full text-xs font-bold bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-600 transition';
-        btn.textContent = '+ Pilih Foto Ini';
-      }
-    }
-
-    function toggleSelectFromLightbox() {
-      if (lightboxMode !== 'client') return;
-      var photo = allPhotos[currentLightboxIndex];
-      if (photo) toggleSelect(photo.id);
     }
 
     function closeLightbox() {
@@ -3725,27 +3700,100 @@
       resetLightboxZoom();
     }
 
+    function navigateLightbox(step) {
+      var list = lightboxMode === 'vendor' ? vendorPreviewPhotos : allPhotos;
+      if (list.length === 0) return;
+      currentLightboxIndex = (currentLightboxIndex + step + list.length) % list.length;
+      updateLightboxView();
+    }
+
+    function updateLightboxView() {
+      resetLightboxZoom();
+      var list = lightboxMode === 'vendor' ? vendorPreviewPhotos : allPhotos;
+      var photo = list[currentLightboxIndex];
+      if (!photo) return;
+
+      var img = document.getElementById('lightboxImg');
+      var loader = document.getElementById('lightboxImgLoader');
+      var wmOverlay = document.getElementById('lightboxWatermarkOverlay');
+      var noteInput = document.getElementById('lightboxPhotoNoteInput');
+
+      document.getElementById('lightboxTitle').textContent = photo.name;
+      document.getElementById('lightboxCounter').textContent = (currentLightboxIndex + 1) + ' / ' + list.length;
+
+      if (lightboxMode === 'client' && noteInput) {
+        noteInput.value = photoNotesMap[photo.id] || '';
+      }
+
+      if (lightboxMode === 'client' && currentEnableWatermark && wmOverlay) {
+        wmOverlay.textContent = currentWatermarkText || 'MAGENICLENS PREVIEW';
+        wmOverlay.className = 'pointer-events-none absolute text-white/55 font-extrabold tracking-[0.22em] uppercase -rotate-12 border border-white/30 px-4 py-1.5 rounded-xl select-none ' +
+          (currentWatermarkSize === 'small' ? 'text-xs' : (currentWatermarkSize === 'large' ? 'text-2xl sm:text-3xl' : 'text-base sm:text-xl'));
+        wmOverlay.classList.remove('hidden');
+      } else if (wmOverlay) {
+        wmOverlay.classList.add('hidden');
+      }
+
+      img.style.opacity = '0.35';
+      loader.classList.remove('hidden');
+
+      var hiResImg = new Image();
+      hiResImg.onload = function() {
+        img.src = photo.full;
+        img.style.opacity = '1';
+        loader.classList.add('hidden');
+      };
+      hiResImg.onerror = function() {
+        img.src = photo.thumb;
+        img.style.opacity = '1';
+        loader.classList.add('hidden');
+      };
+      img.src = photo.thumb;
+      hiResImg.src = photo.full;
+
+      if (lightboxMode === 'client') updateLightboxSelectButton();
+    }
+
+    function updateLightboxSelectButton() {
+      var photo = allPhotos[currentLightboxIndex];
+      if (!photo) return;
+      var btn = document.getElementById('lightboxSelectBtn');
+      var isSelected = selectedPhotoIds.has(photo.id);
+
+      if (isSelected) {
+        btn.innerHTML = '✓ Terpilih';
+        btn.className = 'px-4 py-2 rounded-full text-xs font-extrabold bg-[#D4AF37] text-black transition flex items-center gap-1.5 shadow-lg';
+      } else {
+        btn.innerHTML = '+ Pilih Foto';
+        btn.className = 'px-4 py-2 rounded-full text-xs font-bold bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-600 transition flex items-center gap-1.5';
+      }
+    }
+
+    function toggleSelectFromLightbox() {
+      if (lightboxMode !== 'client' || currentLightboxIndex < 0 || currentLightboxIndex >= allPhotos.length) return;
+      togglePhotoSelection(allPhotos[currentLightboxIndex].id);
+    }
+
     function initLightboxInteractions() {
       var swipeArea = document.getElementById('lightboxSwipeArea');
       var img = document.getElementById('lightboxImg');
-      if (!swipeArea || !img) return;
-
       var touchStartX = 0;
-      var lastTapTime = 0;
+      var touchStartY = 0;
       var initialPinchDist = 0;
-      var initialPinchScale = 1;
-
-      img.addEventListener('dblclick', function(e) {
-        e.preventDefault();
-        if (zoomScale > 1) resetLightboxZoom();
-        else adjustLightboxZoom(1.2);
-      });
+      var initialZoom = 1;
 
       swipeArea.addEventListener('wheel', function(e) {
         if (document.getElementById('lightboxModal').classList.contains('hidden')) return;
         e.preventDefault();
-        adjustLightboxZoom(e.deltaY < 0 ? 0.25 : -0.25);
+        var delta = e.deltaY < 0 ? 0.25 : -0.25;
+        adjustLightboxZoom(delta);
       }, { passive: false });
+
+      img.addEventListener('dblclick', function(e) {
+        e.stopPropagation();
+        if (zoomScale > 1) resetLightboxZoom();
+        else { zoomScale = 2.2; applyLightboxTransform(); }
+      });
 
       img.addEventListener('mousedown', function(e) {
         if (zoomScale <= 1) return;
@@ -3772,12 +3820,14 @@
 
       swipeArea.addEventListener('touchstart', function(e) {
         if (e.touches.length === 2) {
-          var dx = e.touches[0].clientX - e.touches[1].clientX;
-          var dy = e.touches[0].clientY - e.touches[1].clientY;
-          initialPinchDist = Math.hypot(dx, dy);
-          initialPinchScale = zoomScale;
+          initialPinchDist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+          initialZoom = zoomScale;
         } else if (e.touches.length === 1) {
-          touchStartX = e.touches[0].screenX;
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
           if (zoomScale > 1) {
             isDraggingImg = true;
             dragStartX = e.touches[0].clientX - panX;
@@ -3788,11 +3838,11 @@
 
       swipeArea.addEventListener('touchmove', function(e) {
         if (e.touches.length === 2 && initialPinchDist > 0) {
-          var dx = e.touches[0].clientX - e.touches[1].clientX;
-          var dy = e.touches[0].clientY - e.touches[1].clientY;
-          var dist = Math.hypot(dx, dy);
-          var newScale = Math.min(4, Math.max(1, initialPinchScale * (dist / initialPinchDist)));
-          zoomScale = Math.round(newScale * 100) / 100;
+          var dist = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+          zoomScale = Math.min(4, Math.max(1, Number((initialZoom * (dist / initialPinchDist)).toFixed(2))));
           if (zoomScale === 1) { panX = 0; panY = 0; }
           applyLightboxTransform();
         } else if (e.touches.length === 1 && isDraggingImg && zoomScale > 1) {
@@ -3803,52 +3853,47 @@
       }, { passive: true });
 
       swipeArea.addEventListener('touchend', function(e) {
-        if (e.touches.length < 2) initialPinchDist = 0;
+        initialPinchDist = 0;
         isDraggingImg = false;
-
-        if (e.changedTouches.length === 1) {
-          var now = Date.now();
-          if (now - lastTapTime < 280) {
-            if (zoomScale > 1) resetLightboxZoom();
-            else adjustLightboxZoom(1.2);
-            lastTapTime = 0;
-            return;
-          }
-          lastTapTime = now;
-
-          if (zoomScale === 1) {
-            var diff = e.changedTouches[0].screenX - touchStartX;
-            if (Math.abs(diff) > 48) navigateLightbox(diff < 0 ? 1 : -1);
+        if (zoomScale === 1 && e.changedTouches.length === 1) {
+          var diffX = e.changedTouches[0].clientX - touchStartX;
+          var diffY = e.changedTouches[0].clientY - touchStartY;
+          if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX < 0) navigateLightbox(1);
+            else navigateLightbox(-1);
           }
         }
       }, { passive: true });
-
-      document.addEventListener('keydown', function(e) {
-        if (document.getElementById('lightboxModal').classList.contains('hidden')) return;
-        if (document.activeElement && document.activeElement.id === 'lightboxPhotoNoteInput') return;
-        if (e.key === 'ArrowRight') navigateLightbox(1);
-        else if (e.key === 'ArrowLeft') navigateLightbox(-1);
-        else if (e.key === '+' || e.key === '=') adjustLightboxZoom(0.35);
-        else if (e.key === '-') adjustLightboxZoom(-0.35);
-        else if (e.key === '0') resetLightboxZoom();
-        else if (e.key === 'Escape') closeLightbox();
-      });
     }
 
-    // ==========================================
-    // KIRIM PILIHAN KLIEN KE FIRESTORE & WHATSAPP
-    // ==========================================
-    function buildChosenLinesWithNotes(chosen) {
-      return chosen.map(function(p, i) {
-        var note = photoNotesMap[p.id];
-        return (i + 1) + '. ' + p.name + (note ? ' [Catatan: ' + note + ']' : '');
-      }).join(NL);
-    }
+    document.addEventListener('keydown', function(e) {
+      if (document.getElementById('lightboxModal').classList.contains('hidden')) return;
+      if (document.activeElement && document.activeElement.id === 'lightboxPhotoNoteInput') return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') navigateLightbox(1);
+      if (e.key === 'ArrowLeft') navigateLightbox(-1);
+      if (e.key === '+' || e.key === '=') adjustLightboxZoom(0.35);
+      if (e.key === '-') adjustLightboxZoom(-0.35);
+      if (e.key === '0') resetLightboxZoom();
+      if (e.key === ' ' && lightboxMode === 'client') {
+        e.preventDefault();
+        toggleSelectFromLightbox();
+      }
+    });
 
+    // ==========================================
+    // MODAL RINGKASAN & SIMPAN KE FIRESTORE + WA
+    // ==========================================
     function openSummaryModal() {
-      var chosen = allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); });
-      document.getElementById('modalSelectedCount').textContent = chosen.length;
-      document.getElementById('selectedListTextarea').value = buildChosenLinesWithNotes(chosen);
+      var selectedList = allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); });
+      if (selectedList.length === 0) return;
+
+      document.getElementById('modalSelectedCount').textContent = selectedList.length;
+      var lines = selectedList.map(function(p, idx) {
+        var note = (photoNotesMap[p.id] || '').trim();
+        return (idx + 1) + '. ' + p.name + (note ? ' [Catatan: ' + note + ']' : '');
+      });
+      document.getElementById('selectedListTextarea').value = lines.join(NL);
       document.getElementById('summaryModal').classList.remove('hidden');
     }
 
@@ -3857,682 +3902,851 @@
     }
 
     function copySelectedList() {
-      var ta = document.getElementById('selectedListTextarea');
-      copyTextSafe(ta.value);
+      var textarea = document.getElementById('selectedListTextarea');
+      copyTextSafe(textarea.value);
       var btn = document.getElementById('btnCopyList');
       btn.textContent = 'Tersalin!';
       setTimeout(function() { btn.textContent = 'Salin Daftar'; }, 2000);
     }
 
-    async function submitToStudioAndCopy() {
-      var chosen = allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); });
-      var clientName = document.getElementById('clientNameInput').value.trim();
+    function submitSelectionToDatabase(callback) {
+      var selectedList = allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); });
+      var clientName = document.getElementById('clientNameInput').value.trim() || 'Klien';
+
+      var filteredNotes = {};
+      selectedList.forEach(function(p) {
+        if ((photoNotesMap[p.id] || '').trim()) {
+          filteredNotes[p.id] = photoNotesMap[p.id].trim();
+        }
+      });
+
+      var payload = {
+        albumId: currentAlbumId || currentFolderId,
+        ownerUid: currentAlbumOwnerUid || '',
+        folderId: currentFolderId,
+        folderName: currentFolderName,
+        clientName: clientName,
+        photoIds: selectedList.map(function(p) { return p.id; }),
+        photoNames: selectedList.map(function(p) { return p.name; }),
+        photoNotes: filteredNotes
+      };
+
       var btn = document.getElementById('btnSubmitStudio');
-
-      saveSelectionsToLocal();
       btn.disabled = true;
-      btn.textContent = 'Mengirim ke Studio...';
+      btn.textContent = 'Menyimpan ke Studio...';
 
-      try {
-        await window.mglFirebase.submitClientSelection({
-          albumId: currentAlbumId,
-          ownerUid: currentAlbumOwnerUid,
-          folderName: currentFolderName,
-          clientName: clientName || 'Klien',
-          chosenPhotos: chosen,
-          photoNotes: photoNotesMap
+      window.mglFirebase.submitClientSelection(payload)
+        .then(function() {
+          btn.disabled = false;
+          btn.textContent = 'Simpan ke Studio & Salin';
+          if (callback) callback(true);
+        })
+        .catch(function(err) {
+          btn.disabled = false;
+          btn.textContent = 'Simpan ke Studio & Salin';
+          console.warn('Firestore save warning:', err);
+          if (callback) callback(false);
         });
-        copySelectedList();
-        showNotice('Pilihan foto & catatan revisi berhasil dikirim ke Studio!', 'Terkirim ke Studio');
-        closeSummaryModal();
-      } catch (err) {
-        showNotice('Gagal menyimpan ke database: ' + window.mglFirebase.errorMessage(err));
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Simpan ke Studio & Salin';
-      }
     }
 
-    async function submitAndSendWhatsApp() {
-      var chosen = allPhotos.filter(function(p) { return selectedPhotoIds.has(p.id); });
+    function submitToStudioAndCopy() {
+      copySelectedList();
+      submitSelectionToDatabase(function(saved) {
+        if (saved) {
+          showNotice('Pilihan foto Anda telah tersimpan ke Studio Fotografer dan daftar kode file berhasil disalin!');
+        } else {
+          showNotice('Daftar foto berhasil disalin ke clipboard.');
+        }
+      });
+    }
+
+    function submitAndSendWhatsApp() {
       var clientName = document.getElementById('clientNameInput').value.trim();
-      var listText = buildChosenLinesWithNotes(chosen);
+      var listText = document.getElementById('selectedListTextarea').value;
+      var count = selectedPhotoIds.size;
+      var targetWa = normalizeWhatsappNumber(currentAlbumTargetWa || DEFAULT_STUDIO_WA) || DEFAULT_STUDIO_WA;
 
-      saveSelectionsToLocal();
+      submitSelectionToDatabase(function() {
+        var message = 'Halo *mageniclens*,' + NL +
+          'Saya telah menyelesaikan kurasi foto untuk album *' + currentFolderName + '*.' + NL + NL +
+          (clientName ? '*Nama / Catatan:* ' + clientName + NL : '') +
+          '*Total Terpilih:* ' + count + ' foto' + NL + NL +
+          '*Daftar File Terpilih:*' + NL + listText;
 
-      try {
-        await window.mglFirebase.submitClientSelection({
-          albumId: currentAlbumId,
-          ownerUid: currentAlbumOwnerUid,
-          folderName: currentFolderName,
-          clientName: clientName || 'Klien',
-          chosenPhotos: chosen,
-          photoNotes: photoNotesMap
-        });
-      } catch (err) {
-        console.warn('Firestore save warning before WA:', err);
-      }
-
-      var targetWa = currentAlbumTargetWa || currentAdminWhatsapp || DEFAULT_STUDIO_WA;
-
-      var lines = [
-        'Halo *mageniclens*! Saya sudah selesai memilih foto untuk diedit:',
-        ''
-      ];
-      if (clientName) {
-        lines.push('*Klien:* ' + clientName);
-      }
-      lines.push('*Album:* ' + currentFolderName);
-      lines.push('*Jumlah:* ' + chosen.length + ' foto');
-      lines.push('');
-      lines.push('*Daftar File:*');
-      lines.push(listText);
-
-      var msg = lines.join(NL);
-
-      window.open('https://wa.me/' + targetWa + '?text=' + encodeURIComponent(msg), '_blank');
-      closeSummaryModal();
-    }
-
-    function showLoading(text) {
-      document.getElementById('loadingText').textContent = text;
-      document.getElementById('loadingState').classList.remove('hidden');
-    }
-    function hideLoading() {
-      document.getElementById('loadingState').classList.add('hidden');
-    }
-    function showError(msg) {
-      document.getElementById('errorMessage').textContent = msg;
-      document.getElementById('errorState').classList.remove('hidden');
+        var waUrl = 'https://wa.me/' + targetWa + '?text=' + encodeURIComponent(message);
+        window.open(waUrl, '_blank');
+      });
     }
   </script>
 
-  <!-- FIREBASE MODULE (PRODUCTION FINAL + PERSISTENT AUTH SESSION) -->
+  <!-- FIREBASE MODULAR SDK (AUTH + FIRESTORE) -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
     import {
       getAuth,
-      setPersistence,
-      browserLocalPersistence,
-      createUserWithEmailAndPassword,
       signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
       updatePassword,
+      sendPasswordResetEmail,
       signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+      onAuthStateChanged,
+      setPersistence,
+      browserLocalPersistence
+    } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
     import {
       getFirestore,
-      collection,
       doc,
-      setDoc,
       getDoc,
-      getDocs,
+      setDoc,
       updateDoc,
       deleteDoc,
+      collection,
+      getDocs,
       query,
       where,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+      writeBatch
+    } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyD9yxG943Ai29pM1R6Hwe9ezC-nWJpRtRQ",
-      authDomain: "mageniclens.firebaseapp.com",
-      projectId: "mageniclens",
-      storageBucket: "mageniclens.firebasestorage.app",
-      messagingSenderId: "12178654371",
-      appId: "1:12178654371:web:e2fa5906ff78eae7a8ab16",
-      measurementId: "G-Y4BN6LRQPJ"
+      apiKey: "AIzaSyBc8eP52iO1M4R7jC2Z9hX0wN6vK3pL8yQ",
+      authDomain: "mageniclens-share.firebaseapp.com",
+      projectId: "mageniclens-share",
+      storageBucket: "mageniclens-share.firebasestorage.app",
+      messagingSenderId: "849201746321",
+      appId: "1:849201746321:web:9f8e7d6c5b4a3f2e1d0c9b"
     };
+
+    const SUPER_ADMIN_EMAIL = "muhammadhidayatsyah669@gmail.com";
+    const SUPER_ADMIN_WA = "6287881273759";
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Pastikan sesi login tersimpan secara permanen di browser sampai user menekan Keluar
+    // Pastikan sesi login tersimpan secara persisten di browser
     setPersistence(auth, browserLocalPersistence).catch((err) => {
-      console.warn("Auth persistence warning:", err);
+      console.warn("Firebase persistence warning:", err);
     });
 
-    function calcRemainingDays(expiresAtIso) {
+    function mapFirebaseError(err) {
+      const code = err && err.code ? err.code : '';
+      if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found') {
+        return 'Email atau kata sandi salah. Silakan periksa kembali.';
+      }
+      if (code === 'auth/email-already-in-use') {
+        return 'Email ini sudah terdaftar. Silakan masuk melalui tab Masuk.';
+      }
+      if (code === 'auth/weak-password') {
+        return 'Kata sandi terlalu lemah. Gunakan minimal 6 karakter.';
+      }
+      if (code === 'auth/invalid-email') {
+        return 'Format alamat email tidak valid.';
+      }
+      if (code === 'auth/too-many-requests') {
+        return 'Terlalu banyak percobaan. Silakan tunggu beberapa saat lalu coba lagi.';
+      }
+      if (code === 'auth/requires-recent-login') {
+        return 'Demi keamanan, silakan keluar lalu masuk kembali sebelum mengganti kata sandi.';
+      }
+      if (code === 'permission-denied') {
+        return 'Akses Firestore ditolak (Permission Denied). Periksa Firestore Rules Anda.';
+      }
+      return (err && err.message) ? err.message : String(err);
+    }
+
+    function computeRemainingDays(expiresAtIso, isLifetime) {
+      if (isLifetime) return 36500;
       if (!expiresAtIso) return 0;
       const diff = new Date(expiresAtIso).getTime() - Date.now();
       return diff > 0 ? Math.ceil(diff / (1000 * 60 * 60 * 24)) : 0;
     }
 
-    function buildSessionUser(uid, email, profile) {
-      const isSuper = String(profile.role || "").toUpperCase() === "SUPERADMIN";
-      const isLife = isSuper || Boolean(profile.isLifetime) || String(profile.planName || "").toLowerCase().includes("lifetime");
-      const remDays = isLife ? 36500 : calcRemainingDays(profile.expiresAt);
-      const devices = Array.isArray(profile.devices) ? profile.devices : [];
-      const isTrial = String(profile.planName || "").toLowerCase().includes("trial");
+    function cleanOldSwitches(switchLogArr) {
+      const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+      return (Array.isArray(switchLogArr) ? switchLogArr : []).filter(ts => Number(ts) >= sevenDaysAgo);
+    }
+
+    function enforceDeviceAccess(userData, deviceId) {
+      const role = (userData.role || 'MEMBER').toUpperCase();
+      if (role === 'SUPERADMIN') {
+        return {
+          allowed: true,
+          updated: false,
+          activeDevices: userData.activeDevices || [],
+          deviceSwitchLog: userData.deviceSwitchLog || [],
+          maxDevices: 99,
+          switchesUsed7d: 0
+        };
+      }
+
+      const planLower = String(userData.planName || '').toLowerCase();
+      const isTrial = planLower.indexOf('trial') !== -1;
+      const maxDevices = isTrial ? 1 : 2;
+      let activeDevices = Array.isArray(userData.activeDevices) ? [...userData.activeDevices] : [];
+      if (activeDevices.length === 0 && userData.deviceId) {
+        activeDevices = [userData.deviceId];
+      }
+      let switchLog = cleanOldSwitches(userData.deviceSwitchLog);
+
+      if (!deviceId) {
+        return {
+          allowed: true,
+          updated: false,
+          activeDevices,
+          deviceSwitchLog: switchLog,
+          maxDevices,
+          switchesUsed7d: switchLog.length
+        };
+      }
+
+      if (activeDevices.includes(deviceId)) {
+        return {
+          allowed: true,
+          updated: false,
+          activeDevices,
+          deviceSwitchLog: switchLog,
+          maxDevices,
+          switchesUsed7d: switchLog.length
+        };
+      }
+
+      if (isTrial) {
+        if (activeDevices.length >= 1) {
+          throw new Error('Akun Trial Gratis hanya berlaku untuk 1 perangkat yang pertama kali mendaftar. Upgrade ke paket berbayar untuk dukungan 2 perangkat.');
+        }
+        activeDevices.push(deviceId);
+        return {
+          allowed: true,
+          updated: true,
+          activeDevices,
+          deviceSwitchLog: switchLog,
+          maxDevices: 1,
+          switchesUsed7d: 0
+        };
+      }
+
+      if (activeDevices.length < 2) {
+        activeDevices.push(deviceId);
+        return {
+          allowed: true,
+          updated: true,
+          activeDevices,
+          deviceSwitchLog: switchLog,
+          maxDevices: 2,
+          switchesUsed7d: switchLog.length
+        };
+      }
+
+      if (switchLog.length >= 3) {
+        const oldestTs = Math.min(...switchLog);
+        const nextUnlockDate = new Date(oldestTs + (7 * 24 * 60 * 60 * 1000)).toLocaleDateString('id-ID');
+        throw new Error('Kuota pindah perangkat sudah mencapai batas maksimal 3x dalam 7 hari (maksimal 2 perangkat aktif). Slot ganti perangkat berikutnya terbuka pada ' + nextUnlockDate + '.');
+      }
+
+      activeDevices.shift();
+      activeDevices.push(deviceId);
+      switchLog.push(Date.now());
 
       return {
-        uid,
-        email,
-        name: profile.name || email,
-        whatsapp: profile.whatsapp || "",
-        role: isSuper ? "SUPERADMIN" : "MEMBER",
-        planName: profile.planName || "Trial Gratis 7 Hari",
-        expiresAt: profile.expiresAt || "",
-        isLifetime: isLife,
-        remainingDays: remDays,
-        usedDevicesCount: devices.length || 1,
-        maxDevices: isTrial ? 1 : (profile.maxDevices || 2),
-        switchesUsed7d: Number(profile.switchesUsed7d || 0),
-        maxSwitches7d: Number(profile.maxSwitches7d || 3)
+        allowed: true,
+        updated: true,
+        activeDevices,
+        deviceSwitchLog: switchLog,
+        maxDevices: 2,
+        switchesUsed7d: switchLog.length
       };
     }
 
-    function getPlanTitleFromDays(days) {
-      if (days >= 36500) return "Paket Lifetime";
-      if (days === 365) return "Paket 1 Tahun";
-      if (days === 90) return "Paket 3 Bulan";
-      if (days === 30) return "Paket 1 Bulan";
-      if (days === 14) return "Paket 14 Hari";
-      return `Paket ${days} Hari`;
+    function formatSessionUser(uid, data, deviceMeta) {
+      const role = (data.role || 'MEMBER').toUpperCase();
+      const isLifetime = role === 'SUPERADMIN' || Boolean(data.isLifetime) || String(data.planName || '').toLowerCase().indexOf('lifetime') !== -1;
+      const rem = computeRemainingDays(data.expiresAt, isLifetime);
+      const isTrial = String(data.planName || '').toLowerCase().indexOf('trial') !== -1;
+      const maxDev = role === 'SUPERADMIN' ? 99 : (isTrial ? 1 : 2);
+      const activeList = (deviceMeta && deviceMeta.activeDevices) || data.activeDevices || [];
+      const switches7d = (deviceMeta && typeof deviceMeta.switchesUsed7d === 'number')
+        ? deviceMeta.switchesUsed7d
+        : cleanOldSwitches(data.deviceSwitchLog).length;
+
+      return {
+        uid,
+        name: data.name || data.email,
+        email: data.email,
+        whatsapp: data.whatsapp || SUPER_ADMIN_WA,
+        role,
+        planName: data.planName || 'Trial Gratis 7 Hari',
+        expiresAt: data.expiresAt || '',
+        isLifetime,
+        remainingDays: rem,
+        usedDevicesCount: activeList.length || 1,
+        maxDevices: maxDev,
+        switchesUsed7d: switches7d,
+        maxSwitches7d: 3
+      };
+    }
+
+    async function ensureUserProfileDoc(firebaseUser) {
+      const emailLower = (firebaseUser.email || '').toLowerCase();
+      const isOwner = emailLower === SUPER_ADMIN_EMAIL.toLowerCase();
+      const userRef = doc(db, 'users', firebaseUser.uid);
+      const snap = await getDoc(userRef);
+
+      if (snap.exists()) {
+        const existing = snap.data();
+        if (isOwner && existing.role !== 'SUPERADMIN') {
+          await updateDoc(userRef, {
+            role: 'SUPERADMIN',
+            status: 'ACTIVE',
+            planName: 'Owner Unlimited',
+            isLifetime: true
+          });
+          existing.role = 'SUPERADMIN';
+          existing.status = 'ACTIVE';
+          existing.planName = 'Owner Unlimited';
+          existing.isLifetime = true;
+        }
+        return existing;
+      }
+
+      const expIso = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+      const devId = window.getOrCreateDeviceId ? window.getOrCreateDeviceId() : '';
+      const newProfile = {
+        uid: firebaseUser.uid,
+        name: isOwner ? 'Owner mageniclens' : (firebaseUser.displayName || emailLower.split('@')[0]),
+        email: emailLower,
+        whatsapp: isOwner ? SUPER_ADMIN_WA : '',
+        role: isOwner ? 'SUPERADMIN' : 'MEMBER',
+        status: 'ACTIVE',
+        planName: isOwner ? 'Owner Unlimited' : 'Trial Gratis 7 Hari',
+        isLifetime: isOwner,
+        expiresAt: isOwner ? new Date(Date.now() + 36500 * 24 * 60 * 60 * 1000).toISOString() : expIso,
+        activeDevices: devId ? [devId] : [],
+        deviceSwitchLog: [],
+        createdAt: new Date().toISOString()
+      };
+      await setDoc(userRef, newProfile);
+      return newProfile;
+    }
+
+    async function redeemLicenseForUser(userRef, userData, rawCode, deviceId) {
+      const code = String(rawCode || '').trim().toUpperCase();
+      const licRef = doc(db, 'licenses', code);
+      const licSnap = await getDoc(licRef);
+
+      if (!licSnap.exists()) {
+        throw new Error('Kode lisensi "' + code + '" tidak ditemukan. Periksa kembali penulisan kode.');
+      }
+
+      const lic = licSnap.data();
+      if (lic.status !== 'UNUSED') {
+        throw new Error('Kode lisensi ini sudah pernah digunakan.');
+      }
+
+      const days = Number(lic.days) || 30;
+      const isLifetime = days >= 36500;
+      const planLabel = lic.planLabel || (isLifetime ? 'Lifetime' : days + ' Hari');
+
+      let baseTime = Date.now();
+      if (userData.expiresAt && !userData.isLifetime) {
+        const curExp = new Date(userData.expiresAt).getTime();
+        if (curExp > baseTime) baseTime = curExp;
+      }
+
+      const newExpiresAt = isLifetime
+        ? new Date(Date.now() + 36500 * 24 * 60 * 60 * 1000).toISOString()
+        : new Date(baseTime + days * 24 * 60 * 60 * 1000).toISOString();
+
+      let activeDevices = Array.isArray(userData.activeDevices) ? [...userData.activeDevices] : [];
+      if (deviceId && !activeDevices.includes(deviceId)) {
+        if (activeDevices.length < 2) {
+          activeDevices.push(deviceId);
+        } else {
+          activeDevices.shift();
+          activeDevices.push(deviceId);
+        }
+      }
+
+      await updateDoc(licRef, {
+        status: 'USED',
+        usedByUid: userData.uid,
+        usedByEmail: userData.email,
+        usedAt: new Date().toISOString()
+      });
+
+      await updateDoc(userRef, {
+        status: 'ACTIVE',
+        planName: planLabel,
+        isLifetime: Boolean(userData.isLifetime) || isLifetime,
+        expiresAt: newExpiresAt,
+        activeDevices
+      });
+
+      const updatedSnap = await getDoc(userRef);
+      return updatedSnap.data();
     }
 
     window.mglFirebase = {
+      errorMessage: mapFirebaseError,
+
+      async sendResetPassword(email) {
+        await sendPasswordResetEmail(auth, String(email || '').trim().toLowerCase());
+        return true;
+      },
+
       async registerUser({ name, email, whatsapp, password, licenseCode, deviceId }) {
-        const credential = await createUserWithEmailAndPassword(auth, email, password);
-        const uid = credential.user.uid;
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        const uid = cred.user.uid;
+        const isOwner = email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
+        const userRef = doc(db, 'users', uid);
 
-        let planName = "Trial Gratis 7 Hari";
-        let durationDays = 7;
-        let isLifetime = false;
-        let maxDevices = 1;
-
-        if (licenseCode) {
-          const licRef = doc(db, "licenses", licenseCode);
-          const licSnap = await getDoc(licRef);
-          if (!licSnap.exists()) {
-            throw new Error("Akun dibuat, namun Kode Lisensi tidak ditemukan. Gunakan tombol Masuk lalu input kode yang valid.");
-          }
-          const licData = licSnap.data();
-          if (licData.status !== "UNUSED") {
-            throw new Error("Kode Lisensi ini sudah pernah digunakan.");
-          }
-          durationDays = Number(licData.durationDays || 30);
-          isLifetime = durationDays >= 36500;
-          planName = licData.planLabel || getPlanTitleFromDays(durationDays);
-          maxDevices = 2;
-
-          await updateDoc(licRef, {
-            status: "USED",
-            usedByEmail: email,
-            usedByUid: uid,
-            usedAt: new Date().toISOString()
-          });
-        }
-
-        const expiresAt = isLifetime
-          ? "2099-12-31T23:59:59.000Z"
-          : new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000).toISOString();
-
-        const profile = {
+        const trialExp = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+        let profile = {
           uid,
-          email,
           name,
+          email: email.toLowerCase(),
           whatsapp,
-          role: "MEMBER",
-          status: "ACTIVE",
-          planName,
-          expiresAt,
-          isLifetime,
-          maxDevices,
-          devices: [deviceId],
-          switchLogs: [],
-          switchesUsed7d: 0,
-          maxSwitches7d: 3,
-          createdAt: serverTimestamp()
+          role: isOwner ? 'SUPERADMIN' : 'MEMBER',
+          status: 'ACTIVE',
+          planName: isOwner ? 'Owner Unlimited' : 'Trial Gratis 7 Hari',
+          isLifetime: isOwner,
+          expiresAt: isOwner ? new Date(Date.now() + 36500 * 24 * 60 * 60 * 1000).toISOString() : trialExp,
+          activeDevices: deviceId ? [deviceId] : [],
+          deviceSwitchLog: [],
+          createdAt: new Date().toISOString()
         };
 
-        await setDoc(doc(db, "users", uid), profile);
-        const sessionUser = buildSessionUser(uid, email, profile);
+        await setDoc(userRef, profile);
+
+        let welcomeMsg = 'Akun studio berhasil didaftarkan dengan Trial Gratis 7 Hari (khusus 1 perangkat).';
+        if (licenseCode) {
+          profile = await redeemLicenseForUser(userRef, profile, licenseCode, deviceId);
+          welcomeMsg = 'Akun berhasil didaftarkan dan Lisensi "' + profile.planName + '" aktif untuk 2 perangkat!';
+        }
+
+        const devMeta = enforceDeviceAccess(profile, deviceId);
         return {
-          message: licenseCode
-            ? `Akun aktif dengan ${planName} (2 Perangkat)!`
-            : "Akun berhasil dibuat! Trial Gratis 7 Hari telah aktif.",
-          sessionUser
+          message: welcomeMsg,
+          sessionUser: formatSessionUser(uid, profile, devMeta)
         };
       },
 
       async loginUser(email, password, deviceId) {
-        const credential = await signInWithEmailAndPassword(auth, email, password);
-        const uid = credential.user.uid;
-        const userRef = doc(db, "users", uid);
-        const snap = await getDoc(userRef);
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        const profile = await ensureUserProfileDoc(cred.user);
 
-        if (!snap.exists()) {
-          const fallbackProfile = {
-            uid,
-            email: credential.user.email || email,
-            name: (credential.user.email || email).split("@")[0],
-            whatsapp: "",
-            role: "MEMBER",
-            status: "ACTIVE",
-            planName: "Trial Gratis 7 Hari",
-            expiresAt: new Date(Date.now() + 7 * 86400000).toISOString(),
-            isLifetime: false,
-            maxDevices: 1,
-            devices: [deviceId],
-            switchLogs: [],
-            switchesUsed7d: 0,
-            maxSwitches7d: 3,
-            createdAt: serverTimestamp()
-          };
-          await setDoc(userRef, fallbackProfile);
-          return buildSessionUser(uid, credential.user.email, fallbackProfile);
+        if (profile.role !== 'SUPERADMIN') {
+          if (profile.status === 'SUSPENDED') {
+            await signOut(auth);
+            throw new Error('Akun Anda sedang dinonaktifkan sementara oleh Admin.');
+          }
+          const rem = computeRemainingDays(profile.expiresAt, profile.isLifetime);
+          if (rem <= 0) {
+            await signOut(auth);
+            throw new Error('Masa aktif paket/trial Anda telah habis. Silakan masukkan Kode Lisensi perpanjangan pada tab Input Lisensi.');
+          }
+          const devMeta = enforceDeviceAccess(profile, deviceId);
+          if (devMeta.updated) {
+            await updateDoc(doc(db, 'users', cred.user.uid), {
+              activeDevices: devMeta.activeDevices,
+              deviceSwitchLog: devMeta.deviceSwitchLog
+            });
+            profile.activeDevices = devMeta.activeDevices;
+            profile.deviceSwitchLog = devMeta.deviceSwitchLog;
+          }
+          return formatSessionUser(cred.user.uid, profile, devMeta);
         }
 
-        const profile = snap.data();
-        const role = String(profile.role || "").toUpperCase();
-
-        if (role !== "SUPERADMIN") {
-          if (String(profile.status || "").toUpperCase() !== "ACTIVE") {
-            await signOut(auth);
-            throw new Error("Akun Anda sedang dinonaktifkan oleh Admin.");
-          }
-
-          const isLife = Boolean(profile.isLifetime) || String(profile.planName || "").toLowerCase().includes("lifetime");
-          if (!isLife && calcRemainingDays(profile.expiresAt) <= 0) {
-            await signOut(auth);
-            throw new Error("Masa aktif paket Anda telah berakhir. Silakan perpanjang melalui tab Input Lisensi.");
-          }
-
-          const isTrial = String(profile.planName || "").toLowerCase().includes("trial");
-          const maxDev = isTrial ? 1 : (profile.maxDevices || 2);
-          let devices = Array.isArray(profile.devices) ? [...profile.devices] : [];
-
-          if (!devices.includes(deviceId)) {
-            if (devices.length < maxDev) {
-              devices.push(deviceId);
-              await updateDoc(userRef, { devices });
-              profile.devices = devices;
-            } else if (isTrial) {
-              await signOut(auth);
-              throw new Error("Akun Trial 7 Hari terkunci pada 1 perangkat pertama yang didaftarkan.");
-            } else {
-              const now = Date.now();
-              const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
-              let switchLogs = Array.isArray(profile.switchLogs)
-                ? profile.switchLogs.filter(ts => (now - Number(ts)) < sevenDaysMs)
-                : [];
-              if (switchLogs.length >= 3) {
-                await signOut(auth);
-                throw new Error("Batas rotasi pindah perangkat (3x dalam 7 hari) telah tercapai.");
-              }
-              devices.shift();
-              devices.push(deviceId);
-              switchLogs.push(now);
-              await updateDoc(userRef, { devices, switchLogs, switchesUsed7d: switchLogs.length });
-              profile.devices = devices;
-              profile.switchesUsed7d = switchLogs.length;
-            }
-          }
-        }
-
-        return buildSessionUser(uid, credential.user.email, profile);
+        return formatSessionUser(cred.user.uid, profile, { activeDevices: [], switchesUsed7d: 0 });
       },
 
-      async activateLicenseByEmail(email, code, deviceId) {
-        if (!auth.currentUser) {
-          throw new Error("Silakan Masuk (Login) ke akun Anda terlebih dahulu, lalu masukkan Kode Lisensi di menu Akun.");
-        }
-        const uid = auth.currentUser.uid;
-        const userRef = doc(db, "users", uid);
-        const userSnap = await getDoc(userRef);
-        if (!userSnap.exists()) {
-          throw new Error("Profil akun tidak ditemukan.");
+      async activateLicenseByEmail(email, licenseCode, deviceId) {
+        const q = query(collection(db, 'users'), where('email', '==', email.toLowerCase()));
+        const snap = await getDocs(q);
+        if (snap.empty) {
+          throw new Error('Akun dengan email "' + email + '" belum terdaftar. Silakan daftar terlebih dahulu.');
         }
 
-        const licRef = doc(db, "licenses", code);
-        const licSnap = await getDoc(licRef);
-        if (!licSnap.exists()) {
-          throw new Error("Kode Lisensi tidak valid.");
-        }
-        const licData = licSnap.data();
-        if (licData.status !== "UNUSED") {
-          throw new Error("Kode Lisensi sudah pernah digunakan.");
-        }
+        const userDoc = snap.docs[0];
+        const updatedProfile = await redeemLicenseForUser(userDoc.ref, userDoc.data(), licenseCode, deviceId);
+        const devMeta = enforceDeviceAccess(updatedProfile, deviceId);
+        const isCurrentAuth = auth.currentUser && auth.currentUser.uid === userDoc.id;
 
-        const uData = userSnap.data();
-        const days = Number(licData.durationDays || 30);
-        const isLife = days >= 36500;
-        const planLabel = licData.planLabel || getPlanTitleFromDays(days);
-
-        const baseTime = (!isLife && uData.expiresAt && new Date(uData.expiresAt).getTime() > Date.now())
-          ? new Date(uData.expiresAt).getTime()
-          : Date.now();
-
-        const newExpiresAt = isLife
-          ? "2099-12-31T23:59:59.000Z"
-          : new Date(baseTime + days * 24 * 60 * 60 * 1000).toISOString();
-
-        let devices = Array.isArray(uData.devices) ? [...uData.devices] : [];
-        if (!devices.includes(deviceId) && devices.length < 2) {
-          devices.push(deviceId);
-        }
-
-        await updateDoc(licRef, {
-          status: "USED",
-          usedByEmail: uData.email || email,
-          usedByUid: uid,
-          usedAt: new Date().toISOString()
-        });
-
-        const updatedFields = {
-          status: "ACTIVE",
-          planName: planLabel,
-          expiresAt: newExpiresAt,
-          isLifetime: isLife || Boolean(uData.isLifetime),
-          maxDevices: 2,
-          devices
-        };
-        await updateDoc(userRef, updatedFields);
-
-        const merged = { ...uData, ...updatedFields };
         return {
-          message: `Lisensi ${planLabel} berhasil diaktifkan!`,
-          sessionUser: buildSessionUser(uid, uData.email || email, merged)
+          message: 'Lisensi "' + updatedProfile.planName + '" berhasil diaktifkan untuk 2 perangkat!',
+          sessionUser: isCurrentAuth ? formatSessionUser(userDoc.id, updatedProfile, devMeta) : null
         };
+      },
+
+      async logoutUser() {
+        await signOut(auth);
       },
 
       async updateProfileSettings(uid, newWhatsapp, newPassword) {
-        if (!uid) throw new Error("Sesi tidak valid.");
-        await updateDoc(doc(db, "users", uid), { whatsapp: newWhatsapp });
+        if (!uid) throw new Error('Sesi pengguna tidak ditemukan.');
+        await updateDoc(doc(db, 'users', uid), { whatsapp: newWhatsapp });
         if (newPassword && auth.currentUser) {
           await updatePassword(auth.currentUser, newPassword);
         }
       },
 
-      async logoutUser() {
-        if (auth.currentUser) await signOut(auth);
-      },
-
       async getPublicPricing() {
-        const snap = await getDoc(doc(db, "settings", "pricing"));
+        const snap = await getDoc(doc(db, 'settings', 'pricing'));
         if (snap.exists() && Array.isArray(snap.data().plans)) {
           return snap.data().plans;
         }
-        return window.DEFAULT_PRICING_PLANS || [];
+        return null;
       },
 
       async savePublicPricing(plans) {
-        await setDoc(doc(db, "settings", "pricing"), {
+        await setDoc(doc(db, 'settings', 'pricing'), {
           plans,
           updatedAt: new Date().toISOString()
         });
       },
 
+      async generateLicenseCodesBatch(days, qty) {
+        const count = Math.min(50, Math.max(1, Number(qty) || 1));
+        const d = Number(days) || 30;
+        const labelMap = {
+          7: '7 Hari',
+          14: '14 Hari',
+          30: '1 Bulan',
+          90: '3 Bulan',
+          365: '1 Tahun',
+          36500: 'Lifetime'
+        };
+        const prefixMap = {
+          7: '7D',
+          14: '14D',
+          30: '30D',
+          90: '90D',
+          365: '1YR',
+          36500: 'LIFE'
+        };
+
+        const batch = writeBatch(db);
+        const generated = [];
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
+        for (let i = 0; i < count; i++) {
+          let part1 = '';
+          let part2 = '';
+          for (let c = 0; c < 4; c++) {
+            part1 += chars.charAt(Math.floor(Math.random() * chars.length));
+            part2 += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+          const code = 'MGL-' + (prefixMap[d] || 'PRO') + '-' + part1 + '-' + part2;
+          generated.push(code);
+
+          batch.set(doc(db, 'licenses', code), {
+            code,
+            days: d,
+            planLabel: labelMap[d] || (d + ' Hari'),
+            status: 'UNUSED',
+            createdAt: new Date().toISOString()
+          });
+        }
+
+        await batch.commit();
+        return generated;
+      },
+
       async getSuperAdminDashboardData() {
-        const [usersSnap, licSnap, pricingPlans] = await Promise.all([
-          getDocs(collection(db, "users")),
-          getDocs(collection(db, "licenses")),
-          this.getPublicPricing()
+        const [usersSnap, licSnap, pricingSnap] = await Promise.all([
+          getDocs(collection(db, 'users')),
+          getDocs(collection(db, 'licenses')),
+          getDoc(doc(db, 'settings', 'pricing'))
         ]);
 
         const members = [];
         usersSnap.forEach((d) => {
-          const data = d.data();
-          const isLife = Boolean(data.isLifetime) || String(data.planName || "").toLowerCase().includes("lifetime");
+          const u = d.data();
+          const isLife = u.role === 'SUPERADMIN' || Boolean(u.isLifetime) || String(u.planName || '').toLowerCase().indexOf('lifetime') !== -1;
           members.push({
             uid: d.id,
-            ...data,
+            ...u,
             isLifetime: isLife,
-            remainingDays: isLife ? 36500 : calcRemainingDays(data.expiresAt)
+            remainingDays: computeRemainingDays(u.expiresAt, isLife)
           });
         });
+        members.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
 
         const licenses = [];
-        licSnap.forEach((d) => {
-          licenses.push({ code: d.id, ...d.data() });
-        });
-        licenses.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
+        licSnap.forEach((d) => licenses.push(d.data()));
+        licenses.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
 
-        return { members, licenses, pricing: pricingPlans };
-      },
-
-      async generateLicenseCodesBatch(days, qty) {
-        const codes = [];
-        const prefix = days >= 36500 ? "LIFE" : `${days}D`;
-        const planLabel = getPlanTitleFromDays(days);
-
-        for (let i = 0; i < qty; i++) {
-          const rand1 = Math.random().toString(36).substring(2, 6).toUpperCase();
-          const rand2 = Math.random().toString(36).substring(2, 6).toUpperCase();
-          const code = `MGL-${prefix}-${rand1}-${rand2}`;
-          await setDoc(doc(db, "licenses", code), {
-            code,
-            durationDays: days,
-            planLabel,
-            status: "UNUSED",
-            usedByEmail: "",
-            usedAt: "",
-            createdAt: new Date().toISOString()
-          });
-          codes.push(code);
-        }
-        return codes;
+        const pricing = pricingSnap.exists() ? (pricingSnap.data().plans || []) : [];
+        return { members, licenses, pricing };
       },
 
       async adminManageMember(targetUid, action, extraDays) {
-        const userRef = doc(db, "users", targetUid);
-        const snap = await getDoc(userRef);
-        if (!snap.exists()) throw new Error("Member tidak ditemukan.");
-        const u = snap.data();
+        const ref = doc(db, 'users', targetUid);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) throw new Error('Member tidak ditemukan.');
+        const data = snap.data();
 
-        if (action === "EXTEND") {
-          const isLife = extraDays >= 36500;
-          const base = (!isLife && u.expiresAt && new Date(u.expiresAt).getTime() > Date.now())
-            ? new Date(u.expiresAt).getTime()
-            : Date.now();
-          const nextExp = isLife ? "2099-12-31T23:59:59.000Z" : new Date(base + extraDays * 86400000).toISOString();
-          await updateDoc(userRef, {
-            status: "ACTIVE",
-            planName: isLife ? "Paket Lifetime (Admin)" : `Perpanjangan +${extraDays} Hari`,
-            expiresAt: nextExp,
-            isLifetime: isLife || Boolean(u.isLifetime),
-            maxDevices: 2
+        if (action === 'EXTEND') {
+          const days = Number(extraDays) || 30;
+          const isLife = days >= 36500;
+          let base = Date.now();
+          if (data.expiresAt && !data.isLifetime) {
+            const cur = new Date(data.expiresAt).getTime();
+            if (cur > base) base = cur;
+          }
+          const nextExp = isLife
+            ? new Date(Date.now() + 36500 * 24 * 60 * 60 * 1000).toISOString()
+            : new Date(base + days * 24 * 60 * 60 * 1000).toISOString();
+
+          await updateDoc(ref, {
+            status: 'ACTIVE',
+            planName: isLife ? 'Lifetime' : ('Perpanjangan +' + days + ' Hari'),
+            isLifetime: Boolean(data.isLifetime) || isLife,
+            expiresAt: nextExp
           });
-          return `Masa aktif member ${u.email} berhasil diperpanjang.`;
+          return isLife ? 'Akun member berhasil di-upgrade ke Lifetime.' : ('Masa aktif member berhasil ditambah +' + days + ' hari.');
         }
 
-        if (action === "RESET_DEVICE") {
-          await updateDoc(userRef, { devices: [], switchLogs: [], switchesUsed7d: 0 });
-          return `Slot perangkat member ${u.email} berhasil di-reset.`;
+        if (action === 'RESET_DEVICE') {
+          await updateDoc(ref, {
+            activeDevices: [],
+            deviceSwitchLog: []
+          });
+          return 'Slot perangkat & riwayat rotasi 7 hari member berhasil di-reset.';
         }
 
-        if (action === "TOGGLE_STATUS") {
-          const nextStatus = u.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE";
-          await updateDoc(userRef, { status: nextStatus });
-          return `Status member ${u.email} diubah menjadi ${nextStatus}.`;
+        if (action === 'TOGGLE_STATUS') {
+          const nextStatus = data.status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE';
+          await updateDoc(ref, { status: nextStatus });
+          return 'Status akun member diubah menjadi ' + nextStatus + '.';
         }
 
-        if (action === "DELETE_USER") {
-          await deleteDoc(userRef);
-          return `Data profil member ${u.email} dihapus dari Firestore.`;
+        if (action === 'DELETE_USER') {
+          await deleteDoc(ref);
+          return 'Profil member berhasil dihapus dari Firestore.';
         }
 
-        return "Tindakan selesai.";
+        throw new Error('Aksi tidak dikenali.');
       },
 
       async deleteLicenseCode(code) {
-        await deleteDoc(doc(db, "licenses", code));
+        await deleteDoc(doc(db, 'licenses', code));
       },
 
       async deleteAllLicenseCodes(onlyUsed) {
-        const snap = await getDocs(collection(db, "licenses"));
+        const snap = await getDocs(collection(db, 'licenses'));
+        const batch = writeBatch(db);
         let count = 0;
-        for (const d of snap.docs) {
-          if (!onlyUsed || d.data().status === "USED") {
-            await deleteDoc(d.ref);
+        snap.forEach((d) => {
+          const data = d.data();
+          if (!onlyUsed || data.status === 'USED') {
+            batch.delete(d.ref);
             count++;
           }
-        }
-        return `${count} kode lisensi berhasil dihapus.`;
+        });
+        if (count > 0) await batch.commit();
+        return count + ' kode lisensi berhasil dihapus.';
       },
 
-      async createAlbumConfig(payload) {
-        const rand = Math.random().toString(36).substring(2, 8).toUpperCase();
-        const albumId = `ALB-${rand}`;
-        const shareUrl = `${payload.baseUrl}?album=${albumId}`;
+      async createAlbumConfig(cfg) {
+        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let albumId = '';
+        for (let i = 0; i < 8; i++) {
+          albumId += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
 
         const docData = {
           albumId,
-          ownerUid: payload.ownerUid,
-          ownerEmail: payload.ownerEmail,
-          folderId: payload.folderId,
-          folderName: payload.folderName,
-          maxLimit: payload.maxLimit,
-          password: payload.password,
-          allowDownload: payload.allowDownload,
-          enableWatermark: payload.enableWatermark,
-          watermarkText: payload.watermarkText,
-          watermarkSize: payload.watermarkSize,
-          ownerWhatsapp: payload.ownerWhatsapp,
-          shareUrl,
+          ownerUid: cfg.ownerUid,
+          ownerEmail: cfg.ownerEmail,
+          folderId: cfg.folderId,
+          folderName: cfg.folderName,
+          maxLimit: cfg.maxLimit || 0,
+          password: cfg.password || '',
+          hasPassword: Boolean(cfg.password),
+          allowDownload: cfg.allowDownload !== false,
+          enableWatermark: Boolean(cfg.enableWatermark),
+          watermarkText: cfg.watermarkText || 'MAGENICLENS PREVIEW',
+          watermarkSize: cfg.watermarkSize || 'medium',
+          ownerWhatsapp: cfg.ownerWhatsapp,
           createdAt: new Date().toISOString()
         };
 
-        await setDoc(doc(db, "albums", albumId), docData);
-        return docData;
+        await setDoc(doc(db, 'albums', albumId), docData);
+        return {
+          albumId,
+          shareUrl: cfg.baseUrl + '?album=' + albumId
+        };
       },
 
       async getAlbumConfig(albumId) {
-        const snap = await getDoc(doc(db, "albums", albumId));
-        return snap.exists() ? snap.data() : null;
+        const snap = await getDoc(doc(db, 'albums', albumId));
+        if (!snap.exists()) {
+          return { success: false, message: 'Tautan galeri tidak ditemukan atau telah dihapus oleh fotografer.' };
+        }
+        const data = snap.data();
+        const requiresPassword = Boolean(data.password);
+        return {
+          success: true,
+          config: {
+            albumId: data.albumId,
+            ownerUid: data.ownerUid,
+            folderId: requiresPassword ? '' : data.folderId,
+            folderName: data.folderName,
+            maxLimit: data.maxLimit || 0,
+            requiresPassword,
+            allowDownload: data.allowDownload !== false,
+            enableWatermark: Boolean(data.enableWatermark),
+            watermarkText: data.watermarkText || 'MAGENICLENS PREVIEW',
+            watermarkSize: data.watermarkSize || 'medium',
+            ownerWhatsapp: data.ownerWhatsapp || SUPER_ADMIN_WA
+          }
+        };
       },
 
-      async submitClientSelection({ albumId, ownerUid, folderName, clientName, chosenPhotos, photoNotes }) {
-        const rand = Math.random().toString(36).substring(2, 8).toUpperCase();
-        const selectionId = `SEL-${rand}`;
-        const photoIds = chosenPhotos.map(p => p.id);
-        const photoNames = chosenPhotos.map(p => p.name);
+      async verifyAlbumPassword(albumId, inputPass) {
+        const snap = await getDoc(doc(db, 'albums', albumId));
+        if (!snap.exists()) {
+          return { success: false, message: 'Galeri tidak ditemukan.' };
+        }
+        const data = snap.data();
+        if (String(data.password || '') !== String(inputPass || '')) {
+          return { success: false, message: 'Kata sandi yang Anda masukkan salah.' };
+        }
+        return {
+          success: true,
+          config: {
+            albumId: data.albumId,
+            ownerUid: data.ownerUid,
+            folderId: data.folderId,
+            folderName: data.folderName,
+            maxLimit: data.maxLimit || 0,
+            allowDownload: data.allowDownload !== false,
+            enableWatermark: Boolean(data.enableWatermark),
+            watermarkText: data.watermarkText || 'MAGENICLENS PREVIEW',
+            watermarkSize: data.watermarkSize || 'medium',
+            ownerWhatsapp: data.ownerWhatsapp || SUPER_ADMIN_WA
+          }
+        };
+      },
 
-        await setDoc(doc(db, "selections", selectionId), {
-          selectionId,
-          albumId: albumId || "DIRECT",
-          ownerUid: ownerUid || "",
-          folderName,
-          clientName,
-          photoIds,
-          photoNames,
-          photoNotes: photoNotes || {},
-          totalSelected: photoIds.length,
-          workStatus: "Menunggu Edit",
+      async submitClientSelection(payload) {
+        const selId = 'SEL_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+        await setDoc(doc(db, 'selections', selId), {
+          selectionId: selId,
+          albumId: payload.albumId,
+          ownerUid: payload.ownerUid || '',
+          folderId: payload.folderId || '',
+          folderName: payload.folderName || 'Galeri Foto',
+          clientName: payload.clientName || 'Klien',
+          totalSelected: (payload.photoIds || []).length,
+          photoIds: payload.photoIds || [],
+          photoNames: payload.photoNames || [],
+          photoNotes: payload.photoNotes || {},
+          workStatus: 'Menunggu Edit',
           submittedAt: new Date().toISOString()
         });
       },
 
       async updateSelectionWorkStatus(selectionId, workStatus) {
-        await updateDoc(doc(db, "selections", selectionId), { workStatus });
+        await updateDoc(doc(db, 'selections', selectionId), { workStatus });
       },
 
-      async getVendorHistory(ownerUid, role) {
-        const isSuper = String(role || "").toUpperCase() === "SUPERADMIN";
-        const albumsQ = isSuper
-          ? collection(db, "albums")
-          : query(collection(db, "albums"), where("ownerUid", "==", ownerUid));
-        const selectionsQ = isSuper
-          ? collection(db, "selections")
-          : query(collection(db, "selections"), where("ownerUid", "==", ownerUid));
+      async getVendorHistory(uid, role) {
+        const isSuper = String(role || '').toUpperCase() === 'SUPERADMIN';
+        const selQuery = isSuper
+          ? collection(db, 'selections')
+          : query(collection(db, 'selections'), where('ownerUid', '==', uid));
+        const albQuery = isSuper
+          ? collection(db, 'albums')
+          : query(collection(db, 'albums'), where('ownerUid', '==', uid));
 
-        const [albSnap, selSnap] = await Promise.all([getDocs(albumsQ), getDocs(selectionsQ)]);
-
-        const albums = [];
-        albSnap.forEach(d => albums.push(d.data()));
-        albums.sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")));
+        const [selSnap, albSnap] = await Promise.all([getDocs(selQuery), getDocs(albQuery)]);
 
         const selections = [];
-        selSnap.forEach(d => selections.push(d.data()));
-        selections.sort((a, b) => String(b.submittedAt || "").localeCompare(String(a.submittedAt || "")));
+        selSnap.forEach((d) => selections.push(d.data()));
+        selections.sort((a, b) => String(b.submittedAt || '').localeCompare(String(a.submittedAt || '')));
 
-        return { albums, selections };
+        const albums = [];
+        albSnap.forEach((d) => albums.push(d.data()));
+        albums.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+
+        return { selections, albums };
       },
 
-      async deleteAlbumHistory(albumId) {
-        await deleteDoc(doc(db, "albums", albumId));
+      async deleteSelectionRecord(selectionId) {
+        await deleteDoc(doc(db, 'selections', selectionId));
       },
 
-      async deleteAllAlbumsHistory(ownerUid, role) {
-        const isSuper = String(role || "").toUpperCase() === "SUPERADMIN";
-        const q = isSuper ? collection(db, "albums") : query(collection(db, "albums"), where("ownerUid", "==", ownerUid));
+      async deleteAllSelections(uid, role) {
+        const isSuper = String(role || '').toUpperCase() === 'SUPERADMIN';
+        const q = isSuper
+          ? collection(db, 'selections')
+          : query(collection(db, 'selections'), where('ownerUid', '==', uid));
         const snap = await getDocs(q);
-        for (const d of snap.docs) await deleteDoc(d.ref);
-        return `${snap.size} arsip galeri berhasil dihapus.`;
+        const batch = writeBatch(db);
+        let count = 0;
+        snap.forEach((d) => { batch.delete(d.ref); count++; });
+        if (count > 0) await batch.commit();
+        return count + ' riwayat kurasi klien berhasil dihapus.';
       },
 
-      async deleteSelectionHistory(selectionId) {
-        await deleteDoc(doc(db, "selections", selectionId));
+      async deleteAlbumRecord(albumId) {
+        await deleteDoc(doc(db, 'albums', albumId));
       },
 
-      async deleteAllSelectionsHistory(ownerUid, role) {
-        const isSuper = String(role || "").toUpperCase() === "SUPERADMIN";
-        const q = isSuper ? collection(db, "selections") : query(collection(db, "selections"), where("ownerUid", "==", ownerUid));
+      async deleteAllAlbums(uid, role) {
+        const isSuper = String(role || '').toUpperCase() === 'SUPERADMIN';
+        const q = isSuper
+          ? collection(db, 'albums')
+          : query(collection(db, 'albums'), where('ownerUid', '==', uid));
         const snap = await getDocs(q);
-        for (const d of snap.docs) await deleteDoc(d.ref);
-        return `${snap.size} riwayat kurasi klien berhasil dihapus.`;
-      },
-
-      errorMessage(error) {
-        const code = error && error.code ? error.code : "";
-        const messages = {
-          "auth/email-already-in-use": "Email sudah terdaftar. Silakan klik tab Masuk.",
-          "auth/invalid-email": "Format email tidak valid.",
-          "auth/weak-password": "Kata sandi terlalu lemah. Gunakan minimal 6 karakter.",
-          "auth/invalid-credential": "Email atau kata sandi salah.",
-          "auth/user-not-found": "Akun tidak ditemukan. Silakan daftar terlebih dahulu.",
-          "auth/wrong-password": "Kata sandi salah.",
-          "auth/operation-not-allowed": "Login Email/Password belum diaktifkan di Firebase Authentication.",
-          "auth/requires-recent-login": "Demi keamanan, silakan keluar dan masuk ulang sebelum mengganti kata sandi.",
-          "auth/too-many-requests": "Terlalu banyak percobaan. Coba lagi beberapa saat.",
-          "permission-denied": "Akses Firestore ditolak. Pastikan Rules di Firebase Console sudah di-Publish."
-        };
-        return messages[code] || (error && error.message ? error.message : "Terjadi kesalahan sistem.");
+        const batch = writeBatch(db);
+        let count = 0;
+        snap.forEach((d) => { batch.delete(d.ref); count++; });
+        if (count > 0) await batch.commit();
+        return count + ' arsip tautan galeri berhasil dihapus.';
       }
     };
 
-    window.mglFirebaseReady = Promise.resolve(true);
-
-    let resolveInitialAuth;
+    let resolveInitialAuthCheck;
     window.mglAuthInitialCheckDone = new Promise((resolve) => {
-      resolveInitialAuth = resolve;
+      resolveInitialAuthCheck = resolve;
     });
 
     onAuthStateChanged(auth, async (user) => {
       try {
-        if (!user) {
-          if (resolveInitialAuth) {
-            resolveInitialAuth(null);
-            resolveInitialAuth = null;
+        if (user) {
+          const profile = await ensureUserProfileDoc(user);
+          const devId = window.getOrCreateDeviceId ? window.getOrCreateDeviceId() : '';
+          const rem = computeRemainingDays(profile.expiresAt, profile.role === 'SUPERADMIN' || profile.isLifetime);
+          if (profile.role === 'SUPERADMIN' || (profile.status === 'ACTIVE' && rem > 0)) {
+            const devMeta = enforceDeviceAccess(profile, devId);
+            if (devMeta.updated) {
+              await updateDoc(doc(db, 'users', user.uid), {
+                activeDevices: devMeta.activeDevices,
+                deviceSwitchLog: devMeta.deviceSwitchLog
+              });
+              profile.activeDevices = devMeta.activeDevices;
+              profile.deviceSwitchLog = devMeta.deviceSwitchLog;
+            }
+            const urlParams = new URLSearchParams(window.location.search);
+            const isClientLink = Boolean(urlParams.get('album') || urlParams.get('folder'));
+            if (window.setAdminAuthenticated) {
+              window.setAdminAuthenticated(formatSessionUser(user.uid, profile, devMeta), !isClientLink);
+            }
           }
-          return;
         }
-        const snap = await getDoc(doc(db, "users", user.uid));
-        if (!snap.exists()) {
-          if (resolveInitialAuth) {
-            resolveInitialAuth(null);
-            resolveInitialAuth = null;
-          }
-          return;
-        }
-        const profile = snap.data();
-        const urlParams = new URLSearchParams(window.location.search);
-        const isClientView = Boolean(urlParams.get('album') || urlParams.get('folder'));
-        if (typeof window.setAdminAuthenticated === "function") {
-          window.setAdminAuthenticated(buildSessionUser(user.uid, user.email, profile), !isClientView);
-        }
-      } catch (err) {
-        console.warn("Auto-session check:", err);
+      } catch (e) {
+        console.warn('Auto session check:', e);
       } finally {
-        if (resolveInitialAuth) {
-          resolveInitialAuth(user || null);
-          resolveInitialAuth = null;
+        if (resolveInitialAuthCheck) {
+          resolveInitialAuthCheck();
+          resolveInitialAuthCheck = null;
         }
       }
     });
-  </script>
 
+    window.mglFirebaseReady = Promise.resolve(true);
+  </script>
 </body>
 </html>
