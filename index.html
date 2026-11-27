@@ -919,7 +919,7 @@
           <input type="tel" id="regWaInput" autocomplete="off" placeholder="Contoh: 081234567890" class="w-full px-4 py-2.5 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Kata Sandi (Minimal 4 karakter) *</label>
+          <label class="block text-xs font-semibold text-[#4A4337] dark:text-zinc-300 mb-1">Kata Sandi (Minimal 6 karakter) *</label>
           <div class="relative">
             <input type="password" id="regPassInput" autocomplete="new-password" placeholder="Buat kata sandi" class="w-full px-4 py-2.5 pr-11 rounded-xl bg-[#F7F5F0] dark:bg-zinc-950 border border-[#DFD8C8] dark:border-zinc-700 text-sm text-[#1C1B18] dark:text-white focus:outline-none">
             <button type="button" onclick="togglePasswordVisibility('regPassInput', this)" title="Lihat/Sembunyikan Sandi" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-zinc-400 hover:text-[#1C1B18] dark:hover:text-[#D4AF37] transition">
@@ -1672,33 +1672,9 @@
 
       loadPublicPricingPlans();
 
-      var savedAdmin = safeGetItem('mageniclens_admin_email');
-      var savedAdminName = safeGetItem('mageniclens_admin_name');
-      var savedAdminWa = safeGetItem('mageniclens_admin_wa');
-      var savedRole = safeGetItem('mageniclens_admin_role') || 'MEMBER';
-      var savedPlan = safeGetItem('mageniclens_admin_plan') || '';
-      var savedExp = safeGetItem('mageniclens_admin_exp') || '';
-      var savedLife = safeGetItem('mageniclens_admin_life') === '1';
-      var savedRem = parseInt(safeGetItem('mageniclens_admin_rem') || '0', 10);
-      var savedUsedDev = parseInt(safeGetItem('mageniclens_admin_udev') || '1', 10);
-      var savedMaxDev = parseInt(safeGetItem('mageniclens_admin_mdev') || '1', 10);
-      var savedSwUsed = parseInt(safeGetItem('mageniclens_admin_swu') || '0', 10);
-      var savedSwMax = parseInt(safeGetItem('mageniclens_admin_swm') || '3', 10);
-
-      var savedUserObj = savedAdmin ? {
-        email: savedAdmin,
-        name: savedAdminName || savedAdmin,
-        whatsapp: savedAdminWa || DEFAULT_STUDIO_WA,
-        role: savedRole,
-        planName: savedPlan,
-        expiresAt: savedExp,
-        isLifetime: savedLife,
-        remainingDays: savedRem,
-        usedDevicesCount: savedUsedDev,
-        maxDevices: savedMaxDev,
-        switchesUsed7d: savedSwUsed,
-        maxSwitches7d: savedSwMax
-      } : null;
+      // Sesi login tidak lagi dipercaya dari localStorage.
+      // Firebase Authentication menjadi sumber status login.
+      var savedUserObj = null;
 
       if (savedUserObj) {
         setAdminAuthenticated(savedUserObj, true);
@@ -1720,8 +1696,6 @@
             setLandingNavVisible(false);
             document.getElementById('adminDashboard').classList.add('hidden');
             loadGalleryFromDrive(folderParam.trim());
-          } else if (savedUserObj) {
-            setAdminAuthenticated(savedUserObj, true);
           } else {
             document.getElementById('welcomeLandingSection').classList.remove('hidden');
             setLandingNavVisible(true);
@@ -1942,18 +1916,20 @@
 
     function handleRegisterUser() {
       var name = document.getElementById('regNameInput').value.trim();
-      var email = document.getElementById('regEmailInput').value.trim();
+      var email = document.getElementById('regEmailInput').value.trim().toLowerCase();
       var whatsapp = document.getElementById('regWaInput').value.trim();
       var pass = document.getElementById('regPassInput').value;
       var confirmPass = document.getElementById('regConfirmPassInput').value;
-      var licenseCode = document.getElementById('regLicenseInput').value.trim();
-      var deviceId = getOrCreateDeviceId();
-
       var errEl = document.getElementById('registerErrorMsg');
       var btn = document.getElementById('btnRegisterUser');
 
       if (!name || !email || !whatsapp || !pass) {
-        errEl.textContent = 'Semua kolom wajib diisi (kecuali Kode Lisensi jika ingin Trial 7 Hari)!';
+        errEl.textContent = 'Nama, email, WhatsApp, dan kata sandi wajib diisi.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+      if (pass.length < 6) {
+        errEl.textContent = 'Kata sandi Firebase minimal 6 karakter.';
         errEl.classList.remove('hidden');
         return;
       }
@@ -1967,33 +1943,40 @@
       btn.disabled = true;
       btn.textContent = 'Memproses Pendaftaran...';
 
-      google.script.run
-        .withSuccessHandler(function(res) {
-          btn.disabled = false;
-          btn.textContent = 'Daftarkan Akun Studio';
-          if (res.success) {
-            var durMsg = res.isLifetime ? 'Selamanya (Lifetime)' : (res.remainingDays + ' hari');
-            var devMsg = res.maxDevices === 1 ? 'Maks 1 Perangkat' : 'Maks 2 Perangkat • Pindah 3x/7 Hari';
-            showNotice('Pendaftaran berhasil! Paket aktif: ' + res.planName + ' (' + durMsg + ' • ' + devMsg + ').', 'Pendaftaran Berhasil');
-            setAdminAuthenticated(res, true);
-          } else {
-            errEl.textContent = res.message;
-            errEl.classList.remove('hidden');
-          }
-        })
-        .withFailureHandler(function(err) {
-          btn.disabled = false;
-          btn.textContent = 'Daftarkan Akun Studio';
-          errEl.textContent = 'Error: ' + err.message;
+      (async function() {
+        try {
+          if (!window.mglFirebaseReady) throw new Error('Firebase belum siap. Muat ulang halaman dan coba lagi.');
+          await window.mglFirebaseReady;
+          await window.mglFirebase.registerUser({
+            name: name,
+            email: email,
+            whatsapp: whatsapp,
+            password: pass
+          });
+
+          document.getElementById('regPassInput').value = '';
+          document.getElementById('regConfirmPassInput').value = '';
+          document.getElementById('regLicenseInput').value = '';
+          showNotice(
+            'Akun berhasil dibuat. Status akun saat ini MENUNGGU AKTIVASI ADMIN. Fitur paket, trial, dan kode lisensi akan dihubungkan pada tahap migrasi berikutnya.',
+            'Pendaftaran Berhasil'
+          );
+          switchAuthTab('login');
+          document.getElementById('loginEmailInput').value = email;
+        } catch (err) {
+          var message = err && err.message ? err.message : String(err);
+          errEl.textContent = message;
           errEl.classList.remove('hidden');
-        })
-        .registerNewUser(name, email, pass, whatsapp, licenseCode, deviceId);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Daftarkan Akun Studio';
+        }
+      })();
     }
 
     function handleEmailLogin() {
-      var email = document.getElementById('loginEmailInput').value.trim();
+      var email = document.getElementById('loginEmailInput').value.trim().toLowerCase();
       var pass = document.getElementById('loginPassInput').value;
-      var deviceId = getOrCreateDeviceId();
       var errEl = document.getElementById('loginErrorMsg');
       var btn = document.getElementById('btnEmailLogin');
 
@@ -2005,35 +1988,51 @@
 
       btn.disabled = true;
       btn.textContent = 'Memverifikasi Akun...';
+      errEl.classList.add('hidden');
 
-      google.script.run
-        .withSuccessHandler(function(res) {
-          btn.disabled = false;
-          btn.textContent = 'Masuk ke Ruang Studio';
-          if (res.success) {
-            errEl.classList.add('hidden');
-            if (res.notice) {
-              showNotice(res.notice, 'Perangkat Baru Tertaut');
-            }
-            setAdminAuthenticated(res, true);
-          } else if (res.expired) {
-            document.getElementById('actEmailInput').value = email;
-            switchAuthTab('activate');
-            var actErr = document.getElementById('activateErrorMsg');
-            actErr.textContent = res.message;
-            actErr.classList.remove('hidden');
-          } else {
-            errEl.textContent = res.message;
-            errEl.classList.remove('hidden');
+      (async function() {
+        try {
+          if (!window.mglFirebaseReady) throw new Error('Firebase belum siap. Muat ulang halaman dan coba lagi.');
+          await window.mglFirebaseReady;
+          var result = await window.mglFirebase.loginUser(email, pass);
+          var profile = result.profile || {};
+
+          if (String(profile.status || '').toUpperCase() !== 'ACTIVE') {
+            await window.mglFirebase.logoutUser();
+            throw new Error('Akun ditemukan, tetapi belum aktif. Silakan tunggu admin mengaktifkan akun Anda.');
           }
-        })
-        .withFailureHandler(function(err) {
+
+          if (!profile.planName || profile.planName === 'PENDING') {
+            await window.mglFirebase.logoutUser();
+            throw new Error('Paket akun belum ditetapkan oleh admin. Akun belum dapat masuk ke Ruang Studio.');
+          }
+
+          var userForDashboard = {
+            email: result.user.email,
+            name: profile.name || result.user.email,
+            whatsapp: profile.whatsapp || '',
+            role: profile.role || 'MEMBER',
+            planName: profile.planName,
+            expiresAt: profile.expiresAt || '',
+            isLifetime: Boolean(profile.isLifetime),
+            remainingDays: Number(profile.remainingDays || 0),
+            usedDevicesCount: Number(profile.usedDevicesCount || 1),
+            maxDevices: Number(profile.maxDevices || 1),
+            switchesUsed7d: Number(profile.switchesUsed7d || 0),
+            maxSwitches7d: Number(profile.maxSwitches7d || 3)
+          };
+          document.getElementById('loginPassInput').value = '';
+          setAdminAuthenticated(userForDashboard, true);
+        } catch (err) {
+          errEl.textContent = window.mglFirebase && window.mglFirebase.errorMessage
+            ? window.mglFirebase.errorMessage(err)
+            : (err && err.message ? err.message : 'Login gagal. Periksa email dan kata sandi.');
+          errEl.classList.remove('hidden');
+        } finally {
           btn.disabled = false;
           btn.textContent = 'Masuk ke Ruang Studio';
-          errEl.textContent = 'Error: ' + err.message;
-          errEl.classList.remove('hidden');
-        })
-        .loginAdmin(email, pass, deviceId);
+        }
+      })();
     }
 
     function handleActivateLicenseModal() {
@@ -2189,6 +2188,11 @@
     }
 
     function logoutAdmin() {
+      if (window.mglFirebase && window.mglFirebase.logoutUser) {
+        window.mglFirebase.logoutUser().catch(function(err) {
+          console.warn('Firebase sign-out:', err);
+        });
+      }
       isAdminLoggedIn = false;
       currentAdminEmail = '';
       currentAdminWhatsapp = DEFAULT_STUDIO_WA;
@@ -3976,5 +3980,169 @@
       document.getElementById('errorState').classList.remove('hidden');
     }
   </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      deleteUser,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD9yxG943Ai29pM1R6Hwe9ezC-nWJpRtRQ",
+      authDomain: "mageniclens.firebaseapp.com",
+      projectId: "mageniclens",
+      storageBucket: "mageniclens.firebasestorage.app",
+      messagingSenderId: "12178654371",
+      appId: "1:12178654371:web:e2fa5906ff78eae7a8ab16",
+      measurementId: "G-Y4BN6LRQPJ"
+    };
+
+    let app;
+    let auth;
+    let db;
+
+    window.mglFirebaseReady = (async function() {
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+
+      window.mglFirebase = {
+        async registerUser(data) {
+          let credential = null;
+          try {
+            credential = await createUserWithEmailAndPassword(
+              auth,
+              data.email,
+              data.password
+            );
+
+            const profile = {
+              email: data.email,
+              name: data.name,
+              whatsapp: data.whatsapp,
+              role: "MEMBER",
+              planName: "PENDING",
+              expiresAt: null,
+              status: "PENDING",
+              createdAt: serverTimestamp()
+            };
+
+            await setDoc(doc(db, "users", credential.user.uid), profile);
+            await signOut(auth);
+            return { user: credential.user, profile };
+          } catch (error) {
+            // Jika akun Auth berhasil dibuat tetapi dokumen profil gagal,
+            // hapus akun Auth agar tidak meninggalkan akun setengah jadi.
+            if (credential && credential.user) {
+              try {
+                await deleteUser(credential.user);
+              } catch (deleteError) {
+                console.error("Gagal membersihkan akun Auth setelah pendaftaran gagal:", deleteError);
+                try { await signOut(auth); } catch (_) {}
+              }
+            }
+            throw error;
+          }
+        },
+
+        async loginUser(email, password) {
+          const credential = await signInWithEmailAndPassword(auth, email, password);
+          try {
+            const snap = await getDoc(doc(db, "users", credential.user.uid));
+            if (!snap.exists()) {
+              await signOut(auth);
+              throw new Error("Profil akun tidak ditemukan di database. Hubungi admin.");
+            }
+            return { user: credential.user, profile: snap.data() };
+          } catch (error) {
+            if (auth.currentUser) {
+              try { await signOut(auth); } catch (_) {}
+            }
+            throw error;
+          }
+        },
+
+        async logoutUser() {
+          if (auth.currentUser) await signOut(auth);
+        },
+
+        errorMessage(error) {
+          const code = error && error.code ? error.code : "";
+          const messages = {
+            "auth/email-already-in-use": "Email sudah terdaftar. Silakan masuk menggunakan akun tersebut.",
+            "auth/invalid-email": "Format email tidak valid.",
+            "auth/weak-password": "Kata sandi terlalu lemah. Gunakan minimal 6 karakter.",
+            "auth/invalid-credential": "Email atau kata sandi salah.",
+            "auth/user-not-found": "Akun tidak ditemukan.",
+            "auth/wrong-password": "Kata sandi salah.",
+            "auth/too-many-requests": "Terlalu banyak percobaan. Coba lagi beberapa saat.",
+            "permission-denied": "Akses Firestore ditolak. Periksa kembali Firestore Security Rules."
+          };
+          return messages[code] || (error && error.message ? error.message : "Terjadi kesalahan Firebase.");
+        }
+      };
+
+      // Pulihkan sesi hanya berdasarkan Firebase Auth dan profil Firestore,
+      // bukan berdasarkan data login yang tersimpan di localStorage.
+      onAuthStateChanged(auth, async function(user) {
+        if (!user) return;
+        try {
+          const snap = await getDoc(doc(db, "users", user.uid));
+          if (!snap.exists()) {
+            await signOut(auth);
+            return;
+          }
+          const profile = snap.data();
+          if (
+            String(profile.status || "").toUpperCase() !== "ACTIVE" ||
+            !profile.planName ||
+            profile.planName === "PENDING"
+          ) {
+            await signOut(auth);
+            return;
+          }
+          if (typeof window.setAdminAuthenticated === "function") {
+            window.setAdminAuthenticated({
+              email: user.email,
+              name: profile.name || user.email,
+              whatsapp: profile.whatsapp || "",
+              role: profile.role || "MEMBER",
+              planName: profile.planName,
+              expiresAt: profile.expiresAt || "",
+              isLifetime: Boolean(profile.isLifetime),
+              remainingDays: Number(profile.remainingDays || 0),
+              usedDevicesCount: Number(profile.usedDevicesCount || 1),
+              maxDevices: Number(profile.maxDevices || 1),
+              switchesUsed7d: Number(profile.switchesUsed7d || 0),
+              maxSwitches7d: Number(profile.maxSwitches7d || 3)
+            }, true);
+          }
+        } catch (error) {
+          console.error("Gagal memeriksa sesi Firebase:", error);
+          try { await signOut(auth); } catch (_) {}
+        }
+      });
+
+      return true;
+    })().catch(function(error) {
+      console.error("Firebase initialization failed:", error);
+      const message = "Firebase gagal dimuat: " + (error && error.message ? error.message : error);
+      window.mglFirebaseInitError = message;
+      throw error;
+    });
+  </script>
+
 </body>
 </html>
